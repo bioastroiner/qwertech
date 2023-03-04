@@ -1,10 +1,15 @@
 package com.kbi.qwertech.items.stats;
 
+import com.kbi.qwertech.entities.EntityHelperFunctions;
 import gregtech.items.tools.early.GT_Tool_Pickaxe;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
+import net.minecraftforge.event.world.BlockEvent;
+
+import java.util.List;
 
 public class QT_Tool_SturdyPickaxe extends GT_Tool_Pickaxe {
 	
@@ -30,9 +35,10 @@ public class QT_Tool_SturdyPickaxe extends GT_Tool_Pickaxe {
         return 75;
     }
 
-    /*
+
 	public float breakCheck(EntityPlayer player, World world, int x, int y, int z, boolean doBreak)
 	{
+		//if(world.isRemote || player.isClientWorld()) return 0;
 		Block aBlock = world.getBlock(x, y, z);
 		int aMetadata = world.getBlockMetadata(x, y, z);
 		if (aBlock.canHarvestBlock(player, aMetadata) && this.isMinableBlock(aBlock, (byte)aMetadata) && aBlock.getPlayerRelativeBlockHardness(player, world, x, y, z) > 0)
@@ -54,7 +60,7 @@ public class QT_Tool_SturdyPickaxe extends GT_Tool_Pickaxe {
 
 	public void calculateSides(boolean[] pos, boolean[] loc)
 	{
-		if (MOP != null && MOP.typeOfHit == MovingObjectType.BLOCK)
+		if (MOP != null && MOP.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK)
 		{
 			switch (MOP.sideHit)
 			{
@@ -98,9 +104,10 @@ public class QT_Tool_SturdyPickaxe extends GT_Tool_Pickaxe {
 			}
 		}
 	}
-		
+
 	public float checkBlocks(EntityPlayer aPlayer, int aX, int aY, int aZ, boolean chop)
 	{
+		//if(aPlayer.isClientWorld()) return 0;
 		boolean[] checkPos = new boolean[]{false, false, false};
 		boolean[] checkLoc = new boolean[]{false, false, false};
 
@@ -150,24 +157,23 @@ public class QT_Tool_SturdyPickaxe extends GT_Tool_Pickaxe {
 		return returnable;
 	}
 
-	@Override
-	public int convertBlockDrops(List<ItemStack> aDrops, ItemStack aStack, EntityPlayer aPlayer, Block aBlock, long aAvailableDurability, int aX, int aY, int aZ, byte aMetaData, int aFortune, boolean aSilkTouch, BlockEvent.HarvestDropsEvent aEvent)
-	{
-		if (LOCK) return 0;
-		LOCK = true;
-		int returnable = (int)checkBlocks(aPlayer, aX, aY, aZ, true);
-		LOCK = false;
-		return returnable;
-	}
-    */
+    @Override
+    public int convertBlockDrops(List<ItemStack> aDrops, ItemStack aStack, EntityPlayer aPlayer, Block aBlock, long aAvailableDurability, int aX, int aY, int aZ, byte aMetaData, int aFortune, boolean aSilkTouch, BlockEvent.HarvestDropsEvent aEvent) {
+        if (LOCK) return 0;
+        LOCK = true;
+        int returnable = (int)checkBlocks(aPlayer, aX, aY, aZ, true);
+        LOCK = false;
+        return returnable;
+    }
+
 	@Override
 	public float getMiningSpeed(Block aBlock, byte aMetaData, float aDefault, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ)
 	{
-	    /*
+		//if(aWorld.isRemote || aPlayer.isClientWorld()) return aDefault;
 		MOP = EntityHelperFunctions.getEntityLookTrace(aWorld, aPlayer, false, 5D);
 		float returnable = super.getMiningSpeed(aBlock, aMetaData, aDefault, aPlayer, aWorld, aX, aY, aZ);
-		returnable = returnable + checkBlocks(aPlayer, aX, aY, aZ, false);
-		return returnable/5;*/
-	    return super.getMiningSpeed(aBlock, aMetaData, aDefault, aPlayer, aWorld, aX, aY, aZ) + 1;
+		//returnable = returnable + checkBlocks(aPlayer, aX, aY, aZ, false);
+		return returnable/2;
+	    //return super.getMiningSpeed(aBlock, aMetaData, aDefault, aPlayer, aWorld, aX, aY, aZ) + 1;
 	}
 }

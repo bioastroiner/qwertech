@@ -1,10 +1,15 @@
 package com.kbi.qwertech.items.stats;
 
+import com.kbi.qwertech.entities.EntityHelperFunctions;
 import gregtech.items.tools.early.GT_Tool_Shovel;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
+import net.minecraftforge.event.world.BlockEvent;
+
+import java.util.List;
 
 public class QT_Tool_SturdyShovel extends GT_Tool_Shovel {
 	
@@ -30,138 +35,143 @@ public class QT_Tool_SturdyShovel extends GT_Tool_Shovel {
 		return 75;
 	}
 
-	/*
-		public float breakCheck(EntityPlayer player, World world, int x, int y, int z, boolean doBreak)
+	public float breakCheck(EntityPlayer player, World world, int x, int y, int z, boolean doBreak)
+	{
+		//if(world.isRemote || player.isClientWorld()) return 0;
+		Block aBlock = world.getBlock(x, y, z);
+		int aMetadata = world.getBlockMetadata(x, y, z);
+		if (aBlock.canHarvestBlock(player, aMetadata) && this.isMinableBlock(aBlock, (byte)aMetadata) && aBlock.getPlayerRelativeBlockHardness(player, world, x, y, z) > 0)
 		{
-			Block aBlock = world.getBlock(x, y, z);
-			int aMetadata = world.getBlockMetadata(x, y, z);
-			if (aBlock.canHarvestBlock(player, aMetadata) && this.isMinableBlock(aBlock, (byte)aMetadata) && aBlock.getPlayerRelativeBlockHardness(player, world, x, y, z) > 0)
+			if (doBreak)
 			{
-				if (doBreak)
-				{
-					world.func_147480_a(x, y, z, true);
-					return 1;
-				}
-				return super.getMiningSpeed(aBlock, (byte)aMetadata);
+				world.func_147480_a(x, y, z, true);
+				return 1;
 			}
-			return 0;
+			return super.getMiningSpeed(aBlock, (byte)aMetadata);
 		}
-		
-		public void calculateSides(boolean[] pos, boolean[] loc)
+		return 0;
+	}
+	@Override
+	public boolean isMinableBlock(Block aBlock, byte aMetaData) {
+		return super.isMinableBlock(aBlock, aMetaData);
+	}
+
+	public void calculateSides(boolean[] pos, boolean[] loc)
+	{
+		if (MOP != null && MOP.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK)
 		{
-			if (MOP != null && MOP.typeOfHit == MovingObjectType.BLOCK)
+			switch (MOP.sideHit)
 			{
-				switch (MOP.sideHit)
+				case 0:
+				case 1:
 				{
-					case 0:
-					case 1:
-					{
-						pos = new boolean[]{false, true, true};
-						break;
-					}
-					case 2:
-					case 3:
-					{
-						pos = new boolean[]{true, false, true};
-						break;
-					}
-					case 4:
-					case 5:
-					{
-						pos = new boolean[]{true, true, false};
-						break;
-					}
-					default:
-					{
-						pos = new boolean[]{false, false, false};
-						break;
-					}
+					pos[1] = true;
+					pos[2] = true;
+					break;
 				}
-				if (MOP.hitVec.yCoord > MOP.blockY + 0.5)
+				case 2:
+				case 3:
 				{
-					loc[0] = true;
+					pos[0] = true;
+					pos[2] = true;
+					break;
 				}
-				if (MOP.hitVec.zCoord > MOP.blockZ + 0.5)
+				case 4:
+				case 5:
 				{
-					loc[1] = true;
+					pos[0] = true;
+					pos[1] = true;
+					break;
 				}
-				if (MOP.hitVec.xCoord > MOP.blockX + 0.5)
+				default:
 				{
-					loc[2] = true;
+					break;
 				}
+			}
+			if (MOP.hitVec.yCoord > MOP.blockY + 0.5)
+			{
+				loc[0] = true;
+			}
+			if (MOP.hitVec.zCoord > MOP.blockZ + 0.5)
+			{
+				loc[1] = true;
+			}
+			if (MOP.hitVec.xCoord > MOP.blockX + 0.5)
+			{
+				loc[2] = true;
 			}
 		}
-		
-		public float checkBlocks(EntityPlayer aPlayer, int aX, int aY, int aZ, boolean chop)
+	}
+
+	public float checkBlocks(EntityPlayer aPlayer, int aX, int aY, int aZ, boolean chop)
+	{
+		//if(aPlayer.isClientWorld()) return 0;
+		boolean[] checkPos = new boolean[]{false, false, false};
+		boolean[] checkLoc = new boolean[]{false, false, false};
+
+		calculateSides(checkPos, checkLoc);
+
+		float returnable = 0;
+		int x = aX;
+		int y = aY;
+		int z = aZ;
+		if (checkPos[0])
 		{
-			boolean[] checkPos = new boolean[]{false, false, false};
-			boolean[] checkLoc = new boolean[]{false, false, false};
-			
-			calculateSides(checkPos, checkLoc);
-			
-			float returnable = 0;
-			int x = aX;
-			int y = aY;
-			int z = aZ;
-			if (checkPos[0])
-			{
-				if (checkLoc[0]) {y += 1;} else {y -= 1;}
-				returnable = returnable + breakCheck(aPlayer, aPlayer.worldObj, x, y, z, chop);
-				if (checkPos[1])
-				{
-					if (checkLoc[1]) {z += 1;} else {z -= 1;}
-					returnable = returnable + breakCheck(aPlayer, aPlayer.worldObj, x, y, z, chop);
-				} else if (checkPos[2])
-				{
-					if (checkLoc[2]) {x += 1;} else {x -= 1;}
-					returnable = returnable + breakCheck(aPlayer, aPlayer.worldObj, x, y, z, chop);
-				}
-				
-			}
-			x = aX;
-			y = aY;
-			z = aZ;
+			y = checkLoc[0] ? y + 1 : y - 1;
+			returnable = returnable + breakCheck(aPlayer, aPlayer.worldObj, x, y, z, chop);
 			if (checkPos[1])
 			{
-				if (checkLoc[1]) {z += 1;} else {z -= 1;}
+				z = checkLoc[1] ? z + 1 : z - 1;
 				returnable = returnable + breakCheck(aPlayer, aPlayer.worldObj, x, y, z, chop);
-				if (checkPos[2])
-				{
-					if (checkLoc[2]) {x += 1;} else {x -= 1;}
-					returnable = returnable + breakCheck(aPlayer, aPlayer.worldObj, x, y, z, chop);
-				}
-				
+			} else if (checkPos[2])
+			{
+				x = checkLoc[2] ? x + 1 : x - 1;
+				returnable = returnable + breakCheck(aPlayer, aPlayer.worldObj, x, y, z, chop);
 			}
-			x = aX;
-			y = aY;
-			z = aZ;
+
+		}
+		x = aX;
+		y = aY;
+		z = aZ;
+		if (checkPos[1])
+		{
+			z = checkLoc[1] ? z + 1 : z - 1;
+			returnable = returnable + breakCheck(aPlayer, aPlayer.worldObj, x, y, z, chop);
 			if (checkPos[2])
 			{
-				if (checkLoc[2]) {x += 1;} else {x -= 1;}
+				x = checkLoc[2] ? x + 1 : x - 1;
 				returnable = returnable + breakCheck(aPlayer, aPlayer.worldObj, x, y, z, chop);
 			}
-			return returnable;
-		}
 
-		@Override
-		public int convertBlockDrops(List<ItemStack> aDrops, ItemStack aStack, EntityPlayer aPlayer, Block aBlock, long aAvailableDurability, int aX, int aY, int aZ, byte aMetaData, int aFortune, boolean aSilkTouch, BlockEvent.HarvestDropsEvent aEvent)
-		{
-			if (LOCK) return 0;
-			LOCK = true;
-			int returnable = (int)checkBlocks(aPlayer, aX, aY, aZ, true);
-			LOCK = false;
-			return returnable;
 		}
-		*/
+		x = aX;
+		y = aY;
+		z = aZ;
+		if (checkPos[2])
+		{
+			x = checkLoc[2] ? x + 1 : x - 1;
+			returnable = returnable + breakCheck(aPlayer, aPlayer.worldObj, x, y, z, chop);
+		}
+		return returnable;
+	}
 
-		@Override
-		public float getMiningSpeed(Block aBlock, byte aMetaData, float aDefault, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ)
-		{
-			/*
-			MOP = EntityHelperFunctions.getEntityLookTrace(aWorld, aPlayer, false, 5D);
-			float returnable = super.getMiningSpeed(aBlock, aMetaData, aDefault, aPlayer, aWorld, aX, aY, aZ);
-			returnable = returnable + checkBlocks(aPlayer, aX, aY, aZ, false);
-			return returnable/5;*/
-			return super.getMiningSpeed(aBlock, aMetaData, aDefault, aPlayer, aWorld, aX, aY, aZ) + 1;
-		}
+	@Override
+	public int convertBlockDrops(List<ItemStack> aDrops, ItemStack aStack, EntityPlayer aPlayer, Block aBlock, long aAvailableDurability, int aX, int aY, int aZ, byte aMetaData, int aFortune, boolean aSilkTouch, BlockEvent.HarvestDropsEvent aEvent) {
+		if (LOCK) return 0;
+		LOCK = true;
+		int returnable = (int)checkBlocks(aPlayer, aX, aY, aZ, true);
+		LOCK = false;
+		return returnable;
+	}
+
+	@Override
+	public float getMiningSpeed(Block aBlock, byte aMetaData, float aDefault, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ)
+	{
+		//if(aWorld.isRemote || aPlayer.isClientWorld()) return aDefault;
+		MOP = EntityHelperFunctions.getEntityLookTrace(aWorld, aPlayer, false, 5D);
+		float returnable = super.getMiningSpeed(aBlock, aMetaData, aDefault, aPlayer, aWorld, aX, aY, aZ);
+		//returnable = returnable + checkBlocks(aPlayer, aX, aY, aZ, false);
+		return returnable/2;
+		//return super.getMiningSpeed(aBlock, aMetaData, aDefault, aPlayer, aWorld, aX, aY, aZ) + 1;
+	}
 }
