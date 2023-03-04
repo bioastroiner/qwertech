@@ -19,9 +19,9 @@ public class QTConfigs {
 	public static boolean allHammers;
 	public static boolean anyHammers;
 	
-	public static boolean add3DGregTools;
-	public static boolean add3DQwerTools;
-	public static boolean add3DPrefixes;
+	public static boolean add3DGregTools = false;
+	public static boolean add3DQwerTools = false;
+	public static boolean add3DPrefixes = false;
 	
 	public static boolean enableFrogs;
 	public static boolean enableTurkeys;

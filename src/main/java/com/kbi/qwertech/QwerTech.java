@@ -174,10 +174,11 @@ public final class QwerTech extends Abstract_Mod {
 		
 		Configuration t3DConfig = new Configuration(new File(CS.DirectoriesGT.CONFIG_GT, "3Ditems.cfg"));
 		t3DConfig.load();
-		
-		QTConfigs.add3DGregTools = t3DConfig.get("general", "Add3DGregTools", true, "Add 3D models for default GregTech tools").setShowInGui(true).getBoolean(true);
-		QTConfigs.add3DQwerTools = t3DConfig.get("general", "Add3DQwerTools", true, "Add 3D models for new QwerTech tools").setShowInGui(true).getBoolean(true);
-		QTConfigs.add3DPrefixes = t3DConfig.get("general", "Add3DPrefixes", true, "Add 3D Models for OreDictPrefix objects (tool heads, ingots, rods, etc.)").setShowInGui(true).getBoolean(true);
+
+		// TODO: 3D tool models are lagacy remove them completely later
+		QTConfigs.add3DGregTools = t3DConfig.get("general", "Add3DGregTools", false, "Add 3D models for default GregTech tools").setShowInGui(true).getBoolean(false);
+		QTConfigs.add3DQwerTools = t3DConfig.get("general", "Add3DQwerTools", false, "Add 3D models for new QwerTech tools").setShowInGui(true).getBoolean(false);
+		QTConfigs.add3DPrefixes = t3DConfig.get("general", "Add3DPrefixes", false, "Add 3D Models for OreDictPrefix objects (tool heads, ingots, rods, etc.)").setShowInGui(true).getBoolean(false);
 		
 		t3DConfig.save();
 		
@@ -435,7 +436,7 @@ public final class QwerTech extends Abstract_Mod {
 			
 			qwerTool = new MultiItemTool_QT(MODID, "qwertech.tools");
 			QTI.qwerTool.set(qwerTool);
-			qwerTool.setFull3D();
+			qwerTool.setFull3D(); // TODO remove 3d
 			qwerTool.addTool(0, "Mattock", "Tills soil and chops logs", new QT_Tool_Mattock().setMaterialAmount(mattockHead.mAmount), "craftingToolAxe", "craftingToolHoe", TC.stack(TC.INSTRUMENTUM, 2L), TC.stack(TC.METO, 2L), TC.stack(TC.ARBOR, 2L), "toolMattock" );
 			mattockHead.addListener(new OreProcessing_QTTool(0, ConfigCategories.Recipes.gregtechtools + "." + "Mattock", true, false, 0L, 0L, null, new String[][]{{ "PPI", "PIh", "fH " }}, new String[][] { { "PPI", "PIh", "f  " } }, null, null, null, null, null, TD.Atomic.ANTIMATTER.NOT));
 			GameRegistry.addRecipe(new AnyQTTool(0L, mattockHead, true));
