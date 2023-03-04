@@ -379,9 +379,9 @@ processResources
 				include 'mcmod.info'
 
 				// replace version and mcversion
-				expand "mcversion": project.minecraft.version,
+				expand "minecraftVersion": project.minecraft.version,
 						//"modVersion": versionDetails().lastTag,
-						"version": modVersion,
+						"modVersion": modVersion,
 						"modId": modId,
 						"modName": modName
 			}
