@@ -163,13 +163,13 @@ configurations.all {
 // Fix Jenkins' Git: chmod a file should not be detected as a change and append a '.dirty' to the version
 'git config core.fileMode false'.execute()
 // Pulls version from git tag
-try {
-	version = minecraftVersion + "-" + gitVersion()
-}
-catch (Exception e) {
-	throw new IllegalStateException("This mod must be version controlled by Git AND the repository must provide at least one tag!");
-}
-
+//try {
+//	version = minecraftVersion + "-" + gitVersion()
+//}
+//catch (Exception e) {
+//	throw new IllegalStateException("This mod must be version controlled by Git AND the repository must provide at least one tag!");
+//}
+version = modVersion
 group = modGroup
 if(project.hasProperty("customArchiveBaseName") && customArchiveBaseName) {
 	archivesBaseName = customArchiveBaseName
@@ -191,7 +191,7 @@ minecraft {
 			replace gradleTokenModName, modName
 		}
 		if(gradleTokenVersion) {
-			replace gradleTokenVersion, versionDetails().lastTag
+			replace gradleTokenVersion, modVersion
 		}
 		if(gradleTokenGroupName) {
 			replace gradleTokenGroupName, modGroup
@@ -379,8 +379,9 @@ processResources
 				include 'mcmod.info'
 
 				// replace version and mcversion
-				expand "minecraftVersion": project.minecraft.version,
-						"modVersion": versionDetails().lastTag,
+				expand "mcversion": project.minecraft.version,
+						//"modVersion": versionDetails().lastTag,
+						"version": modVersion,
 						"modId": modId,
 						"modName": modName
 			}

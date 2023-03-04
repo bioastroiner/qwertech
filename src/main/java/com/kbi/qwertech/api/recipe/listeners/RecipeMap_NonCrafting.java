@@ -35,7 +35,6 @@ public class RecipeMap_NonCrafting implements IRecipeMapHandler {
 		this.isOutputPrefix = !(aOutput instanceof ItemStack);
 	}
 
-	@Override
 	public boolean addRecipesUsing(RecipeMap aMap, ItemStack aStack,
 			OreDictItemData aData) {
 		if (isDone()) return F;
@@ -47,26 +46,40 @@ public class RecipeMap_NonCrafting implements IRecipeMapHandler {
 	}
 	
 
+//	@Override
+//	public boolean addRecipesUsing(RecipeMap aMap, Fluid aFluid) {
+//		return false;
+//	}
+//
+//	@Override
+//	public boolean addRecipesProducing(RecipeMap aMap, ItemStack aStack,
+//			OreDictItemData aData) {
+//		if (isDone()) return F;
+//		if (this.isOutputPrefix)
+//		{
+//			return aData != null && aData.hasValidMaterialData() && aData.mPrefix == mOutput && addRecipeForMaterial(aMap, aData.mMaterial.mMaterial);
+//		} else {
+//			return (aStack == mOutput && addRecipeForMaterial(aMap, aData.mMaterial.mMaterial));
+//		}
+//	}
+
 	@Override
-	public boolean addRecipesUsing(RecipeMap aMap, Fluid aFluid) {
+	public boolean addRecipesUsing(RecipeMap aMap, boolean aNEI, ItemStack aStack, OreDictItemData aData) {
 		return false;
 	}
 
 	@Override
-	public boolean addRecipesProducing(RecipeMap aMap, ItemStack aStack,
-			OreDictItemData aData) {
-		if (isDone()) return F;
-		if (this.isOutputPrefix)
-		{
-			return aData != null && aData.hasValidMaterialData() && aData.mPrefix == mOutput && addRecipeForMaterial(aMap, aData.mMaterial.mMaterial);
-		} else {
-			return (aStack == mOutput && addRecipeForMaterial(aMap, aData.mMaterial.mMaterial));
-		}
+	public boolean addRecipesUsing(RecipeMap aMap, boolean aNEI, Fluid aFluid) {
+		return false;
 	}
 
 	@Override
-	public boolean addRecipesProducing(RecipeMap aMap, Fluid aFluid) {
-		// TODO Auto-generated method stub
+	public boolean addRecipesProducing(RecipeMap aMap, boolean aNEI, ItemStack aStack, OreDictItemData aData) {
+		return false;
+	}
+
+	@Override
+	public boolean addRecipesProducing(RecipeMap aMap, boolean aNEI, Fluid aFluid) {
 		return false;
 	}
 

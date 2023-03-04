@@ -69,14 +69,12 @@ public class BlockCorrugated extends BlockBaseMeta {
 		if (renderSouth) {maxZ = 1F;} else {maxZ = 0.7F;}
 		this.setBlockBounds(minX, minY, minZ, maxX, maxY, maxZ);
 	}
-	
-	
+
 	@Override
-	public float getExplosionResistance(int meta)
-	{
-		return 3.3F * hardness[meta];
+	public float getExplosionResistance(byte aMeta) {
+		return 3.3F * hardness[aMeta];
 	}
-	
+
 	@Override
 	public boolean isSideSolid(IBlockAccess world, int x, int y, int z, ForgeDirection side)
 	{
@@ -88,14 +86,12 @@ public class BlockCorrugated extends BlockBaseMeta {
 	{
 		return (int)Math.floor(hardness[meta]);
 	}
-	
-	
+
 	@Override
-	public boolean isSealable(int aMeta, byte aSide)
-	{
-	   return false;
+	public boolean isSealable(byte aMeta, byte aSide) {
+		return false;
 	}
-	  
+
 	@Override
 	public boolean isFireSource(World aWorld, int aX, int aY, int aZ, ForgeDirection aSide)
 	{

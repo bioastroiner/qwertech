@@ -61,7 +61,7 @@ public class BlockSoil extends BlockBaseMeta {
     }
 
     @Override
-    public void addInformation(ItemStack aStack, int aMeta, EntityPlayer aPlayer, List aList, boolean aF3_H) {
+    public void addInformation(ItemStack aStack, byte aMeta, EntityPlayer aPlayer, List<String> aList, boolean aF3_H) {
         super.addInformation(aStack, aMeta, aPlayer, aList, aF3_H);
         switch(aMeta)
         {
