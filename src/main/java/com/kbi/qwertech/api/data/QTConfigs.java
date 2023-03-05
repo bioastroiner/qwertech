@@ -15,10 +15,6 @@ public class QTConfigs {
 	
 	public static boolean overwriteJourneyMap;
 	
-	public static boolean removeVanillaCrafting;
-	public static boolean allHammers;
-	public static boolean anyHammers;
-	
 	public static boolean add3DGregTools = false;
 	public static boolean add3DQwerTools = false;
 	public static boolean add3DPrefixes = false;
@@ -26,8 +22,6 @@ public class QTConfigs {
 	public static boolean enableFrogs;
 	public static boolean enableTurkeys;
 	public static boolean enableChickens;
-
-	public static boolean enable3DCrafting;
 	
 	public static boolean enableTools;
 	
