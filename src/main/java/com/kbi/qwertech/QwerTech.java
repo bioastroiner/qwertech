@@ -7,9 +7,7 @@ import com.kbi.qwertech.api.recipe.WoodSpecificCrafting;
 import com.kbi.qwertech.api.recipe.listeners.OreProcessing_NonCrafting;
 import com.kbi.qwertech.api.recipe.listeners.OreProcessing_QTTool;
 import com.kbi.qwertech.api.recipe.listeners.ShapelessCraftFrom;
-import com.kbi.qwertech.api.recipe.managers.CraftingManager3D;
 import com.kbi.qwertech.api.recipe.managers.CraftingManagerCountertop;
-import com.kbi.qwertech.api.recipe.managers.CraftingManagerHammer;
 import com.kbi.qwertech.api.registry.ArmorUpgradeRegistry;
 import com.kbi.qwertech.blocks.BlockCorrugated;
 import com.kbi.qwertech.blocks.BlockSoil;
@@ -66,7 +64,6 @@ import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
@@ -196,7 +193,7 @@ public final class QwerTech extends Abstract_Mod {
 		QTConfigs.enableTurkeys = tSections.get("entities", "enableTurkeys", true, "Allow Turkeys to exist").setShowInGui(true).getBoolean(true);
 		QTConfigs.enableChickens = tSections.get("entities", "enableChickens", true, "Turns baby Chickens into QwerTech chickens").setShowInGui(true).getBoolean(true);
 
-		QTConfigs.enable3DCrafting = tSections.get("crafting", "enable3D", true, "Allow use of the 3x3x3 crafting grid of T4 crafting anvils").setShowInGui(true).getBoolean(true);
+		//QTConfigs.enable3DCrafting = tSections.get("crafting", "enable3D", true, "Allow use of the 3x3x3 crafting grid of T4 crafting anvils").setShowInGui(true).getBoolean(true);
 		
 		QTConfigs.enableTools = tSections.get("tools", "enableTools", true, "Allow the creation of QwerTech tools like maces and mattocks").setShowInGui(true).getBoolean(true);
 		
@@ -226,7 +223,7 @@ public final class QwerTech extends Abstract_Mod {
 	@Override
 	public void onModPreInit2(FMLPreInitializationEvent aEvent) {
 		instance = this;
-		
+
 		QTMT.ChemicalX.toString();
 		COLOR.put("Black", 0);
 		NOTE.A2.get();
@@ -500,7 +497,7 @@ public final class QwerTech extends Abstract_Mod {
 
 	@Override
 	public void onModInit2(FMLInitializationEvent aEvent) {
-		achievementHandler = new RegisterAchievements();
+		//achievementHandler = new RegisterAchievements(); todo: achievement disabled remove later
     	//MinecraftForge.EVENT_BUS.register(achievementHandler);
         //FMLCommonHandler.instance().bus().register(this);
         
@@ -572,112 +569,112 @@ public final class QwerTech extends Abstract_Mod {
 		for (int q = 0; q < 16; q++)
 		{
 			//CR.shaped(ST.make(corrugatedBlock, 1, q), CR.DEF, "hPz", Character.valueOf('P'), OP.plateDouble.mat(wallmats[q], 1));
-			CraftingManagerHammer.getInstance().addRecipe(new ShapedOreRecipe(ST.make(corrugatedBlock, 1,q), "P", "z", 'P', OP.plateDouble.dat(wallmats[q]).toString(), 'z', "craftingToolBendingCylinder"));
+			//CraftingManagerHammer.getInstance().addRecipe(new ShapedOreRecipe(ST.make(corrugatedBlock, 1,q), "P", "z", 'P', OP.plateDouble.dat(wallmats[q]).toString(), 'z', "craftingToolBendingCylinder"));
 			RM.RollFormer.addRecipe1(true, 16, 768, OP.plateDouble.mat(wallmats[q], 1), ST.make(corrugatedBlock,  1, q));
 			RM.RollingMill.addRecipe1(true, 16, 768, ST.make(corrugatedBlock, 1, q), OP.plateDouble.mat(wallmats[q], 1));
 		}
 		
-		for (int q = 1; q < WOOD.woodList.length; q++)
-		{
-			OreDictMaterial woodType = WOOD.woodList[q];
-			if (woodType != null)
-			{
-			    if (OreDictionary.getOres("plank" + woodType.mNameInternal).isEmpty())
-                {
-                    woodType.hide(true);
-                }
-				machines.add(woodType.mNameLocal + " Crafting Table", "Crafting Tables", q, 0, CraftingTableT1.class, 0, 16, wood, UT.NBT.make(NullBT, CS.NBT_MATERIAL, woodType, CS.NBT_INV_SIZE, 12, CS.NBT_TEXTURE, "qwertech:wood", CS.NBT_HARDNESS, 3.0F, CS.NBT_RESISTANCE, 3.0F, CS.NBT_COLOR, UT.Code.getRGBInt(woodType.fRGBaSolid)));
-				CR.shapeless(ST.make(Blocks.crafting_table, 1, 0), CR.DEF, new Object[]{machines.getItem(q)});
-				OreDictionary.registerOre("craftingWorkBenchWood", machines.getItem(q));
-				OreDictionary.registerOre("craftingWorkBench", machines.getItem(q));
-			}
-		}
-		machines.add("Wooden Crafting Table", "Crafting Tables", 0, 0, CraftingTableT1.class, 0, 16, wood, UT.NBT.make(NullBT, CS.NBT_MATERIAL, MT.Wood, CS.NBT_INV_SIZE, 12, CS.NBT_TEXTURE, "qwertech:wood", CS.NBT_HARDNESS, 3.0F, CS.NBT_RESISTANCE, 3.0F, CS.NBT_COLOR, UT.Code.getRGBInt(MT.Wood.fRGBaSolid)));
-		CR.shapeless(ST.make(Blocks.crafting_table, 1, 0), CR.DEF, new Object[]{machines.getItem(0)});
-		OreDictionary.registerOre("craftingWorkBenchWood", machines.getItem(0));
-		OreDictionary.registerOre("craftingWorkBench", machines.getItem(0));
-
-		GameRegistry.addRecipe(new WoodSpecificCrafting(machines.getItem(0), "PP", "PP", 'P', "plankWood"));
-		
-		OreDictMaterial[] tier1 = new OreDictMaterial[]{MT.Plastic, MT.Bi, MT.Cu, MT.Au, MT.Pb, MT.TinAlloy};
-		for (int q = 0; q < tier1.length; q++)
-		{
-			OreDictMaterial mat = tier1[q];
-			machines.add(mat.mNameLocal + " Crafting Table", "Crafting Tables", 257 + q, 0, CraftingTableT1.class, 0, 16, metal, UT.NBT.make(NullBT, CS.NBT_MATERIAL, mat, CS.NBT_INV_SIZE, 12, CS.NBT_TEXTURE, "qwertech:metal", CS.NBT_HARDNESS, 3.0F, CS.NBT_RESISTANCE, 3.0F, CS.NBT_COLOR, UT.Code.getRGBInt(mat.fRGBaSolid)), "CCC", "CCC", "CCC", 'C', OP.chunkGt.dat(mat));
-			OreDictionary.registerOre("craftingWorkBench", machines.getItem(257 + q));
-			OreDictionary.registerOre("craftingWorkBench" + mat.mNameInternal, machines.getItem(257 + q));
-		}
-		
-		machines.add("Sandstone Crafting Table", "Crafting Tables", 256, 0, CraftingTableT1.class, 0, 16, metal, UT.NBT.make(NullBT, CS.NBT_MATERIAL, MT.Sand, CS.NBT_INV_SIZE, 12, CS.NBT_TEXTURE, "qwertech:metal", CS.NBT_HARDNESS, 3.0F, CS.NBT_RESISTANCE, 3.0F, CS.NBT_COLOR, UT.Code.getRGBInt(MT.Sand.fRGBaSolid)), "CCC", "CCC", "CCC", 'C', ST.make(Blocks.sandstone, 1, CS.W));
-		OreDictionary.registerOre("craftingWorkBench", machines.getItem(256));
-		OreDictionary.registerOre("craftingWorkBenchSandstone", machines.getItem(256));
-		
-		OreDictMaterial[] tier2i = new OreDictMaterial[]{MT.Brass, MT.Ag, MT.Al, MT.Constantan, MT.AluminiumBrass, MT.Ni, MT.Ge};
-		OreDictMaterial[] tier2g = new OreDictMaterial[]{MT.Almandine, MT.Topaz, MT.Alexandrite, MT.Spinel, MT.Opal, MT.Maxixe, MT.Pyrope, MT.Goshenite};
-		OreDictMaterial[] tier2r = new OreDictMaterial[]{MT.Blueschist, MT.Greenschist, MT.Stone, MT.Obsidian, MT.Marble, MT.Limestone, MT.Diorite, MT.Andesite, MT.Netherrack, MT.Endstone, MT.Quartzite};
-		
-		for (int q = 0; q < tier2i.length; q++)
-		{
-			OreDictMaterial mat = tier2i[q];
-			machines.add(mat.mNameLocal + " Crafting Table", "Crafting Tables", 270 + q, 0, CraftingTableT2.class, 0, 16, metal, UT.NBT.make(NullBT, CS.NBT_MATERIAL, mat, CS.NBT_INV_SIZE, 13, CS.NBT_TEXTURE, "qwertech:metal", CS.NBT_HARDNESS, 3.0F, CS.NBT_RESISTANCE, 3.0F, CS.NBT_COLOR, UT.Code.getRGBInt(mat.fRGBaSolid)), "CCC", "CCC", "CCC", 'C', OP.chunkGt.dat(mat));
-			OreDictionary.registerOre("craftingWorkBench", machines.getItem(270 + q));
-			OreDictionary.registerOre("craftingWorkBench" + mat.mNameInternal, machines.getItem(270 + q));
-		}
-		for (int q = 0; q < tier2g.length; q++)
-		{
-			OreDictMaterial mat = tier2g[q];
-			machines.add(mat.mNameLocal + " Crafting Table", "Crafting Tables", 280 + q, 0, CraftingTableT2.class, 0, 16, metal, UT.NBT.make(NullBT, CS.NBT_MATERIAL, mat, CS.NBT_INV_SIZE, 13, CS.NBT_TEXTURE, "qwertech:gem", CS.NBT_HARDNESS, 3.0F, CS.NBT_RESISTANCE, 3.0F, CS.NBT_COLOR, UT.Code.getRGBInt(mat.fRGBaSolid)), "CCC", "CCC", "CCC", 'C', OP.gemFlawed.dat(mat));
-			OreDictionary.registerOre("craftingWorkBench", machines.getItem(280 + q));
-			OreDictionary.registerOre("craftingWorkBench" + mat.mNameInternal, machines.getItem(280 + q));
-		}
-		for (int q = 0; q < tier2r.length; q++)
-		{
-			OreDictMaterial mat = tier2r[q];
-			machines.add(mat.mNameLocal + " Crafting Table", "Crafting Tables", 288 + q, 0, CraftingTableT2.class, 0, 16, metal, UT.NBT.make(NullBT, CS.NBT_MATERIAL, mat, CS.NBT_INV_SIZE, 13, CS.NBT_TEXTURE, "qwertech:rock", CS.NBT_HARDNESS, 3.0F, CS.NBT_RESISTANCE, 3.0F, CS.NBT_COLOR, UT.Code.getRGBInt(mat.fRGBaSolid)), "CCC", "CCC", "CCC", 'C', OP.rockGt.dat(mat));
-			OreDictionary.registerOre("craftingWorkBench", machines.getItem(288 + q));
-			OreDictionary.registerOre("craftingWorkBench" + mat.mNameInternal, machines.getItem(288 + q));
-		}
-		
-		OreDictMaterial[] tier3i = new OreDictMaterial[]{MT.Bronze, MT.WroughtIron, MT.Electrum, MT.Alumite, MT.Co, MT.CobaltBrass, MT.Pt, MT.Cr, MT.Os, MT.MeteoricIron};
-		OreDictMaterial[] tier3g = new OreDictMaterial[]{MT.Ruby, MT.OrangeSapphire, MT.Amber, MT.Emerald, MT.Diamond, MT.BlueSapphire, MT.Amethyst};
-		OreDictMaterial[] tier3r = new OreDictMaterial[]{MT.GraniteBlack, MT.GraniteRed, MT.Basalt, MT.Kimberlite, MT.Komatiite};
-		
-		for (int q = 0; q < tier3i.length; q++)
-		{
-			OreDictMaterial mat = tier3i[q];
-			machines.add(mat.mNameLocal + " Crafting Anvil", "Crafting Tables", 300 + q, 0, CraftingTableT3.class, 0, 16, metal, UT.NBT.make(NullBT, CS.NBT_MATERIAL, mat, CS.NBT_INV_SIZE, 13, CS.NBT_TEXTURE, "qwertech:metal", CS.NBT_HARDNESS, 3.0F, CS.NBT_RESISTANCE, 3.0F, CS.NBT_COLOR, UT.Code.getRGBInt(mat.fRGBaSolid)), "CCC", " C ", "CCC", 'C', OP.chunkGt.dat(mat));
-		}
-		for (int q = 0; q < tier3g.length; q++)
-		{
-			OreDictMaterial mat = tier3g[q];
-			machines.add(mat.mNameLocal + " Crafting Anvil", "Crafting Tables", 310 + q, 0, CraftingTableT3.class, 0, 16, metal, UT.NBT.make(NullBT, CS.NBT_MATERIAL, mat, CS.NBT_INV_SIZE, 13, CS.NBT_TEXTURE, "qwertech:gem", CS.NBT_HARDNESS, 3.0F, CS.NBT_RESISTANCE, 3.0F, CS.NBT_COLOR, UT.Code.getRGBInt(mat.fRGBaSolid)), "CCC", " C ", "CCC", 'C', OP.gemFlawed.dat(mat));
-		}
-		for (int q = 0; q < tier3r.length; q++)
-		{
-			OreDictMaterial mat = tier3r[q];
-			machines.add(mat.mNameLocal + " Crafting Anvil", "Crafting Tables", 320 + q, 0, CraftingTableT3.class, 0, 16, metal, UT.NBT.make(NullBT, CS.NBT_MATERIAL, mat, CS.NBT_INV_SIZE, 13, CS.NBT_TEXTURE, "qwertech:rock", CS.NBT_HARDNESS, 3.0F, CS.NBT_RESISTANCE, 3.0F, CS.NBT_COLOR, UT.Code.getRGBInt(mat.fRGBaSolid)), "CCC", " C ", "CCC", 'C', OP.rockGt.dat(mat));
-		}
-		
-		Class<? extends TileEntity> toUse = CraftingTableT4.class;
-		if (!QTConfigs.enable3DCrafting)
-		{
-			toUse = CraftingTableT3.class;
-		}
-		OreDictMaterial[] tier4i = new OreDictMaterial[]{MT.Steel, MT.Invar, MT.SteelGalvanized, MT.MeteoricSteel, MT.Thaumium, MT.Manasteel, MT.Knightmetal, MT.ObsidianSteel, MT.Manyullyn, MT.FakeOsmium};
-		for (int q = 0; q < tier4i.length; q++)
-		{
-			OreDictMaterial mat = tier4i[q];
-			machines.add(mat.mNameLocal + " Crafting Anvil", "Crafting Tables", 330 + q, 0, toUse, 0, 16, metal, UT.NBT.make(NullBT, CS.NBT_MATERIAL, mat, CS.NBT_INV_SIZE, 30, CS.NBT_TEXTURE, "qwertech:metal", CS.NBT_HARDNESS, 3.0F, CS.NBT_RESISTANCE, 3.0F, CS.NBT_COLOR, UT.Code.getRGBInt(mat.fRGBaSolid)), "CCC", " C ", "CCC", 'C', OP.chunkGt.dat(mat));
-		}
-		
-		OreDictMaterial[] tier5i = new OreDictMaterial[]{MT.StainlessSteel, MT.TungstenSteel, MT.Ti, MT.Ad, MT.Bedrock, MT.Desh, MT.TungstenCarbide, MT.DuraniumAlloy, MT.W, MT.TritaniumAlloy};
-		for (int q = 0; q < tier5i.length; q++)
-		{
-			OreDictMaterial mat = tier5i[q];
-			machines.add(mat.mNameLocal + " Crafting Anvil", "Crafting Tables", 340 + q, 0, toUse, 0, 16, metal, UT.NBT.make(NullBT, CS.NBT_MATERIAL, mat, CS.NBT_INV_SIZE, 30, CS.NBT_TEXTURE, "qwertech:metal", CS.NBT_HARDNESS, 3.0F, CS.NBT_RESISTANCE, 3.0F, CS.NBT_COLOR, UT.Code.getRGBInt(mat.fRGBaSolid)), "CCC", " C ", "CCC", 'C', OP.chunkGt.dat(mat));
-		}
-		
-		machines.add("Crafting Helper", "", 400, 0, CraftingHelper.class, 15, 0, air, UT.NBT.make());
+//		for (int q = 1; q < WOOD.woodList.length; q++)
+//		{
+//			OreDictMaterial woodType = WOOD.woodList[q];
+//			if (woodType != null)
+//			{
+//			    if (OreDictionary.getOres("plank" + woodType.mNameInternal).isEmpty())
+//                {
+//                    woodType.hide(true);
+//                }
+//				machines.add(woodType.mNameLocal + " Crafting Table", "Crafting Tables", q, 0, CraftingTableT1.class, 0, 16, wood, UT.NBT.make(NullBT, CS.NBT_MATERIAL, woodType, CS.NBT_INV_SIZE, 12, CS.NBT_TEXTURE, "qwertech:wood", CS.NBT_HARDNESS, 3.0F, CS.NBT_RESISTANCE, 3.0F, CS.NBT_COLOR, UT.Code.getRGBInt(woodType.fRGBaSolid)));
+//				CR.shapeless(ST.make(Blocks.crafting_table, 1, 0), CR.DEF, new Object[]{machines.getItem(q)});
+//				OreDictionary.registerOre("craftingWorkBenchWood", machines.getItem(q));
+//				OreDictionary.registerOre("craftingWorkBench", machines.getItem(q));
+//			}
+//		}
+//		machines.add("Wooden Crafting Table", "Crafting Tables", 0, 0, CraftingTableT1.class, 0, 16, wood, UT.NBT.make(NullBT, CS.NBT_MATERIAL, MT.Wood, CS.NBT_INV_SIZE, 12, CS.NBT_TEXTURE, "qwertech:wood", CS.NBT_HARDNESS, 3.0F, CS.NBT_RESISTANCE, 3.0F, CS.NBT_COLOR, UT.Code.getRGBInt(MT.Wood.fRGBaSolid)));
+//		CR.shapeless(ST.make(Blocks.crafting_table, 1, 0), CR.DEF, new Object[]{machines.getItem(0)});
+//		OreDictionary.registerOre("craftingWorkBenchWood", machines.getItem(0));
+//		OreDictionary.registerOre("craftingWorkBench", machines.getItem(0));
+//
+//		GameRegistry.addRecipe(new WoodSpecificCrafting(machines.getItem(0), "PP", "PP", 'P', "plankWood"));
+//
+//		OreDictMaterial[] tier1 = new OreDictMaterial[]{MT.Plastic, MT.Bi, MT.Cu, MT.Au, MT.Pb, MT.TinAlloy};
+//		for (int q = 0; q < tier1.length; q++)
+//		{
+//			OreDictMaterial mat = tier1[q];
+//			machines.add(mat.mNameLocal + " Crafting Table", "Crafting Tables", 257 + q, 0, CraftingTableT1.class, 0, 16, metal, UT.NBT.make(NullBT, CS.NBT_MATERIAL, mat, CS.NBT_INV_SIZE, 12, CS.NBT_TEXTURE, "qwertech:metal", CS.NBT_HARDNESS, 3.0F, CS.NBT_RESISTANCE, 3.0F, CS.NBT_COLOR, UT.Code.getRGBInt(mat.fRGBaSolid)), "CCC", "CCC", "CCC", 'C', OP.chunkGt.dat(mat));
+//			OreDictionary.registerOre("craftingWorkBench", machines.getItem(257 + q));
+//			OreDictionary.registerOre("craftingWorkBench" + mat.mNameInternal, machines.getItem(257 + q));
+//		}
+//
+//		machines.add("Sandstone Crafting Table", "Crafting Tables", 256, 0, CraftingTableT1.class, 0, 16, metal, UT.NBT.make(NullBT, CS.NBT_MATERIAL, MT.Sand, CS.NBT_INV_SIZE, 12, CS.NBT_TEXTURE, "qwertech:metal", CS.NBT_HARDNESS, 3.0F, CS.NBT_RESISTANCE, 3.0F, CS.NBT_COLOR, UT.Code.getRGBInt(MT.Sand.fRGBaSolid)), "CCC", "CCC", "CCC", 'C', ST.make(Blocks.sandstone, 1, CS.W));
+//		OreDictionary.registerOre("craftingWorkBench", machines.getItem(256));
+//		OreDictionary.registerOre("craftingWorkBenchSandstone", machines.getItem(256));
+//
+//		OreDictMaterial[] tier2i = new OreDictMaterial[]{MT.Brass, MT.Ag, MT.Al, MT.Constantan, MT.AluminiumBrass, MT.Ni, MT.Ge};
+//		OreDictMaterial[] tier2g = new OreDictMaterial[]{MT.Almandine, MT.Topaz, MT.Alexandrite, MT.Spinel, MT.Opal, MT.Maxixe, MT.Pyrope, MT.Goshenite};
+//		OreDictMaterial[] tier2r = new OreDictMaterial[]{MT.Blueschist, MT.Greenschist, MT.Stone, MT.Obsidian, MT.Marble, MT.Limestone, MT.Diorite, MT.Andesite, MT.Netherrack, MT.Endstone, MT.Quartzite};
+//
+//		for (int q = 0; q < tier2i.length; q++)
+//		{
+//			OreDictMaterial mat = tier2i[q];
+//			machines.add(mat.mNameLocal + " Crafting Table", "Crafting Tables", 270 + q, 0, CraftingTableT2.class, 0, 16, metal, UT.NBT.make(NullBT, CS.NBT_MATERIAL, mat, CS.NBT_INV_SIZE, 13, CS.NBT_TEXTURE, "qwertech:metal", CS.NBT_HARDNESS, 3.0F, CS.NBT_RESISTANCE, 3.0F, CS.NBT_COLOR, UT.Code.getRGBInt(mat.fRGBaSolid)), "CCC", "CCC", "CCC", 'C', OP.chunkGt.dat(mat));
+//			OreDictionary.registerOre("craftingWorkBench", machines.getItem(270 + q));
+//			OreDictionary.registerOre("craftingWorkBench" + mat.mNameInternal, machines.getItem(270 + q));
+//		}
+//		for (int q = 0; q < tier2g.length; q++)
+//		{
+//			OreDictMaterial mat = tier2g[q];
+//			machines.add(mat.mNameLocal + " Crafting Table", "Crafting Tables", 280 + q, 0, CraftingTableT2.class, 0, 16, metal, UT.NBT.make(NullBT, CS.NBT_MATERIAL, mat, CS.NBT_INV_SIZE, 13, CS.NBT_TEXTURE, "qwertech:gem", CS.NBT_HARDNESS, 3.0F, CS.NBT_RESISTANCE, 3.0F, CS.NBT_COLOR, UT.Code.getRGBInt(mat.fRGBaSolid)), "CCC", "CCC", "CCC", 'C', OP.gemFlawed.dat(mat));
+//			OreDictionary.registerOre("craftingWorkBench", machines.getItem(280 + q));
+//			OreDictionary.registerOre("craftingWorkBench" + mat.mNameInternal, machines.getItem(280 + q));
+//		}
+//		for (int q = 0; q < tier2r.length; q++)
+//		{
+//			OreDictMaterial mat = tier2r[q];
+//			machines.add(mat.mNameLocal + " Crafting Table", "Crafting Tables", 288 + q, 0, CraftingTableT2.class, 0, 16, metal, UT.NBT.make(NullBT, CS.NBT_MATERIAL, mat, CS.NBT_INV_SIZE, 13, CS.NBT_TEXTURE, "qwertech:rock", CS.NBT_HARDNESS, 3.0F, CS.NBT_RESISTANCE, 3.0F, CS.NBT_COLOR, UT.Code.getRGBInt(mat.fRGBaSolid)), "CCC", "CCC", "CCC", 'C', OP.rockGt.dat(mat));
+//			OreDictionary.registerOre("craftingWorkBench", machines.getItem(288 + q));
+//			OreDictionary.registerOre("craftingWorkBench" + mat.mNameInternal, machines.getItem(288 + q));
+//		}
+//
+//		OreDictMaterial[] tier3i = new OreDictMaterial[]{MT.Bronze, MT.WroughtIron, MT.Electrum, MT.Alumite, MT.Co, MT.CobaltBrass, MT.Pt, MT.Cr, MT.Os, MT.MeteoricIron};
+//		OreDictMaterial[] tier3g = new OreDictMaterial[]{MT.Ruby, MT.OrangeSapphire, MT.Amber, MT.Emerald, MT.Diamond, MT.BlueSapphire, MT.Amethyst};
+//		OreDictMaterial[] tier3r = new OreDictMaterial[]{MT.GraniteBlack, MT.GraniteRed, MT.Basalt, MT.Kimberlite, MT.Komatiite};
+//
+//		for (int q = 0; q < tier3i.length; q++)
+//		{
+//			OreDictMaterial mat = tier3i[q];
+//			machines.add(mat.mNameLocal + " Crafting Anvil", "Crafting Tables", 300 + q, 0, CraftingTableT3.class, 0, 16, metal, UT.NBT.make(NullBT, CS.NBT_MATERIAL, mat, CS.NBT_INV_SIZE, 13, CS.NBT_TEXTURE, "qwertech:metal", CS.NBT_HARDNESS, 3.0F, CS.NBT_RESISTANCE, 3.0F, CS.NBT_COLOR, UT.Code.getRGBInt(mat.fRGBaSolid)), "CCC", " C ", "CCC", 'C', OP.chunkGt.dat(mat));
+//		}
+//		for (int q = 0; q < tier3g.length; q++)
+//		{
+//			OreDictMaterial mat = tier3g[q];
+//			machines.add(mat.mNameLocal + " Crafting Anvil", "Crafting Tables", 310 + q, 0, CraftingTableT3.class, 0, 16, metal, UT.NBT.make(NullBT, CS.NBT_MATERIAL, mat, CS.NBT_INV_SIZE, 13, CS.NBT_TEXTURE, "qwertech:gem", CS.NBT_HARDNESS, 3.0F, CS.NBT_RESISTANCE, 3.0F, CS.NBT_COLOR, UT.Code.getRGBInt(mat.fRGBaSolid)), "CCC", " C ", "CCC", 'C', OP.gemFlawed.dat(mat));
+//		}
+//		for (int q = 0; q < tier3r.length; q++)
+//		{
+//			OreDictMaterial mat = tier3r[q];
+//			machines.add(mat.mNameLocal + " Crafting Anvil", "Crafting Tables", 320 + q, 0, CraftingTableT3.class, 0, 16, metal, UT.NBT.make(NullBT, CS.NBT_MATERIAL, mat, CS.NBT_INV_SIZE, 13, CS.NBT_TEXTURE, "qwertech:rock", CS.NBT_HARDNESS, 3.0F, CS.NBT_RESISTANCE, 3.0F, CS.NBT_COLOR, UT.Code.getRGBInt(mat.fRGBaSolid)), "CCC", " C ", "CCC", 'C', OP.rockGt.dat(mat));
+//		}
+//
+//		Class<? extends TileEntity> toUse = CraftingTableT4.class;
+//		if (!QTConfigs.enable3DCrafting)
+//		{
+//			toUse = CraftingTableT3.class;
+//		}
+//		OreDictMaterial[] tier4i = new OreDictMaterial[]{MT.Steel, MT.Invar, MT.SteelGalvanized, MT.MeteoricSteel, MT.Thaumium, MT.Manasteel, MT.Knightmetal, MT.ObsidianSteel, MT.Manyullyn, MT.FakeOsmium};
+//		for (int q = 0; q < tier4i.length; q++)
+//		{
+//			OreDictMaterial mat = tier4i[q];
+//			machines.add(mat.mNameLocal + " Crafting Anvil", "Crafting Tables", 330 + q, 0, toUse, 0, 16, metal, UT.NBT.make(NullBT, CS.NBT_MATERIAL, mat, CS.NBT_INV_SIZE, 30, CS.NBT_TEXTURE, "qwertech:metal", CS.NBT_HARDNESS, 3.0F, CS.NBT_RESISTANCE, 3.0F, CS.NBT_COLOR, UT.Code.getRGBInt(mat.fRGBaSolid)), "CCC", " C ", "CCC", 'C', OP.chunkGt.dat(mat));
+//		}
+//
+//		OreDictMaterial[] tier5i = new OreDictMaterial[]{MT.StainlessSteel, MT.TungstenSteel, MT.Ti, MT.Ad, MT.Bedrock, MT.Desh, MT.TungstenCarbide, MT.DuraniumAlloy, MT.W, MT.TritaniumAlloy};
+//		for (int q = 0; q < tier5i.length; q++)
+//		{
+//			OreDictMaterial mat = tier5i[q];
+//			machines.add(mat.mNameLocal + " Crafting Anvil", "Crafting Tables", 340 + q, 0, toUse, 0, 16, metal, UT.NBT.make(NullBT, CS.NBT_MATERIAL, mat, CS.NBT_INV_SIZE, 30, CS.NBT_TEXTURE, "qwertech:metal", CS.NBT_HARDNESS, 3.0F, CS.NBT_RESISTANCE, 3.0F, CS.NBT_COLOR, UT.Code.getRGBInt(mat.fRGBaSolid)), "CCC", " C ", "CCC", 'C', OP.chunkGt.dat(mat));
+//		}
+//
+//		machines.add("Crafting Helper", "", 400, 0, CraftingHelper.class, 15, 0, air, UT.NBT.make());
 		
 		OreDictMaterial[] upgradeDeskMats = new OreDictMaterial[] {MT.Bronze, MT.Co, MT.Au, MT.Obsidian, MT.Plastic, MT.Ag};
 		for (int q = 0; q < upgradeDeskMats.length; q++)
@@ -737,9 +734,9 @@ public final class QwerTech extends Abstract_Mod {
 
 		RegisterArmor.instance.addUpgrades();
 
-		CraftingManagerHammer.replacems.put(ST.make(Items.feather, 1, 0), "itemFeather");
-		CraftingManagerHammer.replacems.put(ST.make(Blocks.chest, 1, 0), "craftingChest");
-		CraftingManagerHammer.replacems.put(ST.make(Blocks.crafting_table, 1, 0), "craftingWorkBench");
+		//CraftingManagerHammer.replacems.put(ST.make(Items.feather, 1, 0), "itemFeather");
+		//CraftingManagerHammer.replacems.put(ST.make(Blocks.chest, 1, 0), "craftingChest");
+		//CraftingManagerHammer.replacems.put(ST.make(Blocks.crafting_table, 1, 0), "craftingWorkBench");
 		//CS.GT.mAfterPostInit.add(CraftingManagerHammer.getInstance());
 		//CS.GT.mAfterPostInit.add(CraftingManager3D.getInstance());
 	}
@@ -747,8 +744,6 @@ public final class QwerTech extends Abstract_Mod {
 	@Mod.EventHandler
 	public void onModsLoaded(FMLLoadCompleteEvent event)
 	{
-		CraftingManagerHammer.getInstance().run();
-		CraftingManager3D.getInstance().run();
 		CraftingManagerCountertop.getInstance().run();
 		ModLoadBase.runPostInit();
 	}
@@ -760,18 +755,18 @@ public final class QwerTech extends Abstract_Mod {
 
 	@Override
 	public void onModServerStarted2(FMLServerStartedEvent aEvent) {
-		// TODO Auto-generated method stub
+
 	}
 
 	@Override
 	public void onModServerStopping2(FMLServerStoppingEvent aEvent) {
-		// TODO Auto-generated method stub
+
 		
 	}
 
 	@Override
 	public void onModServerStopped2(FMLServerStoppedEvent aEvent) {
-		// TODO Auto-generated method stub
+
 		
 	}
 }

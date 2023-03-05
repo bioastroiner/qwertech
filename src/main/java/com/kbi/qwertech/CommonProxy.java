@@ -178,7 +178,7 @@ public class CommonProxy extends Abstract_Proxy {
     @SubscribeEvent
     public void livingDied(LivingDeathEvent event)
     {
-    	QwerTech.achievementHandler.onEntityDeath(event);
+    	//QwerTech.achievementHandler.onEntityDeath(event);
     }
     
     @SubscribeEvent
@@ -292,7 +292,7 @@ public class CommonProxy extends Abstract_Proxy {
     @SubscribeEvent
     public void onAchievement(AchievementEvent event)
     {
-    	QwerTech.achievementHandler.onAchieved(event);
+//    	QwerTech.achievementHandler.onAchieved(event);
     }
     
     //@SubscribeEvent
@@ -316,7 +316,7 @@ public class CommonProxy extends Abstract_Proxy {
     @SubscribeEvent
     public void playerAttacks(AttackEntityEvent event)
     {
-    	QwerTech.achievementHandler.onEntityHurt(event);
+    	//QwerTech.achievementHandler.onEntityHurt(event);
     }
     
     //@SubscribeEvent
@@ -334,7 +334,7 @@ public class CommonProxy extends Abstract_Proxy {
     @SubscribeEvent
     public void onPickupItem(EntityItemPickupEvent event)
     {
-    	QwerTech.achievementHandler.onItemPickup(event);
+    	//QwerTech.achievementHandler.onItemPickup(event);
     }
     
     //@SubscribeEvent
@@ -346,7 +346,7 @@ public class CommonProxy extends Abstract_Proxy {
     @SubscribeEvent
     public void onPlayerDestroyItem(PlayerDestroyItemEvent event)
     {
-    	QwerTech.achievementHandler.onBroken(event);
+    	//QwerTech.achievementHandler.onBroken(event);
     }
     
     //@SubscribeEvent
@@ -412,7 +412,7 @@ public class CommonProxy extends Abstract_Proxy {
     @SubscribeEvent
     public void onPlayerWorldInteraction(PlayerInteractEvent event)
     {
-    	QwerTech.achievementHandler.onRightClick(event);
+    	//QwerTech.achievementHandler.onRightClick(event);
     	RegisterArmor.instance.onClickedWearingArmor(event);
     }
     
@@ -550,7 +550,7 @@ public class CommonProxy extends Abstract_Proxy {
     @SubscribeEvent
     public void onPlayerItemUseStop(PlayerUseItemEvent.Stop event)
     {
-    	QwerTech.achievementHandler.onItemFinish(event);
+    	//QwerTech.achievementHandler.onItemFinish(event);
     }
     
     //@SubscribeEvent
@@ -729,7 +729,7 @@ public class CommonProxy extends Abstract_Proxy {
     @SubscribeEvent
     public void onBlockDrop(BlockEvent.HarvestDropsEvent event)
     {
-    	QwerTech.achievementHandler.onBlockBreak(event);
+    	//QwerTech.achievementHandler.onBlockBreak(event);
     }
     
     //@SubscribeEvent
@@ -789,7 +789,7 @@ public class CommonProxy extends Abstract_Proxy {
     @SubscribeEvent
     public void onExplosionDetonate(ExplosionEvent.Detonate event)
     {
-    	QwerTech.achievementHandler.onExploded(event);
+    	//QwerTech.achievementHandler.onExploded(event);
     }
     
     //@SubscribeEvent
@@ -825,7 +825,7 @@ public class CommonProxy extends Abstract_Proxy {
     @SubscribeEvent
     public void onItemCrafted(cpw.mods.fml.common.gameevent.PlayerEvent.ItemCraftedEvent event)
     {
-    	QwerTech.achievementHandler.onCrafted(event);
+    	//QwerTech.achievementHandler.onCrafted(event);
     }
     
     //@SubscribeEvent
@@ -837,7 +837,7 @@ public class CommonProxy extends Abstract_Proxy {
     @SubscribeEvent
     public void onItemSmelted(cpw.mods.fml.common.gameevent.PlayerEvent.ItemSmeltedEvent event)
     {
-    	QwerTech.achievementHandler.onSmelted(event);
+    	//QwerTech.achievementHandler.onSmelted(event);
     }
     
     //@SubscribeEvent

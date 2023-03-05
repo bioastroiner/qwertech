@@ -18,8 +18,6 @@ import com.kbi.qwertech.client.entity.passive.RenderFrog;
 import com.kbi.qwertech.client.entity.projectile.*;
 import com.kbi.qwertech.client.models.entity.*;
 import com.kbi.qwertech.client.tileentity.CountertopRenderer;
-import com.kbi.qwertech.client.tileentity.CraftingTable3DRenderer;
-import com.kbi.qwertech.client.tileentity.CraftingTableRenderer;
 import com.kbi.qwertech.client.tileentity.UpgradeDeskRenderer;
 import com.kbi.qwertech.entities.genetic.EntityPhasianidae;
 import com.kbi.qwertech.entities.neutral.EntityTurkey;
@@ -117,11 +115,6 @@ public final class ClientProxy extends CommonProxy { // NO_UCD (unused code)
 				//new RenderZombieFix());
 		RenderingRegistry.registerEntityRenderingHandler(EntityPhasianidae.class, new RenderGeneticEntity(new GeneticModelHandler(), 1));
 		RenderingRegistry.registerEntityRenderingHandler(EntityFrog.class, new RenderFrog(new ModelFrog(), 0.5F));
-		
-		ClientRegistry.bindTileEntitySpecialRenderer(CraftingTableT1.class, new CraftingTableRenderer());
-		ClientRegistry.bindTileEntitySpecialRenderer(CraftingTableT2.class, new CraftingTableRenderer());
-		ClientRegistry.bindTileEntitySpecialRenderer(CraftingTableT3.class, new CraftingTableRenderer());
-		ClientRegistry.bindTileEntitySpecialRenderer(CraftingTableT4.class, new CraftingTable3DRenderer());
 		
 		ClientRegistry.bindTileEntitySpecialRenderer(UpgradeDesk.class, new UpgradeDeskRenderer());
 

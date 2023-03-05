@@ -1,6 +1,6 @@
 package com.kbi.qwertech.client.tileentity;
 
-import com.kbi.qwertech.tileentities.CraftingTableT1;
+import com.kbi.qwertech.tileentities.CuttingBoardTileEntity;
 import gregapi.data.CS;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -122,8 +122,9 @@ public class CraftingTableRenderer extends TileEntitySpecialRenderer {
         }
         GL11.glPopMatrix();
 	}
-	
-	public void renderTileEntityAt(CraftingTableT1 tileEntity, double x, double y, double z, float partialTick)
+
+	// Todo: temp fix
+	public void renderTileEntityAt(CuttingBoardTileEntity tileEntity, double x, double y, double z, float partialTick)
 	{
 		//System.out.println("Rendering");
 		if (mc == null) mc = Minecraft.getMinecraft();
@@ -238,7 +239,7 @@ public class CraftingTableRenderer extends TileEntitySpecialRenderer {
 
 	@Override
 	public void renderTileEntityAt(TileEntity tileEntity, double x, double y, double z, float partialTick) {
-		renderTileEntityAt((CraftingTableT1)tileEntity, x, y, z, partialTick);
+		renderTileEntityAt((CuttingBoardTileEntity)tileEntity, x, y, z, partialTick);
 	}
 
 }

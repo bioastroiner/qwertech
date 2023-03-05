@@ -1,7 +1,6 @@
 package com.kbi.qwertech.loaders.mod;
 
 import com.kbi.qwertech.api.recipe.RepairRecipe;
-import com.kbi.qwertech.api.recipe.managers.CraftingManagerHammer;
 import com.kbi.qwertech.api.registry.MobBloodRegistry;
 import com.kbi.qwertech.api.registry.MobScrapeRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -325,48 +324,48 @@ public class ModLoad_TF extends ModLoadBase {
 	@Override
 	public void tweakRecipes()
 	{
-		CraftingManagerHammer hammer = CraftingManagerHammer.getInstance();
-		try {
-			hammer.addRecipe(new RepairRecipe(GameRegistry.findItem(this.getMod().mID, "item.ironwoodHelm"), new OreDictMaterialStack(MT.IronWood, CS.U * 5)));
-			hammer.addRecipe(new RepairRecipe(GameRegistry.findItem(this.getMod().mID, "item.ironwoodPlate"), new OreDictMaterialStack(MT.IronWood, CS.U * 8)));
-			hammer.addRecipe(new RepairRecipe(GameRegistry.findItem(this.getMod().mID, "item.ironwoodLegs"), new OreDictMaterialStack(MT.IronWood, CS.U * 7)));
-			hammer.addRecipe(new RepairRecipe(GameRegistry.findItem(this.getMod().mID, "item.ironwoodBoots"), new OreDictMaterialStack(MT.IronWood, CS.U * 4)));
-			
-			hammer.addRecipe(new RepairRecipe(GameRegistry.findItem(this.getMod().mID, "item.ironwoodSword"), new OreDictMaterialStack(MT.IronWood, CS.U * 2)));
-			hammer.addRecipe(new RepairRecipe(GameRegistry.findItem(this.getMod().mID, "item.ironwoodShovel"), new OreDictMaterialStack(MT.IronWood, CS.U)));
-			hammer.addRecipe(new RepairRecipe(GameRegistry.findItem(this.getMod().mID, "item.ironwoodPick"), new OreDictMaterialStack(MT.IronWood, CS.U * 3)));
-			hammer.addRecipe(new RepairRecipe(GameRegistry.findItem(this.getMod().mID, "item.ironwoodAxe"), new OreDictMaterialStack(MT.IronWood, CS.U * 3)));
-			hammer.addRecipe(new RepairRecipe(GameRegistry.findItem(this.getMod().mID, "item.ironwoodHoe"), new OreDictMaterialStack(MT.IronWood, CS.U * 2)));
-			
-			hammer.addRecipe(new RepairRecipe(GameRegistry.findItem(this.getMod().mID, "item.fieryHelm"), new OreDictMaterialStack(MT.FierySteel, CS.U * 5)));
-			hammer.addRecipe(new RepairRecipe(GameRegistry.findItem(this.getMod().mID, "item.fieryPlate"), new OreDictMaterialStack(MT.FierySteel, CS.U * 8)));
-			hammer.addRecipe(new RepairRecipe(GameRegistry.findItem(this.getMod().mID, "item.fieryLegs"), new OreDictMaterialStack(MT.FierySteel, CS.U * 7)));
-			hammer.addRecipe(new RepairRecipe(GameRegistry.findItem(this.getMod().mID, "item.fieryBoots"), new OreDictMaterialStack(MT.FierySteel, CS.U * 4)));
-			
-			hammer.addRecipe(new RepairRecipe(GameRegistry.findItem(this.getMod().mID, "item.fierySword"), new OreDictMaterialStack(MT.FierySteel, CS.U * 2)));
-			hammer.addRecipe(new RepairRecipe(GameRegistry.findItem(this.getMod().mID, "item.fieryPick"), new OreDictMaterialStack(MT.FierySteel, CS.U * 3)));
-
-			hammer.addRecipe(new RepairRecipe(GameRegistry.findItem(this.getMod().mID, "item.steeleafHelm"), new OreDictMaterialStack(MT.Steeleaf, CS.U * 5)));
-			hammer.addRecipe(new RepairRecipe(GameRegistry.findItem(this.getMod().mID, "item.steeleafPlate"), new OreDictMaterialStack(MT.Steeleaf, CS.U * 8)));
-			hammer.addRecipe(new RepairRecipe(GameRegistry.findItem(this.getMod().mID, "item.steeleafLegs"), new OreDictMaterialStack(MT.Steeleaf, CS.U * 7)));
-			hammer.addRecipe(new RepairRecipe(GameRegistry.findItem(this.getMod().mID, "item.steeleafBoots"), new OreDictMaterialStack(MT.Steeleaf, CS.U * 4)));
-			
-			hammer.addRecipe(new RepairRecipe(GameRegistry.findItem(this.getMod().mID, "item.steeleafSword"), new OreDictMaterialStack(MT.Steeleaf, CS.U * 2)));
-			hammer.addRecipe(new RepairRecipe(GameRegistry.findItem(this.getMod().mID, "item.steeleafShovel"), new OreDictMaterialStack(MT.Steeleaf, CS.U)));
-			hammer.addRecipe(new RepairRecipe(GameRegistry.findItem(this.getMod().mID, "item.steeleafPick"), new OreDictMaterialStack(MT.Steeleaf, CS.U * 3)));
-			hammer.addRecipe(new RepairRecipe(GameRegistry.findItem(this.getMod().mID, "item.steeleafAxe"), new OreDictMaterialStack(MT.Steeleaf, CS.U * 3)));
-			hammer.addRecipe(new RepairRecipe(GameRegistry.findItem(this.getMod().mID, "item.steeleafHoe"), new OreDictMaterialStack(MT.Steeleaf, CS.U * 2)));
-			
-			hammer.addRecipe(new RepairRecipe(GameRegistry.findItem(this.getMod().mID, "item.knightlyHelm"), new OreDictMaterialStack(MT.Knightmetal, CS.U * 5)));
-			hammer.addRecipe(new RepairRecipe(GameRegistry.findItem(this.getMod().mID, "item.knightlyPlate"), new OreDictMaterialStack(MT.Knightmetal, CS.U * 8)));
-			hammer.addRecipe(new RepairRecipe(GameRegistry.findItem(this.getMod().mID, "item.knightlyLegs"), new OreDictMaterialStack(MT.Knightmetal, CS.U * 7)));
-			hammer.addRecipe(new RepairRecipe(GameRegistry.findItem(this.getMod().mID, "item.knightlyBoots"), new OreDictMaterialStack(MT.Knightmetal, CS.U * 4)));
-			hammer.addRecipe(new RepairRecipe(GameRegistry.findItem(this.getMod().mID, "item.knightlySword"), new OreDictMaterialStack(MT.Knightmetal, CS.U * 2)));
-			hammer.addRecipe(new RepairRecipe(GameRegistry.findItem(this.getMod().mID, "item.knightlyPick"), new OreDictMaterialStack(MT.Knightmetal, CS.U * 3)));
-			hammer.addRecipe(new RepairRecipe(GameRegistry.findItem(this.getMod().mID, "item.knightlyAxe"), new OreDictMaterialStack(MT.Knightmetal, CS.U * 3)));
-		} catch (Throwable t)
-		{
-			t.printStackTrace();
-		}
+//		CraftingManagerHammer hammer = CraftingManagerHammer.getInstance();
+//		try {
+//			hammer.addRecipe(new RepairRecipe(GameRegistry.findItem(this.getMod().mID, "item.ironwoodHelm"), new OreDictMaterialStack(MT.IronWood, CS.U * 5)));
+//			hammer.addRecipe(new RepairRecipe(GameRegistry.findItem(this.getMod().mID, "item.ironwoodPlate"), new OreDictMaterialStack(MT.IronWood, CS.U * 8)));
+//			hammer.addRecipe(new RepairRecipe(GameRegistry.findItem(this.getMod().mID, "item.ironwoodLegs"), new OreDictMaterialStack(MT.IronWood, CS.U * 7)));
+//			hammer.addRecipe(new RepairRecipe(GameRegistry.findItem(this.getMod().mID, "item.ironwoodBoots"), new OreDictMaterialStack(MT.IronWood, CS.U * 4)));
+//
+//			hammer.addRecipe(new RepairRecipe(GameRegistry.findItem(this.getMod().mID, "item.ironwoodSword"), new OreDictMaterialStack(MT.IronWood, CS.U * 2)));
+//			hammer.addRecipe(new RepairRecipe(GameRegistry.findItem(this.getMod().mID, "item.ironwoodShovel"), new OreDictMaterialStack(MT.IronWood, CS.U)));
+//			hammer.addRecipe(new RepairRecipe(GameRegistry.findItem(this.getMod().mID, "item.ironwoodPick"), new OreDictMaterialStack(MT.IronWood, CS.U * 3)));
+//			hammer.addRecipe(new RepairRecipe(GameRegistry.findItem(this.getMod().mID, "item.ironwoodAxe"), new OreDictMaterialStack(MT.IronWood, CS.U * 3)));
+//			hammer.addRecipe(new RepairRecipe(GameRegistry.findItem(this.getMod().mID, "item.ironwoodHoe"), new OreDictMaterialStack(MT.IronWood, CS.U * 2)));
+//
+//			hammer.addRecipe(new RepairRecipe(GameRegistry.findItem(this.getMod().mID, "item.fieryHelm"), new OreDictMaterialStack(MT.FierySteel, CS.U * 5)));
+//			hammer.addRecipe(new RepairRecipe(GameRegistry.findItem(this.getMod().mID, "item.fieryPlate"), new OreDictMaterialStack(MT.FierySteel, CS.U * 8)));
+//			hammer.addRecipe(new RepairRecipe(GameRegistry.findItem(this.getMod().mID, "item.fieryLegs"), new OreDictMaterialStack(MT.FierySteel, CS.U * 7)));
+//			hammer.addRecipe(new RepairRecipe(GameRegistry.findItem(this.getMod().mID, "item.fieryBoots"), new OreDictMaterialStack(MT.FierySteel, CS.U * 4)));
+//
+//			hammer.addRecipe(new RepairRecipe(GameRegistry.findItem(this.getMod().mID, "item.fierySword"), new OreDictMaterialStack(MT.FierySteel, CS.U * 2)));
+//			hammer.addRecipe(new RepairRecipe(GameRegistry.findItem(this.getMod().mID, "item.fieryPick"), new OreDictMaterialStack(MT.FierySteel, CS.U * 3)));
+//
+//			hammer.addRecipe(new RepairRecipe(GameRegistry.findItem(this.getMod().mID, "item.steeleafHelm"), new OreDictMaterialStack(MT.Steeleaf, CS.U * 5)));
+//			hammer.addRecipe(new RepairRecipe(GameRegistry.findItem(this.getMod().mID, "item.steeleafPlate"), new OreDictMaterialStack(MT.Steeleaf, CS.U * 8)));
+//			hammer.addRecipe(new RepairRecipe(GameRegistry.findItem(this.getMod().mID, "item.steeleafLegs"), new OreDictMaterialStack(MT.Steeleaf, CS.U * 7)));
+//			hammer.addRecipe(new RepairRecipe(GameRegistry.findItem(this.getMod().mID, "item.steeleafBoots"), new OreDictMaterialStack(MT.Steeleaf, CS.U * 4)));
+//
+//			hammer.addRecipe(new RepairRecipe(GameRegistry.findItem(this.getMod().mID, "item.steeleafSword"), new OreDictMaterialStack(MT.Steeleaf, CS.U * 2)));
+//			hammer.addRecipe(new RepairRecipe(GameRegistry.findItem(this.getMod().mID, "item.steeleafShovel"), new OreDictMaterialStack(MT.Steeleaf, CS.U)));
+//			hammer.addRecipe(new RepairRecipe(GameRegistry.findItem(this.getMod().mID, "item.steeleafPick"), new OreDictMaterialStack(MT.Steeleaf, CS.U * 3)));
+//			hammer.addRecipe(new RepairRecipe(GameRegistry.findItem(this.getMod().mID, "item.steeleafAxe"), new OreDictMaterialStack(MT.Steeleaf, CS.U * 3)));
+//			hammer.addRecipe(new RepairRecipe(GameRegistry.findItem(this.getMod().mID, "item.steeleafHoe"), new OreDictMaterialStack(MT.Steeleaf, CS.U * 2)));
+//
+//			hammer.addRecipe(new RepairRecipe(GameRegistry.findItem(this.getMod().mID, "item.knightlyHelm"), new OreDictMaterialStack(MT.Knightmetal, CS.U * 5)));
+//			hammer.addRecipe(new RepairRecipe(GameRegistry.findItem(this.getMod().mID, "item.knightlyPlate"), new OreDictMaterialStack(MT.Knightmetal, CS.U * 8)));
+//			hammer.addRecipe(new RepairRecipe(GameRegistry.findItem(this.getMod().mID, "item.knightlyLegs"), new OreDictMaterialStack(MT.Knightmetal, CS.U * 7)));
+//			hammer.addRecipe(new RepairRecipe(GameRegistry.findItem(this.getMod().mID, "item.knightlyBoots"), new OreDictMaterialStack(MT.Knightmetal, CS.U * 4)));
+//			hammer.addRecipe(new RepairRecipe(GameRegistry.findItem(this.getMod().mID, "item.knightlySword"), new OreDictMaterialStack(MT.Knightmetal, CS.U * 2)));
+//			hammer.addRecipe(new RepairRecipe(GameRegistry.findItem(this.getMod().mID, "item.knightlyPick"), new OreDictMaterialStack(MT.Knightmetal, CS.U * 3)));
+//			hammer.addRecipe(new RepairRecipe(GameRegistry.findItem(this.getMod().mID, "item.knightlyAxe"), new OreDictMaterialStack(MT.Knightmetal, CS.U * 3)));
+//		} catch (Throwable t)
+//		{
+//			t.printStackTrace();
+//		}
 	}
 }
