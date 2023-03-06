@@ -73,7 +73,7 @@ public class QT_Tool_SturdyShovel extends GT_Tool_Shovel {
 	}
 
 	private List<Float> determinateAOE(int x,int y, int z,EntityPlayer aPlayer,World aWorld){
-		List<Float> speed = new ArrayList<>();
+		List<Float> speed = new ArrayList<>();speed.add(0f);
 		if(query_iterated)return speed;
 		if(!query.isEmpty())query.clear();
 		MovingObjectPosition ray = EntityHelperFunctions.getEntityLookTrace(aWorld, aPlayer, false, 5D);
