@@ -121,7 +121,6 @@ public final class QwerTech extends Abstract_Mod {
 	public static int stakeTexID;
 	public static int batTexID;
 	public static int batSpikeTexID;
-	public static RegisterAchievements achievementHandler;
 	public static int maxChiselTex = 4;
 	public static MultiTileEntityRegistry machines;
 	public static MultiTileEntityBlock metal;
@@ -463,9 +462,9 @@ public final class QwerTech extends Abstract_Mod {
 			//maceHeadRaw.addListener(new Loader_OreProcessing.OreProcessing_Sharpening(maceHead, 1L, true, TD.Atomic.ANTIMATTER.NOT));
 			RM.Sharpening.add(new RecipeMapHandlerPrefix(mattockHeadRaw, 1, CS.NF, 16, 0, 64, CS.NF, mattockHead, 1, CS.NI, CS.NI, CS.T, CS.T, CS.F, TD.Atomic.ANTIMATTER.NOT));
 			RM.Sharpening.add(new RecipeMapHandlerPrefix(maceHeadRaw, 1, CS.NF, 16, 0, 64, CS.NF, maceHead, 1, CS.NI, CS.NI, CS.T, CS.T, CS.F, TD.Atomic.ANTIMATTER.NOT));
-			//RM.RollingMill.add(new RecipeMapHandlerPrefix(OP.ring, 1, CS.NF, 16, 0, 64, CS.NF, link, 2, CS.NI, CS.NI, CS.T, CS.T, CS.F, TD.Atomic.ANTIMATTER.NOT));
+			RM.RollingMill.add(new RecipeMapHandlerPrefix(OP.ring, 1, CS.NF, 16, 0, 64, CS.NF, link, 1, CS.NI, CS.NI, CS.T, CS.T, CS.F, TD.Atomic.ANTIMATTER.NOT));
 			//RM.RollBender.add(new RecipeMapHandlerPrefix(OP.stick, 2, CS.NF, 16, 0, 64, CS.NF, chain, 1, CS.NI, CS.NI, CS.T, CS.T, CS.F, TD.Atomic.ANTIMATTER.NOT));
-            //RM.Welder.add(new RecipeMapHandlerPrefix(link, 4, CS.NF, 16, 0, 64, CS.NF,chain, 1, CS.NI, CS.NI, CS.T, CS.T, CS.F, TD.Atomic.ANTIMATTER.NOT));
+            RM.Welder.add(new RecipeMapHandlerPrefix(link, 4, CS.NF, 16, 0, 64, CS.NF,chain, 1, CS.NI, CS.NI, CS.T, CS.T, CS.F, TD.Atomic.ANTIMATTER.NOT));
 
 
             mattockHead.addListener(new ShapelessCraftFrom( 1, null, new String[][] {{"X ", " f"}}, mattockHeadRaw, null, null, null, null, TD.Atomic.ANTIMATTER.NOT));
@@ -494,9 +493,6 @@ public final class QwerTech extends Abstract_Mod {
 
 	@Override
 	public void onModInit2(FMLInitializationEvent aEvent) {
-		//achievementHandler = new RegisterAchievements(); todo: achievement disabled remove later
-    	//MinecraftForge.EVENT_BUS.register(achievementHandler);
-        //FMLCommonHandler.instance().bus().register(this);
         
         //MinecraftForge.EVENT_BUS.register(new RegisterMobs());
         new RegisterMobs();

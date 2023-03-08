@@ -58,7 +58,6 @@ public class Behavior_Swing extends Behavior_AOE {
 					}
 				}
 				aEntity.registerExtendedProperties("isDeflected", new ExtendedPropertiesDeflected());
-				QwerTech.achievementHandler.issueAchievement(aPlayer, "batterUp");
 			}
 		} else if (aEntity instanceof EntityLivingBase){
 			if ((aEntity.width < 1 && aEntity.height < 1) || ((EntityLivingBase)aEntity).isChild()) {
@@ -67,11 +66,6 @@ public class Behavior_Swing extends Behavior_AOE {
 				for (int i = 1; i < 9; i++)	
 				{
 					aEntity.worldObj.spawnParticle("townaura", (float)aEntity.posX + rand.nextFloat(), (float)aEntity.posY + rand.nextFloat(), (float)aEntity.posZ + rand.nextFloat(), aEntity.motionX / i, aEntity.motionY / i, aEntity.motionZ / i);
-				}
-				QwerTech.achievementHandler.issueAchievement(aPlayer, "batterUp");
-				if (aStack.getItemDamage() == 12 && aEntity instanceof EntityBat)
-				{
-					QwerTech.achievementHandler.issueAchievement(aPlayer, "kingBat");
 				}
 			}
 		}

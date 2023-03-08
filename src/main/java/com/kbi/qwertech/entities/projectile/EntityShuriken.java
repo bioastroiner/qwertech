@@ -382,7 +382,6 @@ public class EntityShuriken extends EntityArrow implements IProjectile, IThrowab
                                 EnchantmentHelper.func_151385_b((EntityLivingBase)this.shootingEntity, entitylivingbase);
                                 
                                 if (this.shootingEntity instanceof EntityPlayer && entitylivingbase instanceof EntityCreeper && entitylivingbase.getHealth() <= 0 && entitylivingbase.getDistanceToEntity(this.shootingEntity) > 50) {
-                                	QwerTech.achievementHandler.issueAchievement((EntityPlayer)this.shootingEntity, "ninjaStrike");
                                 }
                             }
 

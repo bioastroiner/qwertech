@@ -111,7 +111,6 @@ public class EntityBall extends EntityRock {
             if (entity instanceof EntityPlayer)
             {
             	int type = this.getType();
-            	if (type == 5) QwerTech.achievementHandler.issueAchievement((EntityPlayer)entity, "mudSplat");
             	if (this.worldObj.isRemote && entity == Minecraft.getMinecraft().thePlayer)
             	{
             		switch (type)

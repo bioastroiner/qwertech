@@ -91,7 +91,6 @@ public class QT_Tool_Mace
 	    aDrops.add(OP.rockGt.mat(MT.Stone, 3 + aFortune));
 	    aPlayer.worldObj.setBlockToAir(aX, aY, aZ);
 	    aEvent.dropChance = 1.0F;
-	    QwerTech.achievementHandler.issueAchievement(aPlayer, "useMace");
 	    return 0;
     } else {
     	for (int q = 0; q < aDrops.size(); q++) {

@@ -247,7 +247,6 @@ public class EntityRock extends EntityThrowable {
 						UT.Sounds.send(this.worldObj, Block.soundTypeGlass.getBreakSound(), 1, 1, mop.blockX, mop.blockY, mop.blockZ);
 						this.worldObj.setBlockToAir(mop.blockX, mop.blockY, mop.blockZ);
 						this.bounce(this.motionX, this.motionY, this.motionZ, 0.6);
-						QwerTech.achievementHandler.issueAchievement((EntityPlayerMP)this.getThrower(), "brokenWindow");
 					} else {
 						bounce = true; //bounce off glass
 					}

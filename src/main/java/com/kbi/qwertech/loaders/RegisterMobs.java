@@ -407,9 +407,11 @@ public class RegisterMobs {
 			MobGearRegistry.registerTool("zombie", QT_Tool.getToolWithStats(14, MT.Stone, MT.Wood), 1, 4); //stone axe
 			MobGearRegistry.registerTool("zombie", QT_Tool.getToolWithStats(14, MT.Bronze, MT.Wood), 1, 4); //bronze axe
 			MobGearRegistry.registerTool("zombie", QT_Tool.getToolWithStats(14, MT.Fe, MT.Wood), 1, 4); //iron axe
+			MobGearRegistry.registerTool("zombie", QT_Tool.getToolWithStats(14, MT.DamascusSteel, MT.Plastic), 1, 4); //iron axe
 			MobGearRegistry.registerTool("zombie", QT_Tool.getToolWithStats(10, MT.Wood, MT.Wood), 2, 4); //wood stake
 			MobGearRegistry.registerTool("zombie", QT_Tool.getToolWithStats(10, MT.Bone, MT.Bone), 2, 4); //bone stake
 			MobGearRegistry.registerTool("zombie", QT_Tool.getToolWithStats(12, MT.Wood, MT.Empty), 2, 4); //wood bat
+			MobGearRegistry.registerTool("zombie", QT_Tool.getToolWithStats(12, MT.ManaQuartz, MT.Empty), 2, 4); //wood bat
 			MobGearRegistry.registerTool("zombie", QT_Tool.make(14), 10, 1); //axe
 			MobGearRegistry.registerTool("zombie", QT_Tool.getToolWithStats(10, MT.Fe, MT.Fe), 2, 1); //iron stake
 			MobGearRegistry.registerTool("zombie", QT_Tool.getToolWithStats(12, MT.Fe, MT.Empty), 2, 1); //iron bat
@@ -429,21 +431,21 @@ public class RegisterMobs {
 			
 			MobGearRegistry.registerTool("zombie", QT_Tool.getToolWithStats(12, MT.Wood, MT.Empty), 5, 0); //wood bat
 		}
-		MobGearRegistry.registerTool("zombie", GT_Tool.make(40), 10, 0); //scythe/sense
-		MobGearRegistry.registerTool("zombie", GT_Tool.make(16), 8,  0); //wrench
+		MobGearRegistry.registerTool("zombie", GT_Tool.make(40), 10, 4); //scythe/sense
+		MobGearRegistry.registerTool("zombie", GT_Tool.make(16), 8,  4); //wrench
 	
-		MobGearRegistry.registerTool("zombie", GT_Tool.make(58), 6,  1); //doubleaxe
-		MobGearRegistry.registerTool("zombie", GT_Tool.make(36), 6,  1); //butchery knife
-		MobGearRegistry.registerTool("zombie", GT_Tool.make(16), 6,  1); //wrench
-		MobGearRegistry.registerTool("zombie", GT_Tool.make(20), 6,  1); //crowbar
+		MobGearRegistry.registerTool("zombie", GT_Tool.make(58), 6,  4); //doubleaxe
+		MobGearRegistry.registerTool("zombie", GT_Tool.make(36), 6,  4); //butchery knife
+		MobGearRegistry.registerTool("zombie", GT_Tool.make(16), 6,  4); //wrench
+		MobGearRegistry.registerTool("zombie", GT_Tool.make(20), 6,  4); //crowbar
 		
-		MobGearRegistry.registerTool("zombie", GT_Tool.make(58), 10, 2); //doubleaxe
-		MobGearRegistry.registerTool("zombie", GT_Tool.make(36), 10, 2); //butchery knife
+		MobGearRegistry.registerTool("zombie", GT_Tool.make(58), 10, 4); //doubleaxe
+		MobGearRegistry.registerTool("zombie", GT_Tool.make(36), 10, 4); //butchery knife
 		
-		MobGearRegistry.registerTool("zombie", GT_Tool.make(16), 5,  2); //wrench
-		MobGearRegistry.registerTool("zombie", GT_Tool.make(20), 10, 2); //crowbar
-		MobGearRegistry.registerTool("zombie", GT_Tool.make(24), 10, 2); //club
-		MobGearRegistry.registerTool("zombie", GT_Tool.make(34), 3,  2); //knife
+		MobGearRegistry.registerTool("zombie", GT_Tool.make(16), 5,  4); //wrench
+		MobGearRegistry.registerTool("zombie", GT_Tool.make(20), 10, 4); //crowbar
+		MobGearRegistry.registerTool("zombie", GT_Tool.make(24), 10, 4); //club
+		MobGearRegistry.registerTool("zombie", GT_Tool.make(34), 3,  4); //knife
 		
 		MobGearRegistry.registerTool("zombie", GT_Tool.getToolWithStats(58, MT.TungstenSteel, MT.TungstenSteel.mHandleMaterial), 5, 3);
 		MobGearRegistry.registerTool("zombie", GT_Tool.getToolWithStats(58, MT.BlueSteel, MT.BlueSteel.mHandleMaterial), 5, 3);
@@ -477,8 +479,7 @@ public class RegisterMobs {
 		}
 		return true;
 	}
-	
-	//@SubscribeEvent
+
 	public void onInteracted(EntityInteractEvent event)
 	{
 		ItemStack bottle = event.entityPlayer.getHeldItem();
@@ -551,8 +552,7 @@ public class RegisterMobs {
 			}
 		}
 	}
-	
-	//@SubscribeEvent
+
 	public void onDrop(LivingDropsEvent event)
 	{
 		for (int q = 0; q < event.drops.size(); q++)
@@ -615,20 +615,17 @@ public class RegisterMobs {
 			}
 		}
 	}
-	
-	//@SubscribeEvent
+
 	public void specialSpawn(LivingSpawnEvent.SpecialSpawn event)
 	{
 		this.onMobSpawn(event);
 	}
-	
-	//@SubscribeEvent
+
 	public void checkSpawn(LivingSpawnEvent.CheckSpawn event)
 	{
 		this.onMobSpawn(event);
 	}
-	
-	//@SubscribeEvent
+
 	public void onAdded(EntityJoinWorldEvent event)
 	{
 		if (event.entity.getClass() == EntityChicken.class && QTConfigs.enableChickens)
@@ -759,8 +756,7 @@ public class RegisterMobs {
     	}
     	//event.setResult(Result.DEFAULT);
     }
-    
-    //@SubscribeEvent
+
     public void onLivingHurt(LivingHurtEvent event)
     {
 		ItemStack held = event.entityLiving.getHeldItem();

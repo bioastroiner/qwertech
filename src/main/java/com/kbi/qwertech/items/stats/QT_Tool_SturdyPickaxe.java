@@ -173,7 +173,7 @@ public class QT_Tool_SturdyPickaxe extends GT_Tool_Pickaxe {
 		MOP = EntityHelperFunctions.getEntityLookTrace(aWorld, aPlayer, false, 5D);
 		float returnable = super.getMiningSpeed(aBlock, aMetaData, aDefault, aPlayer, aWorld, aX, aY, aZ);
 		//returnable = returnable + checkBlocks(aPlayer, aX, aY, aZ, false);
-		return returnable/2;
+		return returnable/4;
 	    //return super.getMiningSpeed(aBlock, aMetaData, aDefault, aPlayer, aWorld, aX, aY, aZ) + 1;
 	}
 }

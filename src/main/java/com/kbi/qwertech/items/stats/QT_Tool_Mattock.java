@@ -1,5 +1,6 @@
 package com.kbi.qwertech.items.stats;
 
+import gregapi.block.MaterialAdventure;
 import gregapi.data.MT;
 import gregapi.data.OP;
 import gregapi.item.multiitem.MultiItemTool;
@@ -8,6 +9,7 @@ import gregapi.item.multiitem.tools.ToolStats;
 import gregapi.render.IIconContainer;
 import gregapi.util.ST;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockHugeMushroom;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -15,6 +17,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.event.world.BlockEvent;
 
 import java.util.List;
+
+import static gregapi.data.CS.TOOL_axe;
+import static gregapi.data.CS.TOOL_shovel;
 
 public class QT_Tool_Mattock
   extends ToolStats
