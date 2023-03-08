@@ -9,13 +9,13 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import net.minecraftforge.event.world.BlockEvent;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class QT_Tool_SturdyPickaxe extends GT_Tool_Pickaxe {
-	
-	boolean LOCK = false;
-	
-	public MovingObjectPosition MOP;
+	//List<int[]> query = new ArrayList<>();
+	//private boolean query_iterated=false;
+	private boolean doAOE=false;
 
     @Override
     public float getMaxDurabilityMultiplier()
@@ -34,146 +34,76 @@ public class QT_Tool_SturdyPickaxe extends GT_Tool_Pickaxe {
     {
         return 75;
     }
-
-
-	public float breakCheck(EntityPlayer player, World world, int x, int y, int z, boolean doBreak)
-	{
-		//if(world.isRemote || player.isClientWorld()) return 0;
-		Block aBlock = world.getBlock(x, y, z);
-		int aMetadata = world.getBlockMetadata(x, y, z);
-		if (aBlock.canHarvestBlock(player, aMetadata) && this.isMinableBlock(aBlock, (byte)aMetadata) && aBlock.getPlayerRelativeBlockHardness(player, world, x, y, z) > 0)
-		{
-			if (doBreak)
-			{
-				world.func_147480_a(x, y, z, true);
-				return 1;
-			}
-			return super.getMiningSpeed(aBlock, (byte)aMetadata);
-		}
-		return 0;
-	}
-
 	@Override
-	public boolean isMinableBlock(Block aBlock, byte aMetaData) {
-		return super.isMinableBlock(aBlock, aMetaData);
+	public int convertBlockDrops(List<ItemStack> aDrops, ItemStack aStack, EntityPlayer aPlayer, Block aBlock, long aAvailableDurability, int aX, int aY, int aZ, byte aMetaData, int aFortune, boolean aSilkTouch, BlockEvent.HarvestDropsEvent aEvent) {
+		//determinateAOE(aX,aY,aZ,aPlayer,aPlayer.worldObj);
+		int blocksBroke = 1;
+		if(isBlockHarvestable(aX,aY-1,aZ,aPlayer, aPlayer.worldObj) && doAOE){
+			aPlayer.worldObj.func_147480_a(aX, aY-1, aZ, true);
+			blocksBroke++;
+		}
+//		if(!query.isEmpty()) {
+//			for (int[] q : query) {
+//				query_iterated=true;
+//				int x = q[0];
+//				int y = q[1];
+//				int z = q[2];
+//				// TOD O this part dosent go further when there is a block above causing an infinit loop and logs (no crash just an overflow) causes gaem corruption till reset
+//				// crashes server
+//				try{
+//					if(aPlayer.worldObj.func_147480_a(x, y, z, true))
+//						blocksBroke++;
+//				} catch(Exception e) {e.printStackTrace();}
+//			}
+//			query_iterated=false;
+//			query.clear();
+//		}
+		return blocksBroke;
 	}
-
-	public void calculateSides(boolean[] pos, boolean[] loc)
-	{
-		if (MOP != null && MOP.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK)
-		{
-			switch (MOP.sideHit)
-			{
-				case 0:
-				case 1:
-				{
-					pos[1] = true;
-					pos[2] = true;
-					break;
-				}
-				case 2:
-				case 3:
-				{
-					pos[0] = true;
-					pos[2] = true;
-					break;
-				}
-				case 4:
-				case 5:
-				{
-					pos[0] = true;
-					pos[1] = true;
-					break;
-				}
-				default:
-				{
-					break;
-				}
-			}
-			if (MOP.hitVec.yCoord > MOP.blockY + 0.5)
-			{
-				loc[0] = true;
-			}
-			if (MOP.hitVec.zCoord > MOP.blockZ + 0.5)
-			{
-				loc[1] = true;
-			}
-			if (MOP.hitVec.xCoord > MOP.blockX + 0.5)
-			{
-				loc[2] = true;
-			}
-		}
-	}
-
-	public float checkBlocks(EntityPlayer aPlayer, int aX, int aY, int aZ, boolean chop)
-	{
-		//if(aPlayer.isClientWorld()) return 0;
-		boolean[] checkPos = new boolean[]{false, false, false};
-		boolean[] checkLoc = new boolean[]{false, false, false};
-
-		calculateSides(checkPos, checkLoc);
-
-		float returnable = 0;
-		int x = aX;
-		int y = aY;
-		int z = aZ;
-		if (checkPos[0])
-		{
-			y = checkLoc[0] ? y + 1 : y - 1;
-			returnable = returnable + breakCheck(aPlayer, aPlayer.worldObj, x, y, z, chop);
-			if (checkPos[1])
-			{
-				z = checkLoc[1] ? z + 1 : z - 1;
-				returnable = returnable + breakCheck(aPlayer, aPlayer.worldObj, x, y, z, chop);
-			} else if (checkPos[2])
-			{
-				x = checkLoc[2] ? x + 1 : x - 1;
-				returnable = returnable + breakCheck(aPlayer, aPlayer.worldObj, x, y, z, chop);
-			}
-
-		}
-		x = aX;
-		y = aY;
-		z = aZ;
-		if (checkPos[1])
-		{
-			z = checkLoc[1] ? z + 1 : z - 1;
-			returnable = returnable + breakCheck(aPlayer, aPlayer.worldObj, x, y, z, chop);
-			if (checkPos[2])
-			{
-				x = checkLoc[2] ? x + 1 : x - 1;
-				returnable = returnable + breakCheck(aPlayer, aPlayer.worldObj, x, y, z, chop);
-			}
-
-		}
-		x = aX;
-		y = aY;
-		z = aZ;
-		if (checkPos[2])
-		{
-			x = checkLoc[2] ? x + 1 : x - 1;
-			returnable = returnable + breakCheck(aPlayer, aPlayer.worldObj, x, y, z, chop);
-		}
-		return returnable;
-	}
-
-    @Override
-    public int convertBlockDrops(List<ItemStack> aDrops, ItemStack aStack, EntityPlayer aPlayer, Block aBlock, long aAvailableDurability, int aX, int aY, int aZ, byte aMetaData, int aFortune, boolean aSilkTouch, BlockEvent.HarvestDropsEvent aEvent) {
-        if (LOCK) return 0;
-        LOCK = true;
-        int returnable = (int)checkBlocks(aPlayer, aX, aY, aZ, true);
-        LOCK = false;
-        return returnable;
-    }
 
 	@Override
 	public float getMiningSpeed(Block aBlock, byte aMetaData, float aDefault, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ)
 	{
-		//if(aWorld.isRemote || aPlayer.isClientWorld()) return aDefault;
-		MOP = EntityHelperFunctions.getEntityLookTrace(aWorld, aPlayer, false, 5D);
-		float returnable = super.getMiningSpeed(aBlock, aMetaData, aDefault, aPlayer, aWorld, aX, aY, aZ);
-		//returnable = returnable + checkBlocks(aPlayer, aX, aY, aZ, false);
-		return returnable/4;
-	    //return super.getMiningSpeed(aBlock, aMetaData, aDefault, aPlayer, aWorld, aX, aY, aZ) + 1;
+		return determinateAOE(aX,aY,aZ,aPlayer,aWorld,aDefault);
+	}
+
+	private float determinateAOE(int x,int y, int z,EntityPlayer aPlayer,World aWorld,float aDefault){
+		float speed_f=aDefault;doAOE=false;
+//		if(query_iterated)return aDefault;
+//		if(!query.isEmpty())query.clear();
+		if(aPlayer.posY>y) {doAOE=false;return speed_f;}
+		MovingObjectPosition ray = EntityHelperFunctions.getEntityLookTrace(aWorld, aPlayer, false, 5D);
+		try {
+			if (ray.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK) {
+				switch (ray.sideHit) {
+					case 0:
+					case 1:
+						break;
+					case 2: // east
+					case 3: // west
+					case 4: // north -> only mine Vertically for tunnel down, mine horz (X+-) and vert in odd
+					case 5: // south
+						// do simple tunnel
+						if (isBlockHarvestable(x, y - 1, z, aPlayer, aWorld)) {
+							doAOE = true;
+							//query.add(new int[]{x, y-1, z});
+							speed_f = Math.max(speed_f, super.getMiningSpeed(aWorld.getBlock(x, y, z), (byte) aWorld.getBlockMetadata(x, y, z)));
+						}
+						// no need to check the first block if you are in #checkForDrops you are already sure its breakble
+//					if(isBlockHarvestable(x,y,z,aPlayer,aWorld)){
+//						query.add(new int[]{x, y, z});
+//						if(isBlockHarvestable(x,y-1,z,aPlayer,aWorld)){
+//							query.add(new int[]{x, y-1, z});
+//						}
+//					}
+				}
+			}
+		} catch (Exception e){e.printStackTrace();}
+		return speed_f;
+	}
+
+	private boolean isBlockHarvestable(int x, int y, int z,EntityPlayer mPlayer,World mWorld) {
+		Block aBlock=mWorld.getBlock(x, y, z);
+		return aBlock.canHarvestBlock(mPlayer, mWorld.getBlockMetadata(x, y, z)) && this.isMinableBlock(mWorld.getBlock(x, y, z), (byte) mWorld.getBlockMetadata(x, y, z));
 	}
 }
