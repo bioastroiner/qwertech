@@ -76,6 +76,7 @@ public class QT_Tool_SturdyPickaxe extends GT_Tool_Pickaxe {
 		try {
 			if (ray.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK) {
 				switch (ray.sideHit) {
+					case -1:
 					case 0:
 					case 1:
 						break;

@@ -83,6 +83,7 @@ public class QT_Tool_SturdyShovel extends GT_Tool_Shovel {
 		try {
 			if (ray.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK) {
 				switch (ray.sideHit) {
+					case -1:
 					case 0:
 					case 1:
 						break;
@@ -95,6 +96,7 @@ public class QT_Tool_SturdyShovel extends GT_Tool_Shovel {
 							doAOE = true;
 							//query.add(new int[]{x, y-1, z});
 							speed_f = Math.max(speed_f, super.getMiningSpeed(aWorld.getBlock(x, y, z), (byte) aWorld.getBlockMetadata(x, y, z)));
+							speed_f++;
 						}
 						// no need to check the first block if you are in #checkForDrops you are already sure its breakble
 //					if(isBlockHarvestable(x,y,z,aPlayer,aWorld)){
