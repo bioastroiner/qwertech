@@ -453,6 +453,9 @@ public final class QwerTech extends Abstract_Mod {
 			
 			qwerTool.addTool(16, "TrenchDiggers Shovel", "Digs a simple 1x2 tunnel, can't dig down", new QT_Tool_SturdyShovel().setMaterialAmount(OP.toolHeadShovel.mAmount), "craftingToolShovel", TC.stack(TC.INSTRUMENTUM, 2), TC.stack(TC.TERRA, 1), "shovel");
 
+
+			qwerTool.addTool(22, "Miner's Hammer", "Mines a simple 3z3 tunnel, Technically an Excavation Pickaxe", new QT_TOOL_MiningHammer().setMaterialAmount(OP.toolHeadHammer.mAmount), "craftingToolPickaxe", TC.stack(TC.INSTRUMENTUM, 2), TC.stack(TC.PERDITIO, 1), "hammer");
+			//UT.Crafting.shapeless(qwerTool.getToolWithStats(22,MT.DamascusSteel,MT.Plastic), new ItemStack[]{ST.make(Items.apple, 1, CS.W)});
 			qwerTool.addTool(18, "StripMiner's Pickaxe", "Mines a simple 1x2 tunnel", new QT_Tool_SturdyPickaxe().setMaterialAmount(OP.toolHeadPickaxe.mAmount), "craftingToolPickaxe", TC.stack(TC.INSTRUMENTUM, 2), TC.stack(TC.PERDITIO, 1), "pickaxe");
 
 			qwerTool.addTool(20, "Kazoo", "A true " + LH.Chat.ITALIC + "instrument" + LH.Chat.RESET + LH.Chat.GRAY + " of torture", new QT_Tool_Kazoo().setMaterialAmount(OP.stick.mAmount), "kazoo");
