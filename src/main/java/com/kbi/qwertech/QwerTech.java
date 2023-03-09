@@ -427,11 +427,10 @@ public final class QwerTech extends Abstract_Mod {
             //OP.stickLong.addListener(new OreProcessing_QTTool(12, ConfigCategories.Recipes.gregtechtools + "." + "Bat", false, false, 0L, 0L, MT.Empty, new String[][]{{"yL"}, {"Ly"}}, null, null, null, null, null, null, TD.Atomic.ANTIMATTER.NOT));
             GameRegistry.addRecipe(new AdvancedCraftingTool(qwerTool, 12, OP.stickLong, MT.WoodTreated));
             qwerTool.addTool(14, "Sturdy Axe", "Fells whole trees in a single chop", new QT_Tool_SturdyAxe().setMaterialAmount(OP.toolHeadAxe.mAmount), "craftingToolAxe", TC.stack(TC.INSTRUMENTUM, 2), TC.stack(TC.ARBOR, 1), TC.stack(TC.MACHINA, 1), "axe");
-            qwerTool.addTool(16, "TrenchDiggers Shovel", "Digs a simple 1x2 tunnel, can't dig down", new QT_Tool_SturdyShovel().setMaterialAmount(OP.toolHeadShovel.mAmount), "craftingToolShovel", TC.stack(TC.INSTRUMENTUM, 2), TC.stack(TC.TERRA, 1), "shovel");
-            qwerTool.addTool(18, "StripMiner's Pickaxe", "Mines a simple 1x2 tunnel", new QT_Tool_SturdyPickaxe().setMaterialAmount(OP.toolHeadPickaxe.mAmount), "craftingToolPickaxe", TC.stack(TC.INSTRUMENTUM, 2), TC.stack(TC.PERDITIO, 1), "pickaxe");
-            qwerTool.addTool(20, "Kazoo", "A true " + LH.Chat.ITALIC + "instrument" + LH.Chat.RESET + LH.Chat.GRAY + " of torture", new QT_Tool_Kazoo().setMaterialAmount(OP.stick.mAmount), "kazoo");
+            qwerTool.addTool(16, "StripMiner's Pickaxe", "Mines a simple 1x2 tunnel", new QT_Tool_SturdyPickaxe().setMaterialAmount(OP.toolHeadPickaxe.mAmount), "craftingToolPickaxe", TC.stack(TC.INSTRUMENTUM, 2), TC.stack(TC.PERDITIO, 1), "pickaxe");
+            qwerTool.addTool(18, "Kazoo", "A true " + LH.Chat.ITALIC + "instrument" + LH.Chat.RESET + LH.Chat.GRAY + " of torture", new QT_Tool_Kazoo().setMaterialAmount(OP.stick.mAmount), "kazoo");
             OP.ring.addListener(new OreProcessing_QTTool(20, ConfigCategories.Recipes.gregtechtools + "." + "Kazoo", false, false, 0L, 0L, MT.Paper, new String[][]{{"XO ", " Sk"}}, null, ST.make(Items.paper, 1, 0), null, null, null, null, TD.Atomic.ANTIMATTER.NOT));
-            qwerTool.addTool(22, "Miner's Hammer", "Mines a simple 3z3 tunnel, Technically an Excavation Pickaxe", new QT_TOOL_MiningHammer().setMaterialAmount(OP.toolHeadHammer.mAmount), "craftingToolPickaxe", TC.stack(TC.INSTRUMENTUM, 2), TC.stack(TC.PERDITIO, 1), "hammer");
+            qwerTool.addTool(20, "Miner's Hammer", "Mines a simple 3z3 tunnel, Technically an Excavation Pickaxe", new QT_TOOL_MiningHammer().setMaterialAmount(OP.toolHeadHammer.mAmount), "craftingToolPickaxe", TC.stack(TC.INSTRUMENTUM, 2), TC.stack(TC.PERDITIO, 1), "hammer");
             UT.Crafting.shapeless(qwerTool.getToolWithStats(22, MT.DamascusSteel, MT.Plastic), new ItemStack[]{ST.make(Items.apple, 1, CS.W)}); //TODO debug
         }
         if (QTConfigs.enableArmor) {
@@ -482,28 +481,28 @@ public final class QwerTech extends Abstract_Mod {
         RM.Mixer.addRecipe1(true, 16L, 16L, OP.dust.mat(MT.Oat, 1), UT.Fluids.make("sugarwater", 250), null, IL.Food_Dough_Sugar.get(2));
         RM.Mixer.addRecipe1(true, 16L, 16L, OP.dust.mat(MT.Potato, 1), UT.Fluids.make("sugarwater", 250), null, IL.Food_Dough_Sugar.get(2));
 
-
-        GameRegistry.addRecipe(new AnyQTTool(12L, new And(OP.stickLong, TD.Atomic.ANTIMATTER.NOT), false, null, new Object[]{OP.toolHeadScrewdriver, OP.toolHeadScrewdriver}, qwerTool.getToolWithStats(12, MT.NULL, MT.Empty)));
-        GameRegistry.addRecipe(new AnyQTTool(12L, new And(OP.stickLong, TD.Atomic.ANTIMATTER.NOT), false, null, new Object[]{OP.toolHeadScrewdriver, OP.toolHeadFile}, qwerTool.getToolWithStats(12, MT.NULL, MT.Empty)));
-        GameRegistry.addRecipe(new AnyQTTool(12L, new And(OP.stickLong, TD.Atomic.ANTIMATTER.NOT), false, null, new Object[]{OP.toolHeadFile, OP.toolHeadFile}, qwerTool.getToolWithStats(12, MT.NULL, MT.Empty)));
-        GameRegistry.addRecipe(new AnyQTTool(12L, new And(OP.stickLong, TD.Atomic.ANTIMATTER.NOT), false, null, new Object[]{OP.toolHeadScrewdriver, OP.toolHeadChisel}, qwerTool.getToolWithStats(12, MT.NULL, MT.Empty)));
-        GameRegistry.addRecipe(new AnyQTTool(12L, new And(OP.stickLong, TD.Atomic.ANTIMATTER.NOT), false, null, new Object[]{OP.toolHeadFile, OP.toolHeadChisel}, qwerTool.getToolWithStats(12, MT.NULL, MT.Empty)));
-        GameRegistry.addRecipe(new AnyQTTool(12L, new And(OP.stickLong, TD.Atomic.ANTIMATTER.NOT), false, null, new Object[]{OP.toolHeadChisel, OP.toolHeadChisel}, qwerTool.getToolWithStats(12, MT.NULL, MT.Empty)));
-        GameRegistry.addRecipe(new AnyQTTool(12L, new And(OP.stickLong, TD.Atomic.ANTIMATTER.NOT), false, null, new Object[]{OP.screw, OP.toolHeadScrewdriver}, qwerTool.getToolWithStats(12, MT.NULL, MT.Empty)));
-        GameRegistry.addRecipe(new AnyQTTool(12L, new And(OP.stickLong, TD.Atomic.ANTIMATTER.NOT), false, null, new Object[]{OP.screw, OP.toolHeadFile}, qwerTool.getToolWithStats(12, MT.NULL, MT.Empty)));
-        GameRegistry.addRecipe(new AnyQTTool(12L, new And(OP.stickLong, TD.Atomic.ANTIMATTER.NOT), false, null, new Object[]{OP.screw, OP.toolHeadChisel}, qwerTool.getToolWithStats(12, MT.NULL, MT.Empty)));
-        GameRegistry.addRecipe(new AnyQTTool(12L, new And(OP.stickLong, TD.Atomic.ANTIMATTER.NOT), false, null, new Object[]{OP.screw, OP.screw}, qwerTool.getToolWithStats(12, MT.NULL, MT.Empty)));
-        GameRegistry.addRecipe(new AnyQTTool(12L, new And(OP.stickLong, TD.Atomic.ANTIMATTER.NOT), false, null, new Object[]{OP.toolHeadArrow, OP.toolHeadScrewdriver}, qwerTool.getToolWithStats(12, MT.NULL, MT.Empty)));
-        GameRegistry.addRecipe(new AnyQTTool(12L, new And(OP.stickLong, TD.Atomic.ANTIMATTER.NOT), false, null, new Object[]{OP.toolHeadArrow, OP.toolHeadFile}, qwerTool.getToolWithStats(12, MT.NULL, MT.Empty)));
-        GameRegistry.addRecipe(new AnyQTTool(12L, new And(OP.stickLong, TD.Atomic.ANTIMATTER.NOT), false, null, new Object[]{OP.toolHeadArrow, OP.toolHeadChisel}, qwerTool.getToolWithStats(12, MT.NULL, MT.Empty)));
-        GameRegistry.addRecipe(new AnyQTTool(12L, new And(OP.stickLong, TD.Atomic.ANTIMATTER.NOT), false, null, new Object[]{OP.toolHeadArrow, OP.screw}, qwerTool.getToolWithStats(12, MT.NULL, MT.Empty)));
-        GameRegistry.addRecipe(new AnyQTTool(12L, new And(OP.stickLong, TD.Atomic.ANTIMATTER.NOT), false, null, new Object[]{OP.toolHeadArrow, OP.toolHeadArrow}, qwerTool.getToolWithStats(12, MT.NULL, MT.Empty)));
-
-        GameRegistry.addRecipe(new AnyQTTool(14L, new And(TD.Atomic.ANTIMATTER.NOT), true, new Object[]{OP.toolHeadAxe, OP.plate}, new Object[]{OP.stickLong}));
-
-        GameRegistry.addRecipe(new AnyQTTool(16L, new And(TD.Atomic.ANTIMATTER.NOT), true, new Object[]{OP.toolHeadShovel, OP.plate}, new Object[]{OP.stickLong}));
-
-        GameRegistry.addRecipe(new AnyQTTool(18L, new And(TD.Atomic.ANTIMATTER.NOT), true, new Object[]{OP.toolHeadPickaxe, OP.plate}, new Object[]{OP.stickLong}));
+//
+//        GameRegistry.addRecipe(new AnyQTTool(12L, new And(OP.stickLong, TD.Atomic.ANTIMATTER.NOT), false, null, new Object[]{OP.toolHeadScrewdriver, OP.toolHeadScrewdriver}, qwerTool.getToolWithStats(12, MT.NULL, MT.Empty)));
+//        GameRegistry.addRecipe(new AnyQTTool(12L, new And(OP.stickLong, TD.Atomic.ANTIMATTER.NOT), false, null, new Object[]{OP.toolHeadScrewdriver, OP.toolHeadFile}, qwerTool.getToolWithStats(12, MT.NULL, MT.Empty)));
+//        GameRegistry.addRecipe(new AnyQTTool(12L, new And(OP.stickLong, TD.Atomic.ANTIMATTER.NOT), false, null, new Object[]{OP.toolHeadFile, OP.toolHeadFile}, qwerTool.getToolWithStats(12, MT.NULL, MT.Empty)));
+//        GameRegistry.addRecipe(new AnyQTTool(12L, new And(OP.stickLong, TD.Atomic.ANTIMATTER.NOT), false, null, new Object[]{OP.toolHeadScrewdriver, OP.toolHeadChisel}, qwerTool.getToolWithStats(12, MT.NULL, MT.Empty)));
+//        GameRegistry.addRecipe(new AnyQTTool(12L, new And(OP.stickLong, TD.Atomic.ANTIMATTER.NOT), false, null, new Object[]{OP.toolHeadFile, OP.toolHeadChisel}, qwerTool.getToolWithStats(12, MT.NULL, MT.Empty)));
+//        GameRegistry.addRecipe(new AnyQTTool(12L, new And(OP.stickLong, TD.Atomic.ANTIMATTER.NOT), false, null, new Object[]{OP.toolHeadChisel, OP.toolHeadChisel}, qwerTool.getToolWithStats(12, MT.NULL, MT.Empty)));
+//        GameRegistry.addRecipe(new AnyQTTool(12L, new And(OP.stickLong, TD.Atomic.ANTIMATTER.NOT), false, null, new Object[]{OP.screw, OP.toolHeadScrewdriver}, qwerTool.getToolWithStats(12, MT.NULL, MT.Empty)));
+//        GameRegistry.addRecipe(new AnyQTTool(12L, new And(OP.stickLong, TD.Atomic.ANTIMATTER.NOT), false, null, new Object[]{OP.screw, OP.toolHeadFile}, qwerTool.getToolWithStats(12, MT.NULL, MT.Empty)));
+//        GameRegistry.addRecipe(new AnyQTTool(12L, new And(OP.stickLong, TD.Atomic.ANTIMATTER.NOT), false, null, new Object[]{OP.screw, OP.toolHeadChisel}, qwerTool.getToolWithStats(12, MT.NULL, MT.Empty)));
+//        GameRegistry.addRecipe(new AnyQTTool(12L, new And(OP.stickLong, TD.Atomic.ANTIMATTER.NOT), false, null, new Object[]{OP.screw, OP.screw}, qwerTool.getToolWithStats(12, MT.NULL, MT.Empty)));
+//        GameRegistry.addRecipe(new AnyQTTool(12L, new And(OP.stickLong, TD.Atomic.ANTIMATTER.NOT), false, null, new Object[]{OP.toolHeadArrow, OP.toolHeadScrewdriver}, qwerTool.getToolWithStats(12, MT.NULL, MT.Empty)));
+//        GameRegistry.addRecipe(new AnyQTTool(12L, new And(OP.stickLong, TD.Atomic.ANTIMATTER.NOT), false, null, new Object[]{OP.toolHeadArrow, OP.toolHeadFile}, qwerTool.getToolWithStats(12, MT.NULL, MT.Empty)));
+//        GameRegistry.addRecipe(new AnyQTTool(12L, new And(OP.stickLong, TD.Atomic.ANTIMATTER.NOT), false, null, new Object[]{OP.toolHeadArrow, OP.toolHeadChisel}, qwerTool.getToolWithStats(12, MT.NULL, MT.Empty)));
+//        GameRegistry.addRecipe(new AnyQTTool(12L, new And(OP.stickLong, TD.Atomic.ANTIMATTER.NOT), false, null, new Object[]{OP.toolHeadArrow, OP.screw}, qwerTool.getToolWithStats(12, MT.NULL, MT.Empty)));
+//        GameRegistry.addRecipe(new AnyQTTool(12L, new And(OP.stickLong, TD.Atomic.ANTIMATTER.NOT), false, null, new Object[]{OP.toolHeadArrow, OP.toolHeadArrow}, qwerTool.getToolWithStats(12, MT.NULL, MT.Empty)));
+//
+//        GameRegistry.addRecipe(new AnyQTTool(14L, new And(TD.Atomic.ANTIMATTER.NOT), true, new Object[]{OP.toolHeadAxe, OP.plate}, new Object[]{OP.stickLong}));
+//
+//        GameRegistry.addRecipe(new AnyQTTool(16L, new And(TD.Atomic.ANTIMATTER.NOT), true, new Object[]{OP.toolHeadShovel, OP.plate}, new Object[]{OP.stickLong}));
+//
+//        GameRegistry.addRecipe(new AnyQTTool(18L, new And(TD.Atomic.ANTIMATTER.NOT), true, new Object[]{OP.toolHeadPickaxe, OP.plate}, new Object[]{OP.stickLong}));
 
         OreDictMaterial[] wallmats = new OreDictMaterial[]{MT.Fe, MT.Al, MT.Au, MT.Steel, MT.Bronze, MT.Brass, MT.Ag, MT.StainlessSteel, MT.WroughtIron, MT.Plastic, MT.Ti, MT.TungstenSteel, MT.Invar, MT.TinAlloy, MT.SteelGalvanized, MT.Electrum};
         for (int q = 0; q < 16; q++) {
@@ -512,108 +511,6 @@ public final class QwerTech extends Abstract_Mod {
             RM.RollFormer.addRecipe1(true, 16, 768, OP.plateDouble.mat(wallmats[q], 1), ST.make(corrugatedBlock, 1, q));
             RM.RollingMill.addRecipe1(true, 16, 768, ST.make(corrugatedBlock, 1, q), OP.plateDouble.mat(wallmats[q], 1));
         }
-
-//		for (int q = 1; q < WOOD.woodList.length; q++)
-//		{
-//			OreDictMaterial woodType = WOOD.woodList[q];
-//			if (woodType != null)
-//			{
-//			    if (OreDictionary.getOres("plank" + woodType.mNameInternal).isEmpty())
-//                {
-//                    woodType.hide(true);
-//                }
-//				machines.add(woodType.mNameLocal + " Crafting Table", "Crafting Tables", q, 0, CraftingTableT1.class, 0, 16, wood, UT.NBT.make(NullBT, CS.NBT_MATERIAL, woodType, CS.NBT_INV_SIZE, 12, CS.NBT_TEXTURE, "qwertech:wood", CS.NBT_HARDNESS, 3.0F, CS.NBT_RESISTANCE, 3.0F, CS.NBT_COLOR, UT.Code.getRGBInt(woodType.fRGBaSolid)));
-//				CR.shapeless(ST.make(Blocks.crafting_table, 1, 0), CR.DEF, new Object[]{machines.getItem(q)});
-//				OreDictionary.registerOre("craftingWorkBenchWood", machines.getItem(q));
-//				OreDictionary.registerOre("craftingWorkBench", machines.getItem(q));
-//			}
-//		}
-//		machines.add("Wooden Crafting Table", "Crafting Tables", 0, 0, CraftingTableT1.class, 0, 16, wood, UT.NBT.make(NullBT, CS.NBT_MATERIAL, MT.Wood, CS.NBT_INV_SIZE, 12, CS.NBT_TEXTURE, "qwertech:wood", CS.NBT_HARDNESS, 3.0F, CS.NBT_RESISTANCE, 3.0F, CS.NBT_COLOR, UT.Code.getRGBInt(MT.Wood.fRGBaSolid)));
-//		CR.shapeless(ST.make(Blocks.crafting_table, 1, 0), CR.DEF, new Object[]{machines.getItem(0)});
-//		OreDictionary.registerOre("craftingWorkBenchWood", machines.getItem(0));
-//		OreDictionary.registerOre("craftingWorkBench", machines.getItem(0));
-//
-//		GameRegistry.addRecipe(new WoodSpecificCrafting(machines.getItem(0), "PP", "PP", 'P', "plankWood"));
-//
-//		OreDictMaterial[] tier1 = new OreDictMaterial[]{MT.Plastic, MT.Bi, MT.Cu, MT.Au, MT.Pb, MT.TinAlloy};
-//		for (int q = 0; q < tier1.length; q++)
-//		{
-//			OreDictMaterial mat = tier1[q];
-//			machines.add(mat.mNameLocal + " Crafting Table", "Crafting Tables", 257 + q, 0, CraftingTableT1.class, 0, 16, metal, UT.NBT.make(NullBT, CS.NBT_MATERIAL, mat, CS.NBT_INV_SIZE, 12, CS.NBT_TEXTURE, "qwertech:metal", CS.NBT_HARDNESS, 3.0F, CS.NBT_RESISTANCE, 3.0F, CS.NBT_COLOR, UT.Code.getRGBInt(mat.fRGBaSolid)), "CCC", "CCC", "CCC", 'C', OP.chunkGt.dat(mat));
-//			OreDictionary.registerOre("craftingWorkBench", machines.getItem(257 + q));
-//			OreDictionary.registerOre("craftingWorkBench" + mat.mNameInternal, machines.getItem(257 + q));
-//		}
-//
-//		machines.add("Sandstone Crafting Table", "Crafting Tables", 256, 0, CraftingTableT1.class, 0, 16, metal, UT.NBT.make(NullBT, CS.NBT_MATERIAL, MT.Sand, CS.NBT_INV_SIZE, 12, CS.NBT_TEXTURE, "qwertech:metal", CS.NBT_HARDNESS, 3.0F, CS.NBT_RESISTANCE, 3.0F, CS.NBT_COLOR, UT.Code.getRGBInt(MT.Sand.fRGBaSolid)), "CCC", "CCC", "CCC", 'C', ST.make(Blocks.sandstone, 1, CS.W));
-//		OreDictionary.registerOre("craftingWorkBench", machines.getItem(256));
-//		OreDictionary.registerOre("craftingWorkBenchSandstone", machines.getItem(256));
-//
-//		OreDictMaterial[] tier2i = new OreDictMaterial[]{MT.Brass, MT.Ag, MT.Al, MT.Constantan, MT.AluminiumBrass, MT.Ni, MT.Ge};
-//		OreDictMaterial[] tier2g = new OreDictMaterial[]{MT.Almandine, MT.Topaz, MT.Alexandrite, MT.Spinel, MT.Opal, MT.Maxixe, MT.Pyrope, MT.Goshenite};
-//		OreDictMaterial[] tier2r = new OreDictMaterial[]{MT.Blueschist, MT.Greenschist, MT.Stone, MT.Obsidian, MT.Marble, MT.Limestone, MT.Diorite, MT.Andesite, MT.Netherrack, MT.Endstone, MT.Quartzite};
-//
-//		for (int q = 0; q < tier2i.length; q++)
-//		{
-//			OreDictMaterial mat = tier2i[q];
-//			machines.add(mat.mNameLocal + " Crafting Table", "Crafting Tables", 270 + q, 0, CraftingTableT2.class, 0, 16, metal, UT.NBT.make(NullBT, CS.NBT_MATERIAL, mat, CS.NBT_INV_SIZE, 13, CS.NBT_TEXTURE, "qwertech:metal", CS.NBT_HARDNESS, 3.0F, CS.NBT_RESISTANCE, 3.0F, CS.NBT_COLOR, UT.Code.getRGBInt(mat.fRGBaSolid)), "CCC", "CCC", "CCC", 'C', OP.chunkGt.dat(mat));
-//			OreDictionary.registerOre("craftingWorkBench", machines.getItem(270 + q));
-//			OreDictionary.registerOre("craftingWorkBench" + mat.mNameInternal, machines.getItem(270 + q));
-//		}
-//		for (int q = 0; q < tier2g.length; q++)
-//		{
-//			OreDictMaterial mat = tier2g[q];
-//			machines.add(mat.mNameLocal + " Crafting Table", "Crafting Tables", 280 + q, 0, CraftingTableT2.class, 0, 16, metal, UT.NBT.make(NullBT, CS.NBT_MATERIAL, mat, CS.NBT_INV_SIZE, 13, CS.NBT_TEXTURE, "qwertech:gem", CS.NBT_HARDNESS, 3.0F, CS.NBT_RESISTANCE, 3.0F, CS.NBT_COLOR, UT.Code.getRGBInt(mat.fRGBaSolid)), "CCC", "CCC", "CCC", 'C', OP.gemFlawed.dat(mat));
-//			OreDictionary.registerOre("craftingWorkBench", machines.getItem(280 + q));
-//			OreDictionary.registerOre("craftingWorkBench" + mat.mNameInternal, machines.getItem(280 + q));
-//		}
-//		for (int q = 0; q < tier2r.length; q++)
-//		{
-//			OreDictMaterial mat = tier2r[q];
-//			machines.add(mat.mNameLocal + " Crafting Table", "Crafting Tables", 288 + q, 0, CraftingTableT2.class, 0, 16, metal, UT.NBT.make(NullBT, CS.NBT_MATERIAL, mat, CS.NBT_INV_SIZE, 13, CS.NBT_TEXTURE, "qwertech:rock", CS.NBT_HARDNESS, 3.0F, CS.NBT_RESISTANCE, 3.0F, CS.NBT_COLOR, UT.Code.getRGBInt(mat.fRGBaSolid)), "CCC", "CCC", "CCC", 'C', OP.rockGt.dat(mat));
-//			OreDictionary.registerOre("craftingWorkBench", machines.getItem(288 + q));
-//			OreDictionary.registerOre("craftingWorkBench" + mat.mNameInternal, machines.getItem(288 + q));
-//		}
-//
-//		OreDictMaterial[] tier3i = new OreDictMaterial[]{MT.Bronze, MT.WroughtIron, MT.Electrum, MT.Alumite, MT.Co, MT.CobaltBrass, MT.Pt, MT.Cr, MT.Os, MT.MeteoricIron};
-//		OreDictMaterial[] tier3g = new OreDictMaterial[]{MT.Ruby, MT.OrangeSapphire, MT.Amber, MT.Emerald, MT.Diamond, MT.BlueSapphire, MT.Amethyst};
-//		OreDictMaterial[] tier3r = new OreDictMaterial[]{MT.GraniteBlack, MT.GraniteRed, MT.Basalt, MT.Kimberlite, MT.Komatiite};
-//
-//		for (int q = 0; q < tier3i.length; q++)
-//		{
-//			OreDictMaterial mat = tier3i[q];
-//			machines.add(mat.mNameLocal + " Crafting Anvil", "Crafting Tables", 300 + q, 0, CraftingTableT3.class, 0, 16, metal, UT.NBT.make(NullBT, CS.NBT_MATERIAL, mat, CS.NBT_INV_SIZE, 13, CS.NBT_TEXTURE, "qwertech:metal", CS.NBT_HARDNESS, 3.0F, CS.NBT_RESISTANCE, 3.0F, CS.NBT_COLOR, UT.Code.getRGBInt(mat.fRGBaSolid)), "CCC", " C ", "CCC", 'C', OP.chunkGt.dat(mat));
-//		}
-//		for (int q = 0; q < tier3g.length; q++)
-//		{
-//			OreDictMaterial mat = tier3g[q];
-//			machines.add(mat.mNameLocal + " Crafting Anvil", "Crafting Tables", 310 + q, 0, CraftingTableT3.class, 0, 16, metal, UT.NBT.make(NullBT, CS.NBT_MATERIAL, mat, CS.NBT_INV_SIZE, 13, CS.NBT_TEXTURE, "qwertech:gem", CS.NBT_HARDNESS, 3.0F, CS.NBT_RESISTANCE, 3.0F, CS.NBT_COLOR, UT.Code.getRGBInt(mat.fRGBaSolid)), "CCC", " C ", "CCC", 'C', OP.gemFlawed.dat(mat));
-//		}
-//		for (int q = 0; q < tier3r.length; q++)
-//		{
-//			OreDictMaterial mat = tier3r[q];
-//			machines.add(mat.mNameLocal + " Crafting Anvil", "Crafting Tables", 320 + q, 0, CraftingTableT3.class, 0, 16, metal, UT.NBT.make(NullBT, CS.NBT_MATERIAL, mat, CS.NBT_INV_SIZE, 13, CS.NBT_TEXTURE, "qwertech:rock", CS.NBT_HARDNESS, 3.0F, CS.NBT_RESISTANCE, 3.0F, CS.NBT_COLOR, UT.Code.getRGBInt(mat.fRGBaSolid)), "CCC", " C ", "CCC", 'C', OP.rockGt.dat(mat));
-//		}
-//
-//		Class<? extends TileEntity> toUse = CraftingTableT4.class;
-//		if (!QTConfigs.enable3DCrafting)
-//		{
-//			toUse = CraftingTableT3.class;
-//		}
-//		OreDictMaterial[] tier4i = new OreDictMaterial[]{MT.Steel, MT.Invar, MT.SteelGalvanized, MT.MeteoricSteel, MT.Thaumium, MT.Manasteel, MT.Knightmetal, MT.ObsidianSteel, MT.Manyullyn, MT.FakeOsmium};
-//		for (int q = 0; q < tier4i.length; q++)
-//		{
-//			OreDictMaterial mat = tier4i[q];
-//			machines.add(mat.mNameLocal + " Crafting Anvil", "Crafting Tables", 330 + q, 0, toUse, 0, 16, metal, UT.NBT.make(NullBT, CS.NBT_MATERIAL, mat, CS.NBT_INV_SIZE, 30, CS.NBT_TEXTURE, "qwertech:metal", CS.NBT_HARDNESS, 3.0F, CS.NBT_RESISTANCE, 3.0F, CS.NBT_COLOR, UT.Code.getRGBInt(mat.fRGBaSolid)), "CCC", " C ", "CCC", 'C', OP.chunkGt.dat(mat));
-//		}
-//
-//		OreDictMaterial[] tier5i = new OreDictMaterial[]{MT.StainlessSteel, MT.TungstenSteel, MT.Ti, MT.Ad, MT.Bedrock, MT.Desh, MT.TungstenCarbide, MT.DuraniumAlloy, MT.W, MT.TritaniumAlloy};
-//		for (int q = 0; q < tier5i.length; q++)
-//		{
-//			OreDictMaterial mat = tier5i[q];
-//			machines.add(mat.mNameLocal + " Crafting Anvil", "Crafting Tables", 340 + q, 0, toUse, 0, 16, metal, UT.NBT.make(NullBT, CS.NBT_MATERIAL, mat, CS.NBT_INV_SIZE, 30, CS.NBT_TEXTURE, "qwertech:metal", CS.NBT_HARDNESS, 3.0F, CS.NBT_RESISTANCE, 3.0F, CS.NBT_COLOR, UT.Code.getRGBInt(mat.fRGBaSolid)), "CCC", " C ", "CCC", 'C', OP.chunkGt.dat(mat));
-//		}
-//
-//		machines.add("Crafting Helper", "", 400, 0, CraftingHelper.class, 15, 0, air, UT.NBT.make());
 
         OreDictMaterial[] upgradeDeskMats = new OreDictMaterial[]{MT.Bronze, MT.Co, MT.Au, MT.Obsidian, MT.Plastic, MT.Ag};
         for (int q = 0; q < upgradeDeskMats.length; q++) {
