@@ -1,10 +1,16 @@
 package com.kbi.qwertech.items.stats;
 
 import com.kbi.qwertech.entities.EntityHelperFunctions;
+import gregapi.data.MT;
+import gregapi.data.OP;
+import gregapi.item.multiitem.MultiItemTool;
+import gregapi.oredict.OreDictPrefix;
+import gregapi.render.IIconContainer;
 import gregtech.items.tools.early.GT_Tool_Pickaxe;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import net.minecraftforge.event.world.BlockEvent;
@@ -14,6 +20,11 @@ import java.util.List;
 public class QT_Tool_SturdyPickaxe extends GT_Tool_Pickaxe {
     int blocksBroke = 1;
     private boolean doAOE = false;
+
+    @Override
+    public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
+        return aIsToolHead ? MultiItemTool.getPrimaryMaterial(aStack, MT.Steel).mTextureSetsItems.get(OreDictPrefix.get("toolHeadSturdyPickaxe").mIconIndexItem) : MultiItemTool.getSecondaryMaterial(aStack, MT.WOODS.Spruce).mTextureSetsItems.get(OP.stick.mIconIndexItem);
+    }
 
     @Override
     public float getMaxDurabilityMultiplier() {

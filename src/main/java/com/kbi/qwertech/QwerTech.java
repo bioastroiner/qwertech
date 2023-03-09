@@ -32,6 +32,7 @@ import gregapi.block.ItemBlockBase;
 import gregapi.block.metatype.BlockStones;
 import gregapi.block.multitileentity.MultiTileEntityBlock;
 import gregapi.block.multitileentity.MultiTileEntityRegistry;
+import gregapi.code.ICondition;
 import gregapi.code.ICondition.And;
 import gregapi.code.ModData;
 import gregapi.config.ConfigCategories;
@@ -336,20 +337,31 @@ public final class QwerTech extends Abstract_Mod {
         sturdyPickaxeHead.setCondition(OP.toolHeadPickaxe); // The Condition under which Items of this Prefix should generate in general. In this case TRUE to have ALL the Items.
         sturdyPickaxeHead.add(UNIFICATABLE, BURNABLE, RECYCLABLE, SCANNABLE, TOOL_HEAD, NEEDS_HANDLE).setStacksize(16).aspects(TC.INSTRUMENTUM, 2, TC.PERFODIO, 1);// Items of this can be recycled for Resources.
         sturdyPickaxeHead.setMaterialStats(gregapi.data.CS.U * 5); // Any Item of this example Prefix has the value of 1 Material Unit (U), this is exactly equal to one Ingot/Dust/Gem.
+        new PrefixItem(MOD_DATA,"qwetech.tools.pickaxe", sturdyPickaxeHead);
 
-        final OreDictPrefix sturdyAxeHead = OreDictPrefix.createPrefix("toolHeadAxe"); // This newly created OreDict Prefix is named "exampleprefix", so an Aluminium Item with this Prefix would be named "exampleprefixAluminium" in the OreDict.
+        final OreDictPrefix sturdyAxeHead = OreDictPrefix.createPrefix("toolHeadSturdyAxe"); // This newly created OreDict Prefix is named "exampleprefix", so an Aluminium Item with this Prefix would be named "exampleprefixAluminium" in the OreDict.
         sturdyAxeHead.setCategoryName("Sturdy Axe Heads"); // That is what the Creative Tab of it would be named.
         sturdyAxeHead.setLocalItemName("", " Sturdy Axe Head"); // Generic Items will follow this naming Guideline, so for example "Small Aluminium Example" for an Aluminium Item with that Prefix.
         sturdyAxeHead.setCondition(OP.toolHeadPickaxe); // The Condition under which Items of this Prefix should generate in general. In this case TRUE to have ALL the Items.
         sturdyAxeHead.add(UNIFICATABLE, BURNABLE, RECYCLABLE, SCANNABLE, TOOL_HEAD, NEEDS_HANDLE).setStacksize(16).aspects(TC.INSTRUMENTUM, 2, TC.TELUM, 1);// Items of this can be recycled for Resources.
         sturdyAxeHead.setMaterialStats(gregapi.data.CS.U * 5); // Any Item of this example Prefix has the value of 1 Material Unit (U), this is exactly equal to one Ingot/Dust/Gem.
+        new PrefixItem(MOD_DATA,"qwetech.tools.axe", sturdyAxeHead);
 
         final OreDictPrefix miningHammerHead = OreDictPrefix.createPrefix("toolHeadMiningHammer"); // This newly created OreDict Prefix is named "exampleprefix", so an Aluminium Item with this Prefix would be named "exampleprefixAluminium" in the OreDict.
         miningHammerHead.setCategoryName("Sturdy Mining Heads"); // That is what the Creative Tab of it would be named.
         miningHammerHead.setLocalItemName("", " Sturdy Mining Hammer Head"); // Generic Items will follow this naming Guideline, so for example "Small Aluminium Example" for an Aluminium Item with that Prefix.
         miningHammerHead.setCondition(OP.toolHeadHammer); // The Condition under which Items of this Prefix should generate in general. In this case TRUE to have ALL the Items.
         miningHammerHead.add(UNIFICATABLE, BURNABLE, RECYCLABLE, SCANNABLE, TOOL_HEAD, NEEDS_HANDLE).setStacksize(16).aspects(TC.INSTRUMENTUM, 10, TC.PERFODIO, 2);// Items of this can be recycled for Resources.
-        miningHammerHead.setMaterialStats(gregapi.data.CS.U * 5); // Any Item of this example Prefix has the value of 1 Material Unit (U), this is exactly equal to one Ingot/Dust/Gem.
+        miningHammerHead.setMaterialStats(gregapi.data.CS.U * 6); // Any Item of this example Prefix has the value of 1 Material Unit (U), this is exactly equal to one Ingot/Dust/Gem.
+        new PrefixItem(MOD_DATA,"qwetech.tools.hammer", miningHammerHead);
+
+        final OreDictPrefix excavatorHead = OreDictPrefix.createPrefix("toolHeadExcavator"); // This newly created OreDict Prefix is named "exampleprefix", so an Aluminium Item with this Prefix would be named "exampleprefixAluminium" in the OreDict.
+        excavatorHead.setCategoryName("Excavating Heads"); // That is what the Creative Tab of it would be named.
+        excavatorHead.setLocalItemName("", " Excavator Head"); // Generic Items will follow this naming Guideline, so for example "Small Aluminium Example" for an Aluminium Item with that Prefix.
+        excavatorHead.setCondition(OP.toolHeadShovel); // The Condition under which Items of this Prefix should generate in general. In this case TRUE to have ALL the Items.
+        excavatorHead.add(UNIFICATABLE, BURNABLE, RECYCLABLE, SCANNABLE, TOOL_HEAD, NEEDS_HANDLE).setStacksize(16).aspects(TC.INSTRUMENTUM, 10, TC.PERFODIO, 2);// Items of this can be recycled for Resources.
+        excavatorHead.setMaterialStats(gregapi.data.CS.U * 6); // Any Item of this example Prefix has the value of 1 Material Unit (U), this is exactly equal to one Ingot/Dust/Gem.
+        new PrefixItem(MOD_DATA,"qwetech.tools.excavator", excavatorHead);
 
         new PrefixItem(MOD_DATA, "qwertech.tools.mattock", mattockHead);
         new PrefixItem(MOD_DATA, "qwertech.tools.mace", maceHead);
@@ -428,10 +440,11 @@ public final class QwerTech extends Abstract_Mod {
             GameRegistry.addRecipe(new AdvancedCraftingTool(qwerTool, 12, OP.stickLong, MT.WoodTreated));
             qwerTool.addTool(14, "Sturdy Axe", "Fells whole trees in a single chop", new QT_Tool_SturdyAxe().setMaterialAmount(OP.toolHeadAxe.mAmount), "craftingToolAxe", TC.stack(TC.INSTRUMENTUM, 2), TC.stack(TC.ARBOR, 1), TC.stack(TC.MACHINA, 1), "axe");
             qwerTool.addTool(16, "StripMiner's Pickaxe", "Mines a simple 1x2 tunnel", new QT_Tool_SturdyPickaxe().setMaterialAmount(OP.toolHeadPickaxe.mAmount), "craftingToolPickaxe", TC.stack(TC.INSTRUMENTUM, 2), TC.stack(TC.PERDITIO, 1), "pickaxe");
+            GameRegistry.addRecipe(new AdvancedCraftingTool(qwerTool, 16, sturdyPickaxeHead, new ICondition.Or(MT.Steel,MT.Bronze)));
             qwerTool.addTool(18, "Kazoo", "A true " + LH.Chat.ITALIC + "instrument" + LH.Chat.RESET + LH.Chat.GRAY + " of torture", new QT_Tool_Kazoo().setMaterialAmount(OP.stick.mAmount), "kazoo");
-            OP.ring.addListener(new OreProcessing_QTTool(20, ConfigCategories.Recipes.gregtechtools + "." + "Kazoo", false, false, 0L, 0L, MT.Paper, new String[][]{{"XO ", " Sk"}}, null, ST.make(Items.paper, 1, 0), null, null, null, null, TD.Atomic.ANTIMATTER.NOT));
+            OP.ring.addListener(new OreProcessing_QTTool(18, ConfigCategories.Recipes.gregtechtools + "." + "Kazoo", false, false, 0L, 0L, MT.Paper, new String[][]{{"XO ", " Sk"}}, null, ST.make(Items.paper, 1, 0), null, null, null, null, TD.Atomic.ANTIMATTER.NOT));
             qwerTool.addTool(20, "Miner's Hammer", "Mines a simple 3z3 tunnel, Technically an Excavation Pickaxe", new QT_TOOL_MiningHammer().setMaterialAmount(OP.toolHeadHammer.mAmount), "craftingToolPickaxe", TC.stack(TC.INSTRUMENTUM, 2), TC.stack(TC.PERDITIO, 1), "hammer");
-            UT.Crafting.shapeless(qwerTool.getToolWithStats(22, MT.DamascusSteel, MT.Plastic), new ItemStack[]{ST.make(Items.apple, 1, CS.W)}); //TODO debug
+            GameRegistry.addRecipe(new AdvancedCraftingTool(qwerTool, 20, miningHammerHead,new ICondition.Or(MT.Steel,MT.Bronze)));
         }
         if (QTConfigs.enableArmor) {
             MinecraftForge.EVENT_BUS.register(new RegisterArmor());

@@ -1,12 +1,21 @@
 package com.kbi.qwertech.items.stats;
 
+import com.kbi.qwertech.QwerTech;
 import com.kbi.qwertech.entities.EntityHelperFunctions;
+import gregapi.data.MT;
+import gregapi.data.OP;
+import gregapi.item.multiitem.MultiItemTool;
+import gregapi.oredict.OreDictPrefix;
+import gregapi.render.IIconContainer;
 import gregtech.items.tools.early.GT_Tool_Pickaxe;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.play.server.S23PacketBlockChange;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.event.world.BlockEvent;
 
 import java.util.List;
@@ -14,6 +23,10 @@ import java.util.List;
 public class QT_TOOL_MiningHammer extends GT_Tool_Pickaxe implements IAOE_Tool {
     // now i understand why qwer had this var, it makes the convertBlockDrops method not be called again while its still running causing an stack overflow error.
     boolean LOCK;
+
+    public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
+        return aIsToolHead ? MultiItemTool.getPrimaryMaterial(aStack, MT.Steel).mTextureSetsItems.get(OreDictPrefix.get("toolHeadMiningHammer").mIconIndexItem) : MultiItemTool.getSecondaryMaterial(aStack, MT.WOODS.Spruce).mTextureSetsItems.get(OP.stick.mIconIndexItem);
+    }
 
     @Override
     public float getMaxDurabilityMultiplier() {
@@ -125,6 +138,65 @@ public class QT_TOOL_MiningHammer extends GT_Tool_Pickaxe implements IAOE_Tool {
         }
         return speed_d * 2 / speed_f;
     }
+
+    public void breakBlock(World world, int x, int y, int z, int sideHit, EntityPlayer playerEntity, int refX, int refY, int refZ) {
+        if (world.isAirBlock(x, y, z)) return;
+
+        if (!(playerEntity instanceof EntityPlayerMP)) return;
+        EntityPlayerMP player = (EntityPlayerMP) playerEntity;
+
+        Block block = world.getBlock(x, y, z);
+        int meta = world.getBlockMetadata(x, y, z);
+
+        Block refBlock = world.getBlock(refX, refY, refZ);
+        float refStrength = ForgeHooks.blockStrength(refBlock, player, world, refX, refY, refZ);
+        float strength = ForgeHooks.blockStrength(block, player, world, x, y, z);
+
+        if (!ForgeHooks.canHarvestBlock(block, player, meta) || refStrength / strength > 10f) return;
+
+        BlockEvent.BreakEvent event = ForgeHooks.onBlockBreakEvent(world, player.theItemInWorldManager.getGameType(), player, x, y, z);
+        if (event.isCanceled())
+            return;
+
+        if (player.capabilities.isCreativeMode) {
+            block.onBlockHarvested(world, x, y, z, meta, player);
+            if (block.removedByPlayer(world, player, x, y, z, false))
+                block.onBlockDestroyedByPlayer(world, x, y, z, meta);
+            if (!world.isRemote) {
+                player.playerNetServerHandler.sendPacket(new S23PacketBlockChange(x, y, z, world));
+            }
+            return;
+        }
+        ItemStack currentItem = player.getCurrentEquippedItem();
+        if (currentItem != null) {
+            currentItem.func_150999_a(world, block, x, y, z, player);
+        }
+        if (!world.isRemote) {
+            block.onBlockHarvested(world, x, y, z, meta, player);
+
+            if (block.removedByPlayer(world, player, x, y, z, true)) {
+                block.onBlockDestroyedByPlayer(world, x, y, z, meta);
+                block.harvestBlock(world, player, x, y, z, meta);
+                block.dropXpOnBlockBreak(world, x, y, z, event.getExpToDrop());
+            }
+
+            player.playerNetServerHandler.sendPacket(new S23PacketBlockChange(x, y, z, world));
+        } else {
+            world.playAuxSFX(2001, x, y, z, Block.getIdFromBlock(block) + (meta << 12));
+            if (block.removedByPlayer(world, player, x, y, z, true)) {
+                block.onBlockDestroyedByPlayer(world, x, y, z, meta);
+            }
+            ItemStack itemstack = player.getCurrentEquippedItem();
+            if (itemstack != null) {
+                itemstack.func_150999_a(world, block, x, y, z, player);
+
+                if (itemstack.stackSize == 0) {
+                    player.destroyCurrentEquippedItem();
+                }
+            }
+        }
+    }
+
 
     private boolean isBlockHarvestable(int x, int y, int z, EntityPlayer mPlayer, World mWorld) {
         Block aBlock = mWorld.getBlock(x, y, z);

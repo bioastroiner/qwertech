@@ -14,6 +14,7 @@ import net.minecraft.block.BlockRailBase;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraftforge.event.world.BlockEvent;
 
@@ -32,7 +33,12 @@ public class QT_Tool_SturdyAxe extends GT_Tool_Axe {
 	{
 	    return 20;
 	}
-	
+
+	@Override
+	public IIcon getIcon(ItemStack aStack, int aRenderPass) {
+		return super.getIcon(aStack, aRenderPass);
+	}
+
 	@Override
 	public boolean isCrowbar()
 	{
