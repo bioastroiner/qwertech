@@ -3,7 +3,7 @@ package com.kbi.qwertech.armor.upgrades;
 import com.kbi.qwertech.api.armor.IArmorStats;
 import com.kbi.qwertech.api.armor.MultiItemArmor;
 import com.kbi.qwertech.api.armor.upgrades.UpgradeBase;
-import com.kbi.qwertech.client.models.ModelArmorPlates;
+import com.kbi.qwertech.client.models.armor.ModelArmorPlates;
 import com.kbi.qwertech.loaders.RegisterArmor;
 import gregapi.data.LH;
 import gregapi.oredict.OreDictMaterial;

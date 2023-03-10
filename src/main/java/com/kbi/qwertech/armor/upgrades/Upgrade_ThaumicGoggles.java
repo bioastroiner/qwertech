@@ -4,7 +4,7 @@ import com.kbi.qwertech.api.armor.MultiItemArmor;
 import com.kbi.qwertech.api.armor.upgrades.IArmorUpgrade;
 import com.kbi.qwertech.api.armor.upgrades.IThaumcraftUpgrade;
 import com.kbi.qwertech.api.armor.upgrades.UpgradeBase;
-import com.kbi.qwertech.client.models.ModelArmorGoggles;
+import com.kbi.qwertech.client.models.armor.ModelArmorGoggles;
 import com.kbi.qwertech.loaders.RegisterArmor;
 import gregapi.data.LH;
 import gregapi.render.IIconContainer;

@@ -3,7 +3,7 @@ package com.kbi.qwertech.armor.upgrades;
 import com.kbi.qwertech.api.armor.MultiItemArmor;
 import com.kbi.qwertech.api.armor.upgrades.IArmorUpgrade;
 import com.kbi.qwertech.api.armor.upgrades.UpgradeBase;
-import com.kbi.qwertech.client.models.ModelArmorMonocle;
+import com.kbi.qwertech.client.models.armor.ModelArmorMonocle;
 import com.kbi.qwertech.loaders.RegisterArmor;
 import gregapi.block.IBlockToolable;
 import gregapi.code.ArrayListNoNulls;

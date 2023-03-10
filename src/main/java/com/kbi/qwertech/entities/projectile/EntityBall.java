@@ -1,6 +1,6 @@
 package com.kbi.qwertech.entities.projectile;
 
-import com.kbi.qwertech.QwerTech;
+import com.kbi.qwertech.client.render.QT_GUIHandler;
 import gregapi.data.IL;
 import gregapi.data.TD;
 import gregapi.oredict.OreDictMaterial;
@@ -117,17 +117,17 @@ public class EntityBall extends EntityRock {
             		{
 	            		case 4:
 	            		{
-	            			com.kbi.qwertech.client.QT_GUIHandler.addNewSplat(new short[]{100, 255, 100, 175});
+	            			QT_GUIHandler.addNewSplat(new short[]{100, 255, 100, 175});
 	            			break;
 	            		}
 	            		case 5:
 	            		{
-	            			com.kbi.qwertech.client.QT_GUIHandler.addNewSplat(new short[]{30, 10, 0, 255});
+	            			QT_GUIHandler.addNewSplat(new short[]{30, 10, 0, 255});
 	            			break;
 	            		}
 	            		case 6:
 	            		{
-	            			com.kbi.qwertech.client.QT_GUIHandler.addNewSplat(new short[]{222, 0, 0, 222});
+	            			QT_GUIHandler.addNewSplat(new short[]{222, 0, 0, 222});
 	            			break;
 	            		}
             		}

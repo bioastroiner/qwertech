@@ -10,10 +10,9 @@ import com.kbi.qwertech.api.recipe.managers.CraftingManagerCountertop;
 import com.kbi.qwertech.api.registry.ArmorUpgradeRegistry;
 import com.kbi.qwertech.blocks.BlockCorrugated;
 import com.kbi.qwertech.blocks.BlockSoil;
-import com.kbi.qwertech.client.QT_GUIHandler;
+import com.kbi.qwertech.client.render.QT_GUIHandler;
 import com.kbi.qwertech.entities.projectile.EntityShuriken;
 import com.kbi.qwertech.items.MultiItemTool_QT;
-import com.kbi.qwertech.items.behavior.Behavior_Slingshot;
 import com.kbi.qwertech.items.behavior.Dispenser_Shuriken;
 import com.kbi.qwertech.items.stats.*;
 import com.kbi.qwertech.loaders.*;
@@ -32,7 +31,6 @@ import gregapi.block.ItemBlockBase;
 import gregapi.block.metatype.BlockStones;
 import gregapi.block.multitileentity.MultiTileEntityBlock;
 import gregapi.block.multitileentity.MultiTileEntityRegistry;
-import gregapi.code.ICondition;
 import gregapi.code.ICondition.And;
 import gregapi.code.ModData;
 import gregapi.config.ConfigCategories;
@@ -172,7 +170,7 @@ public final class QwerTech extends Abstract_Mod {
     }
 
     public void doConfigurations() {
-        Configuration tMainConfig = new Configuration(new File(CS.DirectoriesGT.CONFIG_GT, "QwerTech.cfg"));
+        Configuration tMainConfig = new Configuration(new File(CS.DirectoriesGT.CONFIG_GT, "QwerTech_main.cfg"));
         tMainConfig.load();
 
         QTConfigs.doMobScrapesDrop = tMainConfig.get("entities", "DoMobScrapesDrop", true, "Add bonus loot from certain weapons").setShowInGui(true).getBoolean(true);
@@ -184,28 +182,18 @@ public final class QwerTech extends Abstract_Mod {
         QTConfigs.cowsOverheat = tMainConfig.get("entities", "HeatKillsCows", true, "Add temperature limits to cows (deserts, savannahs)").setShowInGui(true).getBoolean(true);
         QTConfigs.addDungeonTools = tMainConfig.get("worldgen", "AddDungeonTools", true, "Add GT and QT tools as rare dungeon items").setShowInGui(true).getBoolean(true);
         QTConfigs.announceFanfare = tMainConfig.get("achievements", "AnnounceFanfare", false, "If achievements annoy you, turn this off").setShowInGui(true).getBoolean(false);
-        QTConfigs.chemicalXRandom = tMainConfig.get("recipes", "ElectrolyzeChemicalX", true, "Set to false to eliminate the Utonium Volatility Process").setShowInGui(true).getBoolean(true);
+        QTConfigs.chemicalXRandom = tMainConfig.get("recipes", "ElectrolyzeChemicalX", false, "Set to false to eliminate the Utonium Volatility Process").setShowInGui(true).getBoolean(true);
 
         tMainConfig.save();
 
-        Configuration t3DConfig = new Configuration(new File(CS.DirectoriesGT.CONFIG_GT, "3Ditems.cfg"));
-        t3DConfig.load();
-
-        // TODO: 3D tool models are lagacy remove them completely later
-        QTConfigs.add3DGregTools = t3DConfig.get("general", "Add3DGregTools", false, "Add 3D models for default GregTech tools").setShowInGui(true).getBoolean(false);
-        QTConfigs.add3DQwerTools = t3DConfig.get("general", "Add3DQwerTools", false, "Add 3D models for new QwerTech tools").setShowInGui(true).getBoolean(false);
-        QTConfigs.add3DPrefixes = t3DConfig.get("general", "Add3DPrefixes", false, "Add 3D Models for OreDictPrefix objects (tool heads, ingots, rods, etc.)").setShowInGui(true).getBoolean(false);
-
-        t3DConfig.save();
-
-        Configuration tCompat = new Configuration(new File(CS.DirectoriesGT.CONFIG_GT, "QTCompat.cfg"));
+        Configuration tCompat = new Configuration(new File(CS.DirectoriesGT.CONFIG_GT, "QwerTech_Compat.cfg"));
         tCompat.load();
 
         QTConfigs.overwriteJourneyMap = tCompat.get("journeymap", "OverwriteIcons", true, "Overwrite JourneyMap icons on load").setShowInGui(true).getBoolean(true);
 
         tCompat.save();
 
-        Configuration tSections = new Configuration(new File(CS.DirectoriesGT.CONFIG_GT, "QTModules.cfg"));
+        Configuration tSections = new Configuration(new File(CS.DirectoriesGT.CONFIG_GT, "QwerTech_Modules.cfg"));
         tSections.load();
 
         QTConfigs.enableFrogs = tSections.get("entities", "enableFrogs", true, "Allow Frogs to exist").setShowInGui(true).getBoolean(true);
@@ -220,7 +208,7 @@ public final class QwerTech extends Abstract_Mod {
 
         tSections.save();
 
-        Configuration UI = new Configuration(new File(CS.DirectoriesGT.CONFIG_GT, "QT_UI_Display.cfg"));
+        Configuration UI = new Configuration(new File(CS.DirectoriesGT.CONFIG_GT, "QwerTech_UI_Display.cfg"));
         UI.load();
 
         QTConfigs.effectAnchorX = UI.get("effects_custom", "effectAnchorX", 1, "If default is disabled, which screen edge the effect icons will adhere to: left (0), middle (1), or right (2)").setShowInGui(true).getInt(1);
@@ -402,7 +390,6 @@ public final class QwerTech extends Abstract_Mod {
 
             qwerTool = new MultiItemTool_QT(MODID, "qwertech.tools");
             QTI.qwerTool.set(qwerTool);
-            qwerTool.setFull3D(); // TODO remove 3d
             qwerTool.addTool(0, "Mattock", "Tills soil and chops logs", new QT_Tool_Mattock().setMaterialAmount(mattockHead.mAmount), "craftingToolAxe", "craftingToolHoe", TC.stack(TC.INSTRUMENTUM, 2L), TC.stack(TC.METO, 2L), TC.stack(TC.ARBOR, 2L), "toolMattock");
             GameRegistry.addRecipe(new AdvancedCraftingTool(qwerTool, 0, mattockHead, MT.Bronze));
             qwerTool.addTool(2, "Slingshot", "Rock and roll", new QT_Tool_Slingshot().setMaterialAmount(CS.U3 + (CS.U / 2)), TC.stack(TC.INSTRUMENTUM, 2L), TC.stack(TC.TELUM, 2L), TC.stack(TC.TERRA, 2L), "toolSlingshot");
@@ -427,7 +414,7 @@ public final class QwerTech extends Abstract_Mod {
             OP.ring.addListener(new OreProcessing_QTTool(18, ConfigCategories.Recipes.gregtechtools + "." + "Kazoo", false, false, 0L, 0L, MT.Paper, new String[][]{{"XO ", " Sk"}}, null, ST.make(Items.paper, 1, 0), null, null, null, null, TD.Atomic.ANTIMATTER.NOT));
             qwerTool.addTool(20, "Mining Hammer", "Tinker's Hammer, Mines a 3x3 Area", new QT_TOOL_MiningHammer().setMaterialAmount(miningHammerHead.mAmount), "craftingToolPickaxe", TC.stack(TC.INSTRUMENTUM, 10), TC.stack(TC.PERDITIO, 7), "hammer");
             GameRegistry.addRecipe(new AdvancedCraftingTool(qwerTool, 20, miningHammerHead,MT.Steel));
-            qwerTool.addTool(22, "Excavator", "Digs up a 3x3 Area", new QT_TOOL_Excavator().setMaterialAmount(excavatorHead.mAmount), "craftingToolShovel", TC.stack(TC.INSTRUMENTUM, 10), TC.stack(TC.PERDITIO, 7), "shovel");
+            qwerTool.addTool(22, "Excavator", "Digs up a 3x3 Area", new QT_Tool_Excavator().setMaterialAmount(excavatorHead.mAmount), "craftingToolShovel", TC.stack(TC.INSTRUMENTUM, 10), TC.stack(TC.PERDITIO, 7), "shovel");
             GameRegistry.addRecipe(new AdvancedCraftingTool(qwerTool, 22, miningHammerHead,MT.Steel));
         }
         if (QTConfigs.enableArmor) {

@@ -10,15 +10,17 @@ import com.kbi.qwertech.api.entities.Species;
 import com.kbi.qwertech.api.recipe.CountertopRecipe;
 import com.kbi.qwertech.api.registry.ArmorUpgradeRegistry;
 import com.kbi.qwertech.api.registry.MobSpeciesRegistry;
-import com.kbi.qwertech.client.*;
-import com.kbi.qwertech.client.blocks.RenderCorrugated;
-import com.kbi.qwertech.client.entity.genetic.RenderGeneticEntity;
-import com.kbi.qwertech.client.entity.neutral.RenderTurkey;
-import com.kbi.qwertech.client.entity.passive.RenderFrog;
-import com.kbi.qwertech.client.entity.projectile.*;
+import com.kbi.qwertech.client.render.FluidContainerRenderer;
+import com.kbi.qwertech.client.render.QT_Armor_Renderer;
+import com.kbi.qwertech.client.render.QT_Machine_Renderer;
+import com.kbi.qwertech.client.render.blocks.RenderCorrugated;
+import com.kbi.qwertech.client.render.entity.genetic.RenderGeneticEntity;
+import com.kbi.qwertech.client.render.entity.neutral.RenderTurkey;
+import com.kbi.qwertech.client.render.entity.passive.RenderFrog;
+import com.kbi.qwertech.client.render.entity.projectile.*;
 import com.kbi.qwertech.client.models.entity.*;
-import com.kbi.qwertech.client.tileentity.CountertopRenderer;
-import com.kbi.qwertech.client.tileentity.UpgradeDeskRenderer;
+import com.kbi.qwertech.client.render.tileentity.CountertopRenderer;
+import com.kbi.qwertech.client.render.tileentity.UpgradeDeskRenderer;
 import com.kbi.qwertech.entities.genetic.EntityPhasianidae;
 import com.kbi.qwertech.entities.neutral.EntityTurkey;
 import com.kbi.qwertech.entities.passive.EntityFrog;
@@ -34,10 +36,7 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import gregapi.api.Abstract_Mod;
 import gregapi.block.multitileentity.MultiTileEntityRegistry;
-import gregapi.code.ItemStackContainer;
-import gregapi.data.CS;
 import gregapi.data.LH;
-import gregapi.data.OP;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.item.ItemStack;
@@ -60,44 +59,11 @@ public final class ClientProxy extends CommonProxy { // NO_UCD (unused code)
 	@Override
 	public void onProxyAfterInit			(Abstract_Mod aMod, FMLInitializationEvent		aEvent)
 	{
-		Material_Item_Renderer itemRenderer = new Material_Item_Renderer();
 		MinecraftForgeClient.registerItemRenderer(QTI.syringe.getItem(), new FluidContainerRenderer());
 		MinecraftForgeClient.registerItemRenderer(QTI.buckets.getItem(), new FluidContainerRenderer());
-		if (QTConfigs.add3DQwerTools)
-		{
-			MinecraftForgeClient.registerItemRenderer(QTI.qwerTool.getItem(), new QT_Tool_Renderer());
-			MinecraftForgeClient.registerItemRenderer(QTI.qwerFood.getItem(), new QT_Food_Renderer());
-		}
 		if (QTConfigs.enableArmor)
 		{
 			MinecraftForgeClient.registerItemRenderer(QTI.qwerArmor.getItem(), new QT_Armor_Renderer());
-		}
-		if (QTConfigs.add3DGregTools)
-		{
-			MinecraftForgeClient.registerItemRenderer(CS.ToolsGT.sMetaTool, new GT_Tool_Renderer());
-		}
-		if (QTConfigs.add3DPrefixes)
-		{
-			Iterator<ItemStackContainer> ingot = OP.ingot.mRegisteredItems.iterator();
-			while (ingot.hasNext())
-			{
-				MinecraftForgeClient.registerItemRenderer(ingot.next().mItem, itemRenderer);
-			}
-			Iterator<ItemStackContainer> stick = OP.stick.mRegisteredItems.iterator();
-			while (stick.hasNext())
-			{
-				MinecraftForgeClient.registerItemRenderer(stick.next().mItem, itemRenderer);
-			}
-			Iterator<ItemStackContainer> gear = OP.gear.mRegisteredItems.iterator();
-			while (gear.hasNext())
-			{
-				MinecraftForgeClient.registerItemRenderer(gear.next().mItem, itemRenderer);
-			}
-			/*Iterator<ItemStackContainer> stickLong = OP.stickLong.mRegisteredItems.iterator();
-			while (stickLong.hasNext())
-			{
-				MinecraftForgeClient.registerItemRenderer(stickLong.next().mItem, itemRenderer);
-			}*/
 		}
 		MinecraftForgeClient.registerItemRenderer(MultiTileEntityRegistry.getRegistry("qwertech.machines").getItem(401).getItem(), new QT_Machine_Renderer());
 		

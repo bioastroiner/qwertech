@@ -1,5 +1,6 @@
 package com.kbi.qwertech.entities.projectile;
 
+import com.kbi.qwertech.client.render.QT_GUIHandler;
 import cpw.mods.fml.common.registry.IThrowableEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
@@ -88,10 +89,10 @@ public class EntityEgg extends net.minecraft.entity.projectile.EntityEgg impleme
         } else if (this.worldObj.isRemote) {
         	if (p_70184_1_.entityHit == Minecraft.getMinecraft().thePlayer)
         	{
-        		com.kbi.qwertech.client.QT_GUIHandler.addNewSplat(new short[]{222, 222, 222, 200});
-        		com.kbi.qwertech.client.QT_GUIHandler.addNewSplat(new short[]{222, 222, 222, 200});
-        		com.kbi.qwertech.client.QT_GUIHandler.addNewSplat(new short[]{222, 222, 222, 200});
-        		com.kbi.qwertech.client.QT_GUIHandler.addNewSplat(new short[]{222, 111, 0, 250});
+        		QT_GUIHandler.addNewSplat(new short[]{222, 222, 222, 200});
+        		QT_GUIHandler.addNewSplat(new short[]{222, 222, 222, 200});
+        		QT_GUIHandler.addNewSplat(new short[]{222, 222, 222, 200});
+        		QT_GUIHandler.addNewSplat(new short[]{222, 111, 0, 250});
         	}
         }
 
