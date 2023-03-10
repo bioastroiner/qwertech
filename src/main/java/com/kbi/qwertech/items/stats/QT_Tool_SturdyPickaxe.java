@@ -22,6 +22,11 @@ public class QT_Tool_SturdyPickaxe extends GT_Tool_Pickaxe {
     private boolean doAOE = false;
 
     @Override
+    public boolean canCollect() {
+        return true;
+    }
+
+    @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
         return aIsToolHead ? MultiItemTool.getPrimaryMaterial(aStack, MT.Steel).mTextureSetsItems.get(OreDictPrefix.get("toolHeadSturdyPickaxe").mIconIndexItem) : MultiItemTool.getSecondaryMaterial(aStack, MT.WOODS.Spruce).mTextureSetsItems.get(OP.stick.mIconIndexItem);
     }

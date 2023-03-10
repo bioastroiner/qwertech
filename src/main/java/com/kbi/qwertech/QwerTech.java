@@ -76,6 +76,7 @@ import java.util.List;
 
 import static gregapi.data.TD.Prefix.*;
 import static gregapi.data.TD.Properties.HAS_TOOL_STATS;
+import static gregapi.oredict.OreDictMaterialCondition.typemin;
 
 @InterfaceList(value = {
         @Interface(iface = "squeek.applecore.api.food.IEdible", modid = ModIDs.APC)
@@ -313,101 +314,81 @@ public final class QwerTech extends Abstract_Mod {
         final OreDictPrefix mattockHead = OreDictPrefix.createPrefix("toolHeadMattock"); // This newly created OreDict Prefix is named "exampleprefix", so an Aluminium Item with this Prefix would be named "exampleprefixAluminium" in the OreDict.
         mattockHead.setCategoryName("Mattock Heads"); // That is what the Creative Tab of it would be named.
         mattockHead.setLocalItemName("", " Mattock Head"); // Generic Items will follow this naming Guideline, so for example "Small Aluminium Example" for an Aluminium Item with that Prefix.
-        mattockHead.setCondition(new And(OP.toolHeadHoe, OP.toolHeadAxe)); // The Condition under which Items of this Prefix should generate in general. In this case TRUE to have ALL the Items.
+        mattockHead.setCondition(new And(OP.toolHeadShovel, OP.toolHeadAxe, typemin(2))); // The Condition under which Items of this Prefix should generate in general. In this case TRUE to have ALL the Items.
         mattockHead.add(UNIFICATABLE, BURNABLE, RECYCLABLE, SCANNABLE, TOOL_HEAD, NEEDS_HANDLE).setStacksize(16).aspects(TC.INSTRUMENTUM, 2, TC.MESSIS, 1);// Items of this can be recycled for Resources.
-        mattockHead.setMaterialStats(gregapi.data.CS.U * 5); // Any Item of this example Prefix has the value of 1 Material Unit (U), this is exactly equal to one Ingot/Dust/Gem.
+        mattockHead.setMaterialStats(gregapi.data.CS.U * 3); // Any Item of this example Prefix has the value of 1 Material Unit (U), this is exactly equal to one Ingot/Dust/Gem.
+        new PrefixItem(MOD_DATA, "qwertech.tools.mattock", mattockHead);
 
         final OreDictPrefix maceHead = OreDictPrefix.createPrefix("toolHeadMace");
         maceHead.setCategoryName("Mace Heads");
         maceHead.setLocalItemName("", " Mace Head");
-        maceHead.setCondition(new And(HAS_TOOL_STATS, OreDictMaterialCondition.typemin(3)));
+        maceHead.setCondition(new And(HAS_TOOL_STATS, OreDictMaterialCondition.typemin(2)));
         maceHead.add(UNIFICATABLE, BURNABLE, RECYCLABLE, SCANNABLE, TOOL_HEAD, NEEDS_HANDLE).setStacksize(16).aspects(TC.TELUM, 2, TC.PERDITIO, 1);
         maceHead.setMaterialStats(gregapi.data.CS.U * 5);
+        new PrefixItem(MOD_DATA, "qwertech.tools.mace", maceHead);
 
         final OreDictPrefix shuriken = OreDictPrefix.createPrefix("shuriken");
         shuriken.setCategoryName("Shuriken");
         shuriken.setLocalItemName("", " Shuriken");
-        shuriken.setCondition(HAS_TOOL_STATS);
+        shuriken.setCondition(new And(HAS_TOOL_STATS,typemin(2)));
         shuriken.add(UNIFICATABLE, BURNABLE, RECYCLABLE, SCANNABLE).setStacksize(64, 16).aspects(TC.TELUM, 2, TC.MOTUS, 1);
         shuriken.setMaterialStats(OP.stick.mAmount);
+        new PrefixItem(MOD_DATA, "qwertech.tools.shuriken", shuriken) {
+            @Override public ItemStack onItemRightClick(ItemStack item, World world, EntityPlayer player) {
+                OreDictItemData data = OreDictManager.INSTANCE.getItemData(item);UT.Sounds.send(world, "qwertech:metal.slide", 0.5F, (world.rand.nextInt(5) + 8) / 10F, (int) player.posX, (int) player.posY, (int) player.posZ);
+                if (!world.isRemote) {EntityShuriken es = new EntityShuriken(world, player, 4F / 3F, data.mMaterial.mMaterial);world.spawnEntityInWorld(es);
+                    if (!UT.Entities.hasInfiniteItems(player)) {item.stackSize = item.stackSize - 1;}}return item;}
+            @Override public void run() {super.run();BlockDispenser.dispenseBehaviorRegistry.putObject(this, new Dispenser_Shuriken());}
+            @Override public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List aList, boolean aF3_H) {
+                aList.add("Ken I toss this throwing star?"); OreDictMaterial mat = OreDictManager.INSTANCE.getItemData(aStack).mMaterial.mMaterial; float tCombat = 2 + ((mat.mToolQuality) / 2F);
+                aList.add(LH.Chat.WHITE + "Attack Damage: " + LH.Chat.BLUE + "+" + tCombat + LH.Chat.RED + " (= " + ((tCombat + 1) / 2) + " Hearts)" + LH.Chat.GRAY);
+                if (mat == MT.Ag && aPlayer.getDisplayName().toLowerCase().startsWith("bear989")) {aList.add(LH.Chat.BLINKING_RED + "Be careful with this, Mr. Bear!" + LH.Chat.GRAY);}
+                else if ((mat == MT.Pb || mat == MT.Craponite) && aPlayer.getDisplayName().equalsIgnoreCase("crazyj1984")) {aList.add(LH.Chat.BLINKING_RED + "Careful not to cut yourself on this one, lass!" + LH.Chat.GRAY);}
+                else if ((mat == MT.Diamond || mat == MT.Diamantine) && aPlayer.getDisplayName().equalsIgnoreCase("shadowkn1ght18") || aPlayer.getDisplayName().equalsIgnoreCase("netmc")) {aList.add(LH.Chat.BLINKING_RED + "I wouldn't throw this straight up if I were you..." + LH.Chat.GRAY);}
+                else if (mat == MT.Ti && aPlayer.getDisplayName().equalsIgnoreCase("gregoriust") || aPlayer.getDisplayName().equalsIgnoreCase("speiger")) {aList.add(LH.Chat.BLINKING_RED + "How is this like a NullPointerException? You'll get mad if it's thrown at you." + LH.Chat.GRAY);}
+                else if (mat == MT.Pt && aPlayer.getDisplayName().equalsIgnoreCase("qwertygiy") || aPlayer.getDisplayName().equalsIgnoreCase("ilrith")) {aList.add(LH.Chat.BLINKING_RED + "But it's so shiny!" + LH.Chat.GRAY);}
+                else if (mat == MT.Al && aPlayer.getDisplayName().equalsIgnoreCase("andyafw")) {aList.add(LH.Chat.BLINKING_RED + "Might want to return this one to Wal-Mart.");}}
+        };
 
         final OreDictPrefix sturdyPickaxeHead = OreDictPrefix.createPrefix("toolHeadSturdyPickaxe"); // This newly created OreDict Prefix is named "exampleprefix", so an Aluminium Item with this Prefix would be named "exampleprefixAluminium" in the OreDict.
         sturdyPickaxeHead.setCategoryName("Sturdy Pickaxe Heads"); // That is what the Creative Tab of it would be named.
         sturdyPickaxeHead.setLocalItemName("", " Sturdy Pickaxe Head"); // Generic Items will follow this naming Guideline, so for example "Small Aluminium Example" for an Aluminium Item with that Prefix.
-        sturdyPickaxeHead.setCondition(OP.toolHeadPickaxe); // The Condition under which Items of this Prefix should generate in general. In this case TRUE to have ALL the Items.
+        sturdyPickaxeHead.setCondition(new And(OP.toolHeadPickaxe,typemin(2))); // The Condition under which Items of this Prefix should generate in general. In this case TRUE to have ALL the Items.
         sturdyPickaxeHead.add(UNIFICATABLE, BURNABLE, RECYCLABLE, SCANNABLE, TOOL_HEAD, NEEDS_HANDLE).setStacksize(16).aspects(TC.INSTRUMENTUM, 2, TC.PERFODIO, 1);// Items of this can be recycled for Resources.
-        sturdyPickaxeHead.setMaterialStats(gregapi.data.CS.U * 5); // Any Item of this example Prefix has the value of 1 Material Unit (U), this is exactly equal to one Ingot/Dust/Gem.
+        sturdyPickaxeHead.setMaterialStats(gregapi.data.CS.U * 3); // Any Item of this example Prefix has the value of 1 Material Unit (U), this is exactly equal to one Ingot/Dust/Gem.
         new PrefixItem(MOD_DATA,"qwetech.tools.pickaxe", sturdyPickaxeHead);
 
         final OreDictPrefix sturdyAxeHead = OreDictPrefix.createPrefix("toolHeadSturdyAxe"); // This newly created OreDict Prefix is named "exampleprefix", so an Aluminium Item with this Prefix would be named "exampleprefixAluminium" in the OreDict.
         sturdyAxeHead.setCategoryName("Sturdy Axe Heads"); // That is what the Creative Tab of it would be named.
         sturdyAxeHead.setLocalItemName("", " Sturdy Axe Head"); // Generic Items will follow this naming Guideline, so for example "Small Aluminium Example" for an Aluminium Item with that Prefix.
-        sturdyAxeHead.setCondition(OP.toolHeadPickaxe); // The Condition under which Items of this Prefix should generate in general. In this case TRUE to have ALL the Items.
+        sturdyAxeHead.setCondition(new And(OP.toolHeadPickaxe,typemin(2))); // The Condition under which Items of this Prefix should generate in general. In this case TRUE to have ALL the Items.
         sturdyAxeHead.add(UNIFICATABLE, BURNABLE, RECYCLABLE, SCANNABLE, TOOL_HEAD, NEEDS_HANDLE).setStacksize(16).aspects(TC.INSTRUMENTUM, 2, TC.TELUM, 1);// Items of this can be recycled for Resources.
-        sturdyAxeHead.setMaterialStats(gregapi.data.CS.U * 5); // Any Item of this example Prefix has the value of 1 Material Unit (U), this is exactly equal to one Ingot/Dust/Gem.
+        sturdyAxeHead.setMaterialStats(gregapi.data.CS.U * 3); // Any Item of this example Prefix has the value of 1 Material Unit (U), this is exactly equal to one Ingot/Dust/Gem.
         new PrefixItem(MOD_DATA,"qwetech.tools.axe", sturdyAxeHead);
 
         final OreDictPrefix miningHammerHead = OreDictPrefix.createPrefix("toolHeadMiningHammer"); // This newly created OreDict Prefix is named "exampleprefix", so an Aluminium Item with this Prefix would be named "exampleprefixAluminium" in the OreDict.
         miningHammerHead.setCategoryName("Sturdy Mining Heads"); // That is what the Creative Tab of it would be named.
         miningHammerHead.setLocalItemName("", " Sturdy Mining Hammer Head"); // Generic Items will follow this naming Guideline, so for example "Small Aluminium Example" for an Aluminium Item with that Prefix.
-        miningHammerHead.setCondition(OP.toolHeadHammer); // The Condition under which Items of this Prefix should generate in general. In this case TRUE to have ALL the Items.
+        miningHammerHead.setCondition(new And(OP.toolHeadHammer,OP.toolHeadPickaxe,typemin(2))); // The Condition under which Items of this Prefix should generate in general. In this case TRUE to have ALL the Items.
         miningHammerHead.add(UNIFICATABLE, BURNABLE, RECYCLABLE, SCANNABLE, TOOL_HEAD, NEEDS_HANDLE).setStacksize(16).aspects(TC.INSTRUMENTUM, 10, TC.PERFODIO, 2);// Items of this can be recycled for Resources.
-        miningHammerHead.setMaterialStats(gregapi.data.CS.U * 6); // Any Item of this example Prefix has the value of 1 Material Unit (U), this is exactly equal to one Ingot/Dust/Gem.
+        miningHammerHead.setMaterialStats(gregapi.data.CS.U * 18); // Any Item of this example Prefix has the value of 1 Material Unit (U), this is exactly equal to one Ingot/Dust/Gem.
         new PrefixItem(MOD_DATA,"qwetech.tools.hammer", miningHammerHead);
 
         final OreDictPrefix excavatorHead = OreDictPrefix.createPrefix("toolHeadExcavator"); // This newly created OreDict Prefix is named "exampleprefix", so an Aluminium Item with this Prefix would be named "exampleprefixAluminium" in the OreDict.
         excavatorHead.setCategoryName("Excavating Heads"); // That is what the Creative Tab of it would be named.
         excavatorHead.setLocalItemName("", " Excavator Head"); // Generic Items will follow this naming Guideline, so for example "Small Aluminium Example" for an Aluminium Item with that Prefix.
-        excavatorHead.setCondition(OP.toolHeadShovel); // The Condition under which Items of this Prefix should generate in general. In this case TRUE to have ALL the Items.
+        excavatorHead.setCondition(new And(OP.toolHeadShovel,typemin(2))); // The Condition under which Items of this Prefix should generate in general. In this case TRUE to have ALL the Items.
         excavatorHead.add(UNIFICATABLE, BURNABLE, RECYCLABLE, SCANNABLE, TOOL_HEAD, NEEDS_HANDLE).setStacksize(16).aspects(TC.INSTRUMENTUM, 10, TC.PERFODIO, 2);// Items of this can be recycled for Resources.
-        excavatorHead.setMaterialStats(gregapi.data.CS.U * 6); // Any Item of this example Prefix has the value of 1 Material Unit (U), this is exactly equal to one Ingot/Dust/Gem.
+        excavatorHead.setMaterialStats(gregapi.data.CS.U * 7); // Any Item of this example Prefix has the value of 1 Material Unit (U), this is exactly equal to one Ingot/Dust/Gem.
         new PrefixItem(MOD_DATA,"qwetech.tools.excavator", excavatorHead);
 
-        new PrefixItem(MOD_DATA, "qwertech.tools.mattock", mattockHead);
-        new PrefixItem(MOD_DATA, "qwertech.tools.mace", maceHead);
-        new PrefixItem(MOD_DATA, "qwertech.tools.shuriken", shuriken) {
-            @Override
-            public ItemStack onItemRightClick(ItemStack item, World world, EntityPlayer player) {
-                OreDictItemData data = OreDictManager.INSTANCE.getItemData(item);
-                UT.Sounds.send(world, "qwertech:metal.slide", 0.5F, (world.rand.nextInt(5) + 8) / 10F, (int) player.posX, (int) player.posY, (int) player.posZ);
-                if (!world.isRemote) {
-                    EntityShuriken es = new EntityShuriken(world, player, 4F / 3F, data.mMaterial.mMaterial);
-                    world.spawnEntityInWorld(es);
-                    if (!UT.Entities.hasInfiniteItems(player)) {
-                        item.stackSize = item.stackSize - 1;
-                    }
-                }
-                return item;
-            }
-
-            @Override
-            public void run() {
-                super.run();
-                BlockDispenser.dispenseBehaviorRegistry.putObject(this, new Dispenser_Shuriken());
-            }
-
-            @Override
-            public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List aList, boolean aF3_H) {
-                aList.add("Ken I toss this throwing star?");
-                OreDictMaterial mat = OreDictManager.INSTANCE.getItemData(aStack).mMaterial.mMaterial;
-                float tCombat = 2 + ((mat.mToolQuality) / 2F);
-                aList.add(LH.Chat.WHITE + "Attack Damage: " + LH.Chat.BLUE + "+" + tCombat + LH.Chat.RED + " (= " + ((tCombat + 1) / 2) + " Hearts)" + LH.Chat.GRAY);
-                if (mat == MT.Ag && aPlayer.getDisplayName().toLowerCase().startsWith("bear989")) {
-                    aList.add(LH.Chat.BLINKING_RED + "Be careful with this, Mr. Bear!" + LH.Chat.GRAY);
-                } else if ((mat == MT.Pb || mat == MT.Craponite) && aPlayer.getDisplayName().equalsIgnoreCase("crazyj1984")) {
-                    aList.add(LH.Chat.BLINKING_RED + "Careful not to cut yourself on this one, lass!" + LH.Chat.GRAY);
-                } else if ((mat == MT.Diamond || mat == MT.Diamantine) && aPlayer.getDisplayName().equalsIgnoreCase("shadowkn1ght18") || aPlayer.getDisplayName().equalsIgnoreCase("netmc")) {
-                    aList.add(LH.Chat.BLINKING_RED + "I wouldn't throw this straight up if I were you..." + LH.Chat.GRAY);
-                } else if (mat == MT.Ti && aPlayer.getDisplayName().equalsIgnoreCase("gregoriust") || aPlayer.getDisplayName().equalsIgnoreCase("speiger")) {
-                    aList.add(LH.Chat.BLINKING_RED + "How is this like a NullPointerException? You'll get mad if it's thrown at you." + LH.Chat.GRAY);
-                } else if (mat == MT.Pt && aPlayer.getDisplayName().equalsIgnoreCase("qwertygiy") || aPlayer.getDisplayName().equalsIgnoreCase("ilrith")) {
-                    aList.add(LH.Chat.BLINKING_RED + "But it's so shiny!" + LH.Chat.GRAY);
-                } else if (mat == MT.Al && aPlayer.getDisplayName().equalsIgnoreCase("andyafw")) {
-                    aList.add(LH.Chat.BLINKING_RED + "Might want to return this one to Wal-Mart.");
-                }
-            }
-        };
-        shuriken.addListener(new Loader_OreProcessing.OreProcessing_CraftFrom(4L, null, new String[][]{{"X X", " f ", "X X"}, {" X ", "XfX", " X "}}, OP.stick, null, null, null, null, TD.Atomic.ANTIMATTER.NOT));
+        shuriken.addListener(new Loader_OreProcessing.OreProcessing_CraftFrom(1, null, new String[][]{{"X X", " f ", "X X"}, {" X ", "XfX", " X "}}, OP.stick, null, null, null, null, TD.Atomic.ANTIMATTER.NOT));
+        maceHead.addListener(new Loader_OreProcessing.OreProcessing_CraftFrom(1, null, new String[][]{{"YSY", "SXS", "YSY"},{"SYS", "YXY", "SYS"}}, OP.gearGt,OP.bolt, null, null, null, TD.Atomic.ANTIMATTER.NOT));
+        mattockHead.addListener(new Loader_OreProcessing.OreProcessing_CraftFrom(1L, null, new String[][]{{"PXh","Y  ","f  "}}, OP.toolHeadAxe,OP.toolHeadShovel, null, null, null, TD.Atomic.ANTIMATTER.NOT));
+        sturdyAxeHead.addListener(new Loader_OreProcessing.OreProcessing_CraftFrom(1L, null, new String[][]{{"PPh","PX ","f  "}}, OP.toolHeadAxe,null, null, null, null, TD.Atomic.ANTIMATTER.NOT));
+        sturdyPickaxeHead.addListener(new Loader_OreProcessing.OreProcessing_CraftFrom(1L, null, new String[][]{{"XPh","P  ","f  "}}, OP.toolHeadPickaxe,null, null, null, null, TD.Atomic.ANTIMATTER.NOT));
+        miningHammerHead.addListener(new Loader_OreProcessing.OreProcessing_CraftFrom(1L, null, new String[][]{{"PPh","YX ","PPf"}}, OP.toolHeadHammer,OP.plateDense, null, null, null, TD.Atomic.ANTIMATTER.NOT));
+        excavatorHead.addListener(new Loader_OreProcessing.OreProcessing_CraftFrom(1L, null, new String[][]{{"PPP","PXP","f h"}}, OP.toolHeadShovel,null, null, null, null, TD.Atomic.ANTIMATTER.NOT));
         //new PrefixBlock(QwerTech.MODID, QwerTech.MODID, "qwertech.blocks.stake", stake, null, null, null, null, net.minecraft.block.material.Material.wood, net.minecraft.block.Block.soundTypeLadder, null, 1.5F, 4.5F,   0,   0, 999, 0, 0, 0, 1, 1, 1, false, false, false, false, false, false, true, true, true, true, false, true, true, true, gregapi.oredict.OreDictMaterial.MATERIAL_ARRAY);
 
         if (QTConfigs.enableTools) {
@@ -439,12 +420,15 @@ public final class QwerTech extends Abstract_Mod {
             //OP.stickLong.addListener(new OreProcessing_QTTool(12, ConfigCategories.Recipes.gregtechtools + "." + "Bat", false, false, 0L, 0L, MT.Empty, new String[][]{{"yL"}, {"Ly"}}, null, null, null, null, null, null, TD.Atomic.ANTIMATTER.NOT));
             GameRegistry.addRecipe(new AdvancedCraftingTool(qwerTool, 12, OP.stickLong, MT.WoodTreated));
             qwerTool.addTool(14, "Sturdy Axe", "Fells whole trees in a single chop", new QT_Tool_SturdyAxe().setMaterialAmount(OP.toolHeadAxe.mAmount), "craftingToolAxe", TC.stack(TC.INSTRUMENTUM, 2), TC.stack(TC.ARBOR, 1), TC.stack(TC.MACHINA, 1), "axe");
-            qwerTool.addTool(16, "StripMiner's Pickaxe", "Mines a simple 1x2 tunnel", new QT_Tool_SturdyPickaxe().setMaterialAmount(OP.toolHeadPickaxe.mAmount), "craftingToolPickaxe", TC.stack(TC.INSTRUMENTUM, 2), TC.stack(TC.PERDITIO, 1), "pickaxe");
-            GameRegistry.addRecipe(new AdvancedCraftingTool(qwerTool, 16, sturdyPickaxeHead, new ICondition.Or(MT.Steel,MT.Bronze)));
+            GameRegistry.addRecipe(new AdvancedCraftingTool(qwerTool, 14, sturdyAxeHead,MT.Steel));
+            qwerTool.addTool(16, "Sturdy Pickaxe", "Mines a simple 1x2 tunnel, Pretty safe won't dig the tunnel if the block isn't right in front of you", new QT_Tool_SturdyPickaxe().setMaterialAmount(OP.toolHeadPickaxe.mAmount), "craftingToolPickaxe", TC.stack(TC.INSTRUMENTUM, 2), TC.stack(TC.PERDITIO, 1), "pickaxe");
+            GameRegistry.addRecipe(new AdvancedCraftingTool(qwerTool, 16, sturdyPickaxeHead,MT.Steel));
             qwerTool.addTool(18, "Kazoo", "A true " + LH.Chat.ITALIC + "instrument" + LH.Chat.RESET + LH.Chat.GRAY + " of torture", new QT_Tool_Kazoo().setMaterialAmount(OP.stick.mAmount), "kazoo");
             OP.ring.addListener(new OreProcessing_QTTool(18, ConfigCategories.Recipes.gregtechtools + "." + "Kazoo", false, false, 0L, 0L, MT.Paper, new String[][]{{"XO ", " Sk"}}, null, ST.make(Items.paper, 1, 0), null, null, null, null, TD.Atomic.ANTIMATTER.NOT));
-            qwerTool.addTool(20, "Miner's Hammer", "Mines a simple 3z3 tunnel, Technically an Excavation Pickaxe", new QT_TOOL_MiningHammer().setMaterialAmount(OP.toolHeadHammer.mAmount), "craftingToolPickaxe", TC.stack(TC.INSTRUMENTUM, 2), TC.stack(TC.PERDITIO, 1), "hammer");
-            GameRegistry.addRecipe(new AdvancedCraftingTool(qwerTool, 20, miningHammerHead,new ICondition.Or(MT.Steel,MT.Bronze)));
+            qwerTool.addTool(20, "Mining Hammer", "Tinker's Hammer, Mines a 3x3 Area", new QT_TOOL_MiningHammer().setMaterialAmount(miningHammerHead.mAmount), "craftingToolPickaxe", TC.stack(TC.INSTRUMENTUM, 10), TC.stack(TC.PERDITIO, 7), "hammer");
+            GameRegistry.addRecipe(new AdvancedCraftingTool(qwerTool, 20, miningHammerHead,MT.Steel));
+            qwerTool.addTool(22, "Excavator", "Digs up a 3x3 Area", new QT_TOOL_Excavator().setMaterialAmount(excavatorHead.mAmount), "craftingToolShovel", TC.stack(TC.INSTRUMENTUM, 10), TC.stack(TC.PERDITIO, 7), "shovel");
+            GameRegistry.addRecipe(new AdvancedCraftingTool(qwerTool, 22, miningHammerHead,MT.Steel));
         }
         if (QTConfigs.enableArmor) {
             MinecraftForge.EVENT_BUS.register(new RegisterArmor());
@@ -464,7 +448,7 @@ public final class QwerTech extends Abstract_Mod {
 
         ModLoadBase.runInit();
 
-        CS.ToolsGT.sMetaTool.addItemBehavior(CS.ToolsGT.WRENCH, new Behavior_Slingshot("", 20, 40));
+        // TODO what is this?! //CS.ToolsGT.sMetaTool.addItemBehavior(CS.ToolsGT.WRENCH, new Behavior_Slingshot("", 20, 40));
 
         CR.shaped(ST.make(soilBlock, 2, 8), CR.DEF, "AA", "AA", 'A', "treeLeaves");
         CR.shaped(ST.make(soilBlock, 1, 5), CR.DEF, "AA", 'A', ST.make(Blocks.leaves, 1, 1));
@@ -519,10 +503,10 @@ public final class QwerTech extends Abstract_Mod {
 
         OreDictMaterial[] wallmats = new OreDictMaterial[]{MT.Fe, MT.Al, MT.Au, MT.Steel, MT.Bronze, MT.Brass, MT.Ag, MT.StainlessSteel, MT.WroughtIron, MT.Plastic, MT.Ti, MT.TungstenSteel, MT.Invar, MT.TinAlloy, MT.SteelGalvanized, MT.Electrum};
         for (int q = 0; q < 16; q++) {
-            //CR.shaped(ST.make(corrugatedBlock, 1, q), CR.DEF, "hPz", Character.valueOf('P'), OP.plateDouble.mat(wallmats[q], 1));
-            //CraftingManagerHammer.getInstance().addRecipe(new ShapedOreRecipe(ST.make(corrugatedBlock, 1,q), "P", "z", 'P', OP.plateDouble.dat(wallmats[q]).toString(), 'z', "craftingToolBendingCylinder"));
-            RM.RollFormer.addRecipe1(true, 16, 768, OP.plateDouble.mat(wallmats[q], 1), ST.make(corrugatedBlock, 1, q));
-            RM.RollingMill.addRecipe1(true, 16, 768, ST.make(corrugatedBlock, 1, q), OP.plateDouble.mat(wallmats[q], 1));
+            RM.RollFormer.addRecipe1(true, 16, 768, OP.plateDouble.mat(wallmats[q], 1), ST.make(corrugatedBlock, 4, q));
+            RM.RollFormer.addRecipe1(true, 16, 768, OP.plate.mat(wallmats[q], 1), ST.make(corrugatedBlock, 2, q));
+            RM.RollingMill.addRecipe1(true, 16, 768, ST.make(corrugatedBlock, 2, q), OP.plate.mat(wallmats[q], 1));
+            CR.shaped(ST.make(corrugatedBlock, 12, q), new Object[]{"PPP","PPP"," h ",'P', OP.plate.mat(wallmats[q], 1)});
         }
 
         OreDictMaterial[] upgradeDeskMats = new OreDictMaterial[]{MT.Bronze, MT.Co, MT.Au, MT.Obsidian, MT.Plastic, MT.Ag};
@@ -534,14 +518,14 @@ public final class QwerTech extends Abstract_Mod {
         for (int q = 1; q < WOOD.woodList.length; q++) {
             OreDictMaterial woodType = WOOD.woodList[q];
             if (woodType != null) {
-                machines.add(woodType.mNameLocal + " Countertop", "Countertops", 410 + q, 0, CuttingBoardTileEntity.class, 0, 16, wood, UT.NBT.make(NullBT, CS.NBT_MATERIAL, woodType, CS.NBT_INV_SIZE, 9, CS.NBT_TEXTURE, "qwertech:wood", CS.NBT_HARDNESS, 3.0F, CS.NBT_RESISTANCE, 3.0F, CS.NBT_COLOR, UT.Code.getRGBInt(woodType.fRGBaSolid)), "S", "P", 'S', "slabWood", 'P', "plank" + woodType.mNameInternal);
-                machines.add(woodType.mNameLocal + " Compost Bin", "Compost Bins", 715 + q, 0, CompostBinTileEntity.class, 0, 64, wood, UT.NBT.make(NullBT, CS.NBT_MATERIAL, woodType, CS.NBT_INV_SIZE, 12, CS.NBT_TEXTURE, "qwertech:wood", CS.NBT_HARDNESS, 3.0F, CS.NBT_RESISTANCE, 3.0F, CS.NBT_COLOR, UT.Code.getRGBInt(woodType.fRGBaSolid)), "SSS", " P ", 'S', "stickWood", 'P', "plank" + woodType.mNameInternal);
+                //machines.add(woodType.mNameLocal + " Countertop", "Countertops", 410 + q, 0, CuttingBoardTileEntity.class, 0, 16, wood, UT.NBT.make(NullBT, CS.NBT_MATERIAL, woodType, CS.NBT_INV_SIZE, 9, CS.NBT_TEXTURE, "qwertech:wood", CS.NBT_HARDNESS, 3.0F, CS.NBT_RESISTANCE, 3.0F, CS.NBT_COLOR, UT.Code.getRGBInt(woodType.fRGBaSolid)), "S", "P", 'S', "slabWood", 'P', "plank" + woodType.mNameInternal);
+                //machines.add(woodType.mNameLocal + " Compost Bin", "Compost Bins", 715 + q, 0, CompostBinTileEntity.class, 0, 64, wood, UT.NBT.make(NullBT, CS.NBT_MATERIAL, woodType, CS.NBT_INV_SIZE, 12, CS.NBT_TEXTURE, "qwertech:wood", CS.NBT_HARDNESS, 3.0F, CS.NBT_RESISTANCE, 3.0F, CS.NBT_COLOR, UT.Code.getRGBInt(woodType.fRGBaSolid)), "SSS", " P ", 'S', "stickWood", 'P', "plank" + woodType.mNameInternal);
                 machines.add(woodType.mNameLocal + " Chest", "Chests", 1510 + q, 0, ChestTileEntity.class, 0, 64, wood, UT.NBT.make(NullBT, CS.NBT_MATERIAL, woodType, CS.NBT_INV_SIZE, 27, CS.NBT_TEXTURE, "woodenchest", CS.NBT_HARDNESS, 3.0F, CS.NBT_RESISTANCE, 3.0F, CS.NBT_COLOR, UT.Code.getRGBInt(woodType.fRGBaSolid)));
                 CR.shapeless(ST.make(Blocks.chest, 1, 0), CR.DEF, new Object[]{machines.getItem(1510 + q)});
                 OM.reg(OD.craftingChest, machines.getItem(1510 + q));
                 OM.reg("craftingChestWood", machines.getItem(1510 + q));
                 //move these afterwards because they use the chest in the recipe
-                machines.add(woodType.mNameLocal + " Counterdrawers", "Counterdrawers", 980 + q, 0, CountertopShelvesTileEntity.class, 0, 16, wood, UT.NBT.make(NullBT, CS.NBT_MATERIAL, woodType, CS.NBT_INV_SIZE, 9 + 18, CS.NBT_TEXTURE, "qwertech:wood", CS.NBT_HARDNESS, 3.0F, CS.NBT_RESISTANCE, 3.0F, CS.NBT_COLOR, UT.Code.getRGBInt(woodType.fRGBaSolid)), "GCG", "PHP", 'C', machines.getItem(410 + q), 'P', "plank" + woodType.mNameInternal, 'H', machines.getItem(1510 + q), 'G', OD.itemGlue);
+                //machines.add(woodType.mNameLocal + " Counterdrawers", "Counterdrawers", 980 + q, 0, CountertopShelvesTileEntity.class, 0, 16, wood, UT.NBT.make(NullBT, CS.NBT_MATERIAL, woodType, CS.NBT_INV_SIZE, 9 + 18, CS.NBT_TEXTURE, "qwertech:wood", CS.NBT_HARDNESS, 3.0F, CS.NBT_RESISTANCE, 3.0F, CS.NBT_COLOR, UT.Code.getRGBInt(woodType.fRGBaSolid)), "GCG", "PHP", 'C', machines.getItem(410 + q), 'P', "plank" + woodType.mNameInternal, 'H', machines.getItem(1510 + q), 'G', OD.itemGlue);
                 CR.shaped(machines.getItem(980 + q), new Object[]{"GCG", "PHP", 'C', machines.getItem(410 + q), 'P', "plank" + woodType.mNameInternal, 'H', machines.getItem(1510 + q), 'G', OD.slimeball});
                 machines.add(woodType.mNameLocal + " Nesting Box", "Nesting Boxes", 1780 + q, 0, NestBoxTileEntity.class, 0, 16, wood, UT.NBT.make(NullBT, CS.NBT_MATERIAL, woodType, CS.NBT_INV_SIZE, 5, CS.NBT_TEXTURE, "qwertech:wood", CS.NBT_HARDNESS, 3.0F, CS.NBT_RESISTANCE, 3.0F, CS.NBT_COLOR, UT.Code.getRGBInt(woodType.fRGBaSolid)), "GGP", "PPP", 'P', "plank" + woodType.mNameInternal, 'G', IL.Grass.get(1));
             }

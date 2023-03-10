@@ -1,11 +1,14 @@
 package com.kbi.qwertech.items.stats;
 
+import com.kbi.qwertech.QwerTech;
 import gregapi.data.MT;
 import gregapi.data.OP;
 import gregapi.item.multiitem.MultiItemTool;
 import gregapi.oredict.OreDictPrefix;
 import gregapi.render.IIconContainer;
+import gregapi.render.TextureSet;
 import gregtech.items.tools.early.GT_Tool_Pickaxe;
+import gregtech.items.tools.early.GT_Tool_Shovel;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -20,17 +23,18 @@ import java.util.List;
 
 import static com.kbi.qwertech.items.stats.ToolsVector.raytraceFromEntity;
 
-public class QT_TOOL_MiningHammer extends GT_Tool_Pickaxe implements IAOE_Tool {
+public class QT_TOOL_Excavator extends GT_Tool_Shovel implements IAOE_Tool {
     public int breakRadius=1;
     public int breakDepth=0;
 
+    public int handle = TextureSet.addToAll(QwerTech.MODID, true, "shovel_handle");
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? MultiItemTool.getPrimaryMaterial(aStack, MT.Steel).mTextureSetsItems.get(OreDictPrefix.get("toolHeadMiningHammer").mIconIndexItem) : MultiItemTool.getSecondaryMaterial(aStack, MT.WOODS.Spruce).mTextureSetsItems.get(OP.stick.mIconIndexItem);
+        return aIsToolHead ? MultiItemTool.getPrimaryMaterial(aStack, MT.Steel).mTextureSetsItems.get(OreDictPrefix.get("toolHeadExcavator").mIconIndexItem) : MultiItemTool.getSecondaryMaterial(aStack, MT.WOODS.Spruce).mTextureSetsItems.get(OP.handle.mIconIndexItem);
     }
 
     @Override
     public float getMaxDurabilityMultiplier() {
-        return 1.8F;
+        return 1F;
     }
 
     @Override
