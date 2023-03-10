@@ -84,11 +84,11 @@ public class Upgrade_Lubricant extends UpgradeBase {
 				if (!world.isRemote)
 				{
 					player.attackEntityFrom(tripped, 4.0F);
-					player.setJumping(true);
-					if (player instanceof EntityPlayer)
-					{
-						((EntityPlayer) player).jump();
-					}
+//					player.setJumping(true);
+//					if (player instanceof EntityPlayer)
+//					{
+//						((EntityPlayer) player).jump();
+//					}
 				}
 			}
 		}

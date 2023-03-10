@@ -1,15 +1,12 @@
 package com.kbi.qwertech.loaders;
 
 import com.kbi.qwertech.QwerTech;
-import com.kbi.qwertech.api.armor.upgrades.IArmorUpgrade;
 import com.kbi.qwertech.api.data.QTI;
 import com.kbi.qwertech.api.data.QTMT;
 import com.kbi.qwertech.api.entities.Species;
 import com.kbi.qwertech.api.entities.Subtype;
-import com.kbi.qwertech.api.registry.ArmorUpgradeRegistry;
 import com.kbi.qwertech.api.registry.MobBloodRegistry;
 import com.kbi.qwertech.api.registry.MobSpeciesRegistry;
-import com.kbi.qwertech.armor.upgrades.Upgrade_SpringBoots;
 import com.kbi.qwertech.entities.EntityHelperFunctions;
 import com.kbi.qwertech.entities.genetic.EntityPhasianidae;
 import com.kbi.qwertech.entities.neutral.EntityTurkey;
@@ -798,8 +795,7 @@ public class RegisterItems {
 			}
 		};
 		
-		
-		new MultiItemRandom(QwerTech.MODID, "qwertech.armor.upgrades") {@Override public void addItems() {
+		RegisterArmor.qt_armor_upgrades = new MultiItemRandom(QwerTech.MODID, "qwertech.armor.upgrades") {@Override public void addItems() {
 			addItem(0, "Dual Steel Springs"					, "Boingy boingy boingy");
 			addItem(1, "Dual Stainless Steel Springs"		, "Boingy boingy boingy");
 			addItem(2, "Dual Brass Springs"					, "Boingy boingy boingy");
@@ -811,28 +807,6 @@ public class RegisterItems {
 			CR.shapeless(ST.make(this, 1, 2), CR.DEF, new Object[]{"springSmallBrass", "springSmallBrass"});
 			CR.shapeless(ST.make(this, 1, 3), CR.DEF, new Object[]{"springSmallAluminium", "springSmallAluminium"});
 			CR.shapeless(ST.make(this, 1, 4), CR.DEF, new Object[]{"springSmallThaumium", "springSmallThaumium"});
-			
-			IArmorUpgrade upgrade1 = new Upgrade_SpringBoots(MT.Steel);
-			upgrade1.setMaterialAmount(OP.springSmall.mAmount * 2);
-			upgrade1.addUpgradeStack(ST.make(this,1, 0));
-			IArmorUpgrade upgrade2 = new Upgrade_SpringBoots(MT.StainlessSteel);
-			upgrade2.setMaterialAmount(OP.springSmall.mAmount * 2);
-			upgrade2.addUpgradeStack(ST.make(this, 1, 1));
-			IArmorUpgrade upgrade3 = new Upgrade_SpringBoots(MT.Brass);
-			upgrade3.setMaterialAmount(OP.springSmall.mAmount * 2);
-			upgrade3.addUpgradeStack(ST.make(this,1, 2));
-			IArmorUpgrade upgrade4 = new Upgrade_SpringBoots(MT.Al);
-			upgrade4.setMaterialAmount(OP.springSmall.mAmount * 2);
-			upgrade4.addUpgradeStack(ST.make(this, 1, 3));
-			IArmorUpgrade upgrade5 = new Upgrade_SpringBoots(MT.Thaumium);
-			upgrade5.setMaterialAmount(OP.springSmall.mAmount * 2);
-			upgrade5.addUpgradeStack(ST.make(this, 1, 4));
-			
-			ArmorUpgradeRegistry.instance.addUpgrade(0, upgrade1);
-			ArmorUpgradeRegistry.instance.addUpgrade(1, upgrade2);
-			ArmorUpgradeRegistry.instance.addUpgrade(2, upgrade3);
-			ArmorUpgradeRegistry.instance.addUpgrade(3, upgrade4);
-			ArmorUpgradeRegistry.instance.addUpgrade(4, upgrade5);
 		}
 		};
 		

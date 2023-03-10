@@ -15,6 +15,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
+import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
@@ -199,6 +200,16 @@ public class UpgradeBase implements IArmorUpgrade {
 			ItemStack stack, DamageSource source, float amount,
 			LivingHurtEvent event) {
 		return false;
+	}
+
+	@Override
+	public void onEntityJump(EntityPlayer player, ItemStack stack) {
+
+	}
+
+	@Override
+	public void onEntityFall(EntityPlayer player, float distance, LivingFallEvent event, ItemStack stack) {
+
 	}
 
 	/**

@@ -1,5 +1,9 @@
 package com.kbi.qwertech;
 
+import codechicken.core.launch.CodeChickenCorePlugin;
+import com.kbi.qwertech.api.armor.IArmorStats;
+import com.kbi.qwertech.api.armor.MultiItemArmor;
+import com.kbi.qwertech.api.armor.upgrades.IArmorUpgrade;
 import com.kbi.qwertech.api.data.QTI;
 import com.kbi.qwertech.loaders.RegisterArmor;
 import com.kbi.qwertech.loaders.RegisterMobs;
@@ -14,6 +18,7 @@ import gregapi.item.multiitem.MultiItemTool;
 import gregapi.oredict.OreDictMaterial;
 import gregapi.oredict.OreDictPrefix;
 import gregapi.util.UT;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.AnvilUpdateEvent;
@@ -34,6 +39,8 @@ import net.minecraftforge.event.entity.minecart.MinecartUpdateEvent;
 import net.minecraftforge.event.entity.player.*;
 import net.minecraftforge.event.terraingen.*;
 import net.minecraftforge.event.world.*;
+
+import static com.kbi.qwertech.api.armor.MultiItemArmor.getUpgrades;
 
 
 /**
@@ -220,6 +227,56 @@ public class CommonProxy extends Abstract_Proxy {
                                     UT.Sounds.send(event.entityPlayer.worldObj, "qwertech:metal.slide", 0.5F, (CS.RNGSUS.nextInt(5) + 8) / 10F, (int) event.entityPlayer.posX, (int) event.entityPlayer.posY, (int) event.entityPlayer.posZ);
                                     event.entityPlayer.inventory.setInventorySlotContents(previousSlot, stack);
                                 }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    @SubscribeEvent // TODO armor Events
+    public void onEntityJump(LivingEvent.LivingJumpEvent event){
+        if(event.entityLiving instanceof EntityPlayer){
+            EntityPlayer player = (EntityPlayer) event.entityLiving;
+            for (int i = 0; i < 4; i++) {
+                ItemStack armorSlot = player.getCurrentArmor(i);
+                if (armorSlot != null && armorSlot.getItem() instanceof MultiItemArmor) {
+                    IArmorStats tStats = ((MultiItemArmor)armorSlot.getItem()).getArmorStats(armorSlot);
+                    if (tStats != null) {
+                        tStats.onEntityJump(player,player.getCurrentArmor(i));
+                        IArmorUpgrade[] upgrades = getUpgrades(player.getCurrentArmor(i));
+                        for (int q = 0; q < upgrades.length; q++)
+                        {
+                            IArmorUpgrade upgrade = upgrades[q];
+                            if (upgrade != null)
+                            {
+                                upgrade.onEntityJump(player,player.getCurrentArmor(i));
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public void onEntityFall(LivingFallEvent event){
+        if(event.entityLiving instanceof EntityPlayer){
+            EntityPlayer player = (EntityPlayer) event.entityLiving;
+            for (int i = 0; i < 4; i++) {
+                ItemStack armorSlot = player.getCurrentArmor(i);
+                if (armorSlot != null && armorSlot.getItem() instanceof MultiItemArmor) {
+                    IArmorStats tStats = ((MultiItemArmor)armorSlot.getItem()).getArmorStats(armorSlot);
+                    if (tStats != null) {
+                        tStats.onEntityFall(player,event.distance,event,player.getCurrentArmor(i));
+                        IArmorUpgrade[] upgrades = getUpgrades(player.getCurrentArmor(i));
+                        for (int q = 0; q < upgrades.length; q++)
+                        {
+                            IArmorUpgrade upgrade = upgrades[q];
+                            if (upgrade != null)
+                            {
+                                upgrade.onEntityFall(player,event.distance,event,player.getCurrentArmor(i));
                             }
                         }
                     }

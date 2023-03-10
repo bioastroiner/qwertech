@@ -11,6 +11,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
+import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 /**
@@ -289,6 +290,10 @@ public interface IArmorStats {
     boolean onProjectileDamage(World world, EntityLivingBase entity,
                                ItemStack stack, DamageSource source, float amount,
                                LivingHurtEvent event);
+
+	void onEntityJump(EntityPlayer player,ItemStack stack);
+
+	void onEntityFall(EntityPlayer player, float distance, LivingFallEvent event, ItemStack stack);
 
 	/**
 	 * Called when a new armor piece is registered
