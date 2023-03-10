@@ -12,6 +12,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregapi.data.*;
+import gregapi.item.multiitem.MultiItemRandom;
 import gregapi.oredict.OreDictMaterial;
 import gregapi.util.ST;
 import net.minecraft.client.model.ModelBiped;
@@ -39,6 +40,8 @@ public class RegisterArmor {
 	public static HashMap<String, Object> iconTitle = new HashMap();
 	private static List<String> types = new ArrayList();
 	public static RegisterArmor instance;
+
+	public static MultiItemRandom qt_armor_upgrades;
 	
 	public RegisterArmor()
 	{
@@ -113,6 +116,28 @@ public class RegisterArmor {
 	
 	public void addUpgrades()
 	{
+		IArmorUpgrade upgrade1 = new Upgrade_SpringBoots(MT.Steel);
+		upgrade1.setMaterialAmount(OP.springSmall.mAmount * 2);
+		upgrade1.addUpgradeStack(ST.make(qt_armor_upgrades,1, 0));
+		IArmorUpgrade upgrade2 = new Upgrade_SpringBoots(MT.StainlessSteel);
+		upgrade2.setMaterialAmount(OP.springSmall.mAmount * 2);
+		upgrade2.addUpgradeStack(ST.make(qt_armor_upgrades, 1, 1));
+		IArmorUpgrade upgrade3 = new Upgrade_SpringBoots(MT.Brass);
+		upgrade3.setMaterialAmount(OP.springSmall.mAmount * 2);
+		upgrade3.addUpgradeStack(ST.make(qt_armor_upgrades,1, 2));
+		IArmorUpgrade upgrade4 = new Upgrade_SpringBoots(MT.Al);
+		upgrade4.setMaterialAmount(OP.springSmall.mAmount * 2);
+		upgrade4.addUpgradeStack(ST.make(qt_armor_upgrades, 1, 3));
+		IArmorUpgrade upgrade5 = new Upgrade_SpringBoots(MT.Thaumium);
+		upgrade5.setMaterialAmount(OP.springSmall.mAmount * 2);
+		upgrade5.addUpgradeStack(ST.make(qt_armor_upgrades, 1, 4));
+
+		ArmorUpgradeRegistry.instance.addUpgrade(0, upgrade1);
+		ArmorUpgradeRegistry.instance.addUpgrade(1, upgrade2);
+		ArmorUpgradeRegistry.instance.addUpgrade(2, upgrade3);
+		ArmorUpgradeRegistry.instance.addUpgrade(3, upgrade4);
+		ArmorUpgradeRegistry.instance.addUpgrade(4, upgrade5);
+
 		IArmorUpgrade upgrade = new Upgrade_Lubricant();
 		upgrade.addUpgradeStack(IL.Bottle_Lubricant.get(1));
 		ArmorUpgradeRegistry.instance.addUpgrade(5, upgrade);
@@ -175,7 +200,12 @@ public class RegisterArmor {
 		ArmorUpgradeRegistry.instance.addUpgrade(16, upgrade);
 		
 		upgrade = new Upgrade_Magnifier();
-		upgrade.addUpgradeStack(ST.make(CS.ToolsGT.sMetaTool, 1, 62));
+		upgrade.addUpgradeStack(ST.make(CS.ToolsGT.sMetaTool, 1, 62));// Magnifying Glass
+		upgrade.addUpgradeStack(OP.lens.mat(MT.Glass,1));
+		upgrade.addUpgradeStack(OP.lens.mat(MT.Sapphire,1));
+		upgrade.addUpgradeStack(OP.lens.mat(MT.Ruby,1));
+		upgrade.addUpgradeStack(OP.lens.mat(MT.Diamond,1));
+		upgrade.addUpgradeStack(OP.lens.mat(MT.Amethyst,1));
 		ArmorUpgradeRegistry.instance.addUpgrade(17, upgrade);
 		
 		upgrade = new Upgrade_Feather();
