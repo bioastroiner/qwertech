@@ -28,7 +28,7 @@ public class QT_Tool_Excavator extends GT_Tool_Shovel implements IAOE_Tool {
 
     public int handle = TextureSet.addToAll(QwerTech.MODID, true, "shovel_handle");
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? MultiItemTool.getPrimaryMaterial(aStack, MT.Steel).mTextureSetsItems.get(OreDictPrefix.get("toolHeadExcavator").mIconIndexItem) : MultiItemTool.getSecondaryMaterial(aStack, MT.WOODS.Spruce).mTextureSetsItems.get(OP.handle.mIconIndexItem);
+        return aIsToolHead ? MultiItemTool.getPrimaryMaterial(aStack, MT.Steel).mTextureSetsItems.get(OreDictPrefix.get("toolHeadExcavator").mIconIndexItem) : MultiItemTool.getSecondaryMaterial(aStack, MT.WOODS.Spruce).mTextureSetsItems.get(OP.stick.mIconIndexItem);
     }
 
     @Override
