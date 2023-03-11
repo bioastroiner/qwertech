@@ -203,7 +203,9 @@ public class QT_TOOL_MiningHammer extends GT_Tool_Pickaxe implements IAOE_Tool {
                 }
             }
         }
-        return aDefault/speed_all;
+        float returnable = aDefault*5/speed_all;
+        if(returnable>aDefault) returnable=aDefault*1.5f;
+        return returnable;
     }
 
     public void breakBlock(World world, int x, int y, int z, int sideHit, EntityPlayer playerEntity, int refX, int refY, int refZ) {

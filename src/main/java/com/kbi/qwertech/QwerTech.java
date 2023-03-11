@@ -347,8 +347,8 @@ public final class QwerTech extends Abstract_Mod {
         new PrefixItem(MOD_DATA,"qwetech.tools.pickaxe", sturdyPickaxeHead);
 
         final OreDictPrefix sturdyAxeHead = OreDictPrefix.createPrefix("toolHeadSturdyAxe"); // This newly created OreDict Prefix is named "exampleprefix", so an Aluminium Item with this Prefix would be named "exampleprefixAluminium" in the OreDict.
-        sturdyAxeHead.setCategoryName("Sturdy Axe Heads"); // That is what the Creative Tab of it would be named.
-        sturdyAxeHead.setLocalItemName("", " Sturdy Axe Head"); // Generic Items will follow this naming Guideline, so for example "Small Aluminium Example" for an Aluminium Item with that Prefix.
+        sturdyAxeHead.setCategoryName("Lumberaxe Heads"); // That is what the Creative Tab of it would be named.
+        sturdyAxeHead.setLocalItemName("", " Lumber Axe Head"); // Generic Items will follow this naming Guideline, so for example "Small Aluminium Example" for an Aluminium Item with that Prefix.
         sturdyAxeHead.setCondition(new And(OP.toolHeadPickaxe,typemin(2))); // The Condition under which Items of this Prefix should generate in general. In this case TRUE to have ALL the Items.
         sturdyAxeHead.add(UNIFICATABLE, BURNABLE, RECYCLABLE, SCANNABLE, TOOL_HEAD, NEEDS_HANDLE).setStacksize(16).aspects(TC.INSTRUMENTUM, 2, TC.TELUM, 1);// Items of this can be recycled for Resources.
         sturdyAxeHead.setMaterialStats(gregapi.data.CS.U * 3); // Any Item of this example Prefix has the value of 1 Material Unit (U), this is exactly equal to one Ingot/Dust/Gem.
@@ -406,7 +406,7 @@ public final class QwerTech extends Abstract_Mod {
             qwerTool.addTool(12, "Bat", "Underwood Light Switch", new QT_Tool_Bat().setMaterialAmount(OP.stick.mAmount), TC.stack(TC.TELUM, 2), "toolBat");
             //OP.stickLong.addListener(new OreProcessing_QTTool(12, ConfigCategories.Recipes.gregtechtools + "." + "Bat", false, false, 0L, 0L, MT.Empty, new String[][]{{"yL"}, {"Ly"}}, null, null, null, null, null, null, TD.Atomic.ANTIMATTER.NOT));
             GameRegistry.addRecipe(new AdvancedCraftingTool(qwerTool, 12, OP.stickLong, MT.WoodTreated));
-            qwerTool.addTool(14, "Sturdy Axe", "Fells whole trees in a single chop", new QT_Tool_SturdyAxe().setMaterialAmount(OP.toolHeadAxe.mAmount), "craftingToolAxe", TC.stack(TC.INSTRUMENTUM, 2), TC.stack(TC.ARBOR, 1), TC.stack(TC.MACHINA, 1), "axe");
+            qwerTool.addTool(14, "LumberAxe", "Jack Jack", new QT_Tool_Lumberaxe().setMaterialAmount(OP.toolHeadAxe.mAmount), "craftingToolAxe", TC.stack(TC.INSTRUMENTUM, 2), TC.stack(TC.ARBOR, 1), TC.stack(TC.MACHINA, 1), "axe");
             GameRegistry.addRecipe(new AdvancedCraftingTool(qwerTool, 14, sturdyAxeHead,MT.Steel));
             qwerTool.addTool(16, "Sturdy Pickaxe", "Mines a simple 1x2 tunnel, Pretty safe won't dig the tunnel if the block isn't right in front of you", new QT_Tool_SturdyPickaxe().setMaterialAmount(OP.toolHeadPickaxe.mAmount), "craftingToolPickaxe", TC.stack(TC.INSTRUMENTUM, 2), TC.stack(TC.PERDITIO, 1), "pickaxe");
             GameRegistry.addRecipe(new AdvancedCraftingTool(qwerTool, 16, sturdyPickaxeHead,MT.Steel));
