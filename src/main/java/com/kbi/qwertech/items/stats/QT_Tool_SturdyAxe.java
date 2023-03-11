@@ -3,6 +3,7 @@ package com.kbi.qwertech.items.stats;
 import com.google.common.collect.Lists;
 import com.kbi.qwertech.QwerTech;
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.eventhandler.Event;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import gnu.trove.set.hash.THashSet;
@@ -135,7 +136,12 @@ public class QT_Tool_SturdyAxe extends GT_Tool_Axe implements IAOE_Tool {
 		return false;
 	}
 
-	public void breakBlock(World world, int x, int y, int z, int sideHit, EntityPlayer playerEntity, int refX, int refY, int refZ) {
+    @Override
+    public void onLeftClick(EntityPlayer player, World world, int face, int x, int y, int z, Event.Result useBlock, Event.Result useItem) {
+
+    }
+
+    public void breakBlock(World world, int x, int y, int z, int sideHit, EntityPlayer playerEntity, int refX, int refY, int refZ) {
 		if (world.isAirBlock(x, y, z)) return;
 
 		if (!(playerEntity instanceof EntityPlayerMP)) return;

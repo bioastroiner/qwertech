@@ -1,5 +1,6 @@
 package com.kbi.qwertech.items.stats;
 
+import cpw.mods.fml.common.eventhandler.Event;
 import gregapi.data.MT;
 import gregapi.data.OP;
 import gregapi.item.multiitem.MultiItemTool;
@@ -11,6 +12,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.server.S23PacketBlockChange;
+import net.minecraft.network.play.server.S25PacketBlockBreakAnim;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
@@ -92,6 +94,57 @@ public class QT_TOOL_MiningHammer extends GT_Tool_Pickaxe implements IAOE_Tool {
             }
         }
         return false;
+    }
+
+    @Override // TODO: Implement Block Bricking Animation Maybe...
+    public void onLeftClick(EntityPlayer player, World world, int face, int X, int Y, int Z, Event.Result useBlock, Event.Result useItem) {
+//
+//        if(player.isSneaking()) return;
+//        // IMPORTED FROM IMPACT IT WORKED BETTER THAN MINE!!
+//        Block block = player.worldObj.getBlock(X, Y, Z);
+//        int meta = player.worldObj.getBlockMetadata(X, Y, Z);
+//
+////        if (block == null || !itemstack.hasTagCompound())
+////            return;
+//
+//        MovingObjectPosition mop = raytraceFromEntity(player.worldObj, player, false, 4.5d);
+//        if (mop == null)
+//            return;
+//        int sideHit = mop.sideHit;
+//        //int sideHit = Minecraft.getMinecraft().objectMouseOver.sideHit;
+//
+//        // we successfully destroyed a block. time to do AOE!
+//        int xRange = breakRadius;
+//        int yRange = breakRadius;
+//        int zRange = breakDepth;
+//        switch (sideHit) {
+//            case 0:
+//            case 1:
+//                yRange = breakDepth;
+//                zRange = breakRadius;
+//                break;
+//            case 2:
+//            case 3:
+//                xRange = breakRadius;
+//                zRange = breakDepth;
+//                break;
+//            case 4:
+//            case 5:
+//                xRange = breakDepth;
+//                zRange = breakRadius;
+//                break;
+//        }
+//        for (int xPos = X - xRange; xPos <= X + xRange; xPos++) {
+//            for (int yPos = Y - yRange; yPos <= Y + yRange; yPos++) {
+//                for (int zPos = Z - zRange; zPos <= Z + zRange; zPos++) {
+//                    if (xPos == X && yPos == Y && zPos == Z) continue;
+//                    if(!world.isRemote)
+//                        ((EntityPlayerMP) player).playerNetServerHandler.sendPacket(new S25PacketBlockBreakAnim(xPos, yPos, zPos, player.getEntityId(), /*(int) player.getBreakSpeed(block,true,meta,x,y,z)*/1));
+//                    //breakBlock(player.worldObj, xPos, yPos, zPos, sideHit, player, X, Y, Z);
+//                }
+//            }
+//        }
+//        return;
     }
 
     @Override

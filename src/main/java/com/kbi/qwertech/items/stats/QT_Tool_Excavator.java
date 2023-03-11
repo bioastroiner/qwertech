@@ -1,6 +1,7 @@
 package com.kbi.qwertech.items.stats;
 
 import com.kbi.qwertech.QwerTech;
+import cpw.mods.fml.common.eventhandler.Event;
 import gregapi.data.MT;
 import gregapi.data.OP;
 import gregapi.item.multiitem.MultiItemTool;
@@ -95,6 +96,11 @@ public class QT_Tool_Excavator extends GT_Tool_Shovel implements IAOE_Tool {
             }
         }
         return false;
+    }
+
+    @Override
+    public void onLeftClick(EntityPlayer player, World world, int face, int x, int y, int z, Event.Result useBlock, Event.Result useItem) {
+
     }
 
     @Override

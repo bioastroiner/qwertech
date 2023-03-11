@@ -5,6 +5,7 @@ import com.kbi.qwertech.api.armor.IArmorStats;
 import com.kbi.qwertech.api.armor.MultiItemArmor;
 import com.kbi.qwertech.api.armor.upgrades.IArmorUpgrade;
 import com.kbi.qwertech.api.data.QTI;
+import com.kbi.qwertech.items.stats.IAOE_Tool;
 import com.kbi.qwertech.loaders.RegisterArmor;
 import com.kbi.qwertech.loaders.RegisterMobs;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -39,6 +40,7 @@ import net.minecraftforge.event.entity.minecart.MinecartUpdateEvent;
 import net.minecraftforge.event.entity.player.*;
 import net.minecraftforge.event.terraingen.*;
 import net.minecraftforge.event.world.*;
+import vazkii.botania.api.mana.ManaItemHandler;
 
 import static com.kbi.qwertech.api.armor.MultiItemArmor.getUpgrades;
 
@@ -283,5 +285,17 @@ public class CommonProxy extends Abstract_Proxy {
                 }
             }
         }
+    }
+
+    @SubscribeEvent
+    public void onLeftClick(PlayerInteractEvent event) {
+        if (event.action == PlayerInteractEvent.Action.LEFT_CLICK_BLOCK) {
+            ItemStack stack = event.entityPlayer.getCurrentEquippedItem();
+            if (stack != null && stack.getItem() instanceof MultiItemTool && ((MultiItemTool) stack.getItem()).getToolStats(stack) instanceof IAOE_Tool) {
+                IAOE_Tool stat = (IAOE_Tool) ((MultiItemTool) stack.getItem()).getToolStats(stack);
+                stat.onLeftClick(event.entityPlayer,event.world,event.face,event.x,event.y,event.z,event.useBlock,event.useItem);
+            }
+        }
+
     }
 }
