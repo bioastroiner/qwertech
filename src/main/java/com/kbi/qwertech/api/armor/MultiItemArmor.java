@@ -80,7 +80,7 @@ import static gregapi.data.CS.*;
 public class MultiItemArmor extends ItemArmor implements IItemProjectile, IItemUpdatable, IItemGT, IItemNoGTOverride, IItemEnergy, thaumcraft.api.IGoggles, thaumcraft.api.nodes.IRevealer, thaumcraft.api.IVisDiscountGear {
 
 	// Armor Materials that show up in NEI
-	public static final OreDictMaterial[] example_materials = new OreDictMaterial[]{MT.CosmicNeutronium};
+	public static final OreDictMaterial[] example_materials = new OreDictMaterial[]{MT.DraconiumAwakened};
 	public boolean showIngamePopups(ItemStack itemStack, EntityLivingBase entityLivingBase) {
 		IArmorUpgrade[] upgrades = getUpgrades(itemStack);
 		for (int q = 0; q < upgrades.length; q++)
