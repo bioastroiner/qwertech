@@ -5,6 +5,7 @@ import gregapi.data.MT;
 import gregapi.item.multiitem.MultiItemTool;
 import gregapi.item.multiitem.tools.ToolStats;
 import gregapi.render.IIconContainer;
+import gregapi.render.TextureSet;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
@@ -118,11 +119,12 @@ public class QT_Tool_Knuckles
   {
 		return Math.min(5, aDefault * 2);
   }
-  
+
+  public static final int knucklesTexID = TextureSet.addToAll(QwerTech.MODID, true, "knuckles");
 	@Override
   public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack)
   {
-    return MultiItemTool.getPrimaryMaterial(aStack, MT.Steel).mTextureSetsItems.get(QwerTech.knucklesTexID);
+    return MultiItemTool.getPrimaryMaterial(aStack, MT.Steel).mTextureSetsItems.get(knucklesTexID);
   }
   
 	@Override

@@ -1,6 +1,5 @@
 package com.kbi.qwertech.items.stats;
 
-import com.kbi.qwertech.entities.EntityHelperFunctions;
 import cpw.mods.fml.common.eventhandler.Event;
 import gregapi.data.MT;
 import gregapi.data.OP;
@@ -13,13 +12,10 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.server.S23PacketBlockChange;
-import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.event.world.BlockEvent;
-
-import java.util.List;
 
 import static com.kbi.qwertech.items.stats.ToolsVector.raytraceFromEntity;
 

@@ -1,13 +1,13 @@
 package com.kbi.qwertech.items.stats;
 
 import com.kbi.qwertech.QwerTech;
-import com.kbi.qwertech.items.behavior.Behavior_Scrape;
 import com.kbi.qwertech.items.behavior.Behavior_Swing;
 import gregapi.data.MT;
 import gregapi.item.multiitem.MultiItemTool;
 import gregapi.item.multiitem.tools.ToolStats;
 import gregapi.oredict.OreDictMaterial;
 import gregapi.render.IIconContainer;
+import gregapi.render.TextureSet;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.enchantment.Enchantment;
@@ -93,7 +93,6 @@ public class QT_Tool_Bat extends ToolStats {
 		@Override
 	  public void onStatsAddedToTool(MultiItemTool aItem, int aID)
 	  {
-		  aItem.addItemBehavior(aID, new Behavior_Scrape(1F));
 		  aItem.addItemBehavior(aID, new Behavior_Swing(2));
 	  }
 		
@@ -110,16 +109,18 @@ public class QT_Tool_Bat extends ToolStats {
 		public int[] getEnchantmentLevels(ItemStack aStack) {
 			return new int[]{MultiItemTool.getPrimaryMaterial(aStack).mToolQuality - 2};
 		}
-	
+
+		public static final int batTexID = TextureSet.addToAll(QwerTech.MODID, true, "bat");
+		public static final int batSpikeTexID = TextureSet.addToAll(QwerTech.MODID, true, "batSpike");
 		@Override
 		  public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack)
 		  {
 			OreDictMaterial secondary = MultiItemTool.getSecondaryMaterial(aStack, MT.NULL);
 			if (secondary == MT.Empty || secondary == MT.Butter || secondary == MT.NULL)
 			{
-				return MultiItemTool.getPrimaryMaterial(aStack, MT.Wood).mTextureSetsItems.get(QwerTech.batTexID);
+				return MultiItemTool.getPrimaryMaterial(aStack, MT.Wood).mTextureSetsItems.get(batTexID);
 			}
-		    return aIsToolHead ? MultiItemTool.getSecondaryMaterial(aStack, MT.Steel).mTextureSetsItems.get(QwerTech.batSpikeTexID) : MultiItemTool.getPrimaryMaterial(aStack, MT.Wood).mTextureSetsItems.get(QwerTech.batTexID);
+		    return aIsToolHead ? MultiItemTool.getSecondaryMaterial(aStack, MT.Steel).mTextureSetsItems.get(batSpikeTexID) : MultiItemTool.getPrimaryMaterial(aStack, MT.Wood).mTextureSetsItems.get(batTexID);
 		  }
 		  
 			@Override

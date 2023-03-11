@@ -1,6 +1,5 @@
 package com.kbi.qwertech.loaders;
 
-import com.kbi.qwertech.api.data.QTConfigs;
 import com.kbi.qwertech.api.data.QTI;
 import gregapi.data.CS;
 import gregapi.data.MT;
@@ -47,7 +46,6 @@ public class RegisterLoot {
 	
 	public static void init()
 	{
-		if (!(QTConfigs.addDungeonTools)) return;
 		OreDictPrefix star = OreDictPrefix.get("shuriken");
 		OreDictMaterial[] mats = new OreDictMaterial[]{MT.Steel, MT.Bronze, MT.BlackSteel, MT.BlackBronze, MT.WroughtIron, MT.Au, MT.Ag};
 		MultiItemTool gt = CS.ToolsGT.sMetaTool;

@@ -2,7 +2,6 @@ package com.kbi.qwertech.client.render;
 
 import com.kbi.qwertech.api.armor.IArmorStats;
 import com.kbi.qwertech.api.armor.MultiItemArmor;
-import com.kbi.qwertech.api.data.QTConfigs;
 import com.kbi.qwertech.client.render.gui.GuiSplat;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import gregapi.oredict.OreDictMaterial;
@@ -21,6 +20,33 @@ import org.lwjgl.opengl.GL11;
 import java.util.HashMap;
 
 public class QT_GUIHandler {
+
+	/*
+    I:defaultType=0
+    I:effectOutline=0
+    B:useDefault=true
+    I:effectAnchorX=1
+    I:effectAnchorY=2
+    I:effectCenterX=0
+    I:effectCenterY=0
+    B:effectHorizontal=true
+    I:effectOffsetX=-89
+    I:effectOffsetY=-46
+    I:effectRowLimit=0
+*/
+
+public static boolean effectUseDefault=true;
+public static int effectDefaultInUse=1;
+public static int effectCenterY=0;
+public static int effectCenterX=0;
+public static int effectRowLimit=0;
+public static int effectAnchorX=-89;
+public static int effectOffsetX=1;
+public static int effectAnchorY=2;
+public static int effectOffsetY=-46;
+// 1 = squere, 2 = circle
+public static int effectBackgroundType=1;
+public static boolean effectHorizontal=true;
 	public static int[] splats;
 	public static short[][] colors;
 	public static ResourceLocation backgroundIcons = new ResourceLocation("qwertech:textures/gui/effect/backgrounds.png");
@@ -165,7 +191,7 @@ public class QT_GUIHandler {
 	public void onRendertext(RenderGameOverlayEvent.Text event)
 	{
 		Minecraft minecraft = Minecraft.getMinecraft();
-		if (QTConfigs.enableArmor && event.type == ElementType.TEXT)
+		if (event.type == ElementType.TEXT)
 		{
 			//event.setCanceled(true);
 			GL11.glEnable(GL11.GL_ALPHA_TEST);
@@ -214,9 +240,9 @@ public class QT_GUIHandler {
                 extras = extras + 1;
             }
 
-			if (QTConfigs.effectUseDefault)
+			if (effectUseDefault)
             {
-                switch (QTConfigs.effectDefaultInUse)
+                switch (effectDefaultInUse)
                 {
                     case 5:
                         x = (event.resolution.getScaledWidth()) - 2;
@@ -275,34 +301,34 @@ public class QT_GUIHandler {
                         break;
                 }
             } else {
-			    renderDown = QTConfigs.effectCenterY;
-			    renderRight = QTConfigs.effectCenterX;
-			    perRow = QTConfigs.effectRowLimit;
-			    isHorizontal = QTConfigs.effectHorizontal;
-			    switch (QTConfigs.effectAnchorX)
+			    renderDown = effectCenterY;
+			    renderRight = effectCenterX;
+			    perRow = effectRowLimit;
+			    isHorizontal = effectHorizontal;
+			    switch (effectAnchorX)
                 {
                     case 0:
-                        x = QTConfigs.effectOffsetX;
+                        x = effectOffsetX;
                         break;
                     case 1:
-                        x = (event.resolution.getScaledWidth() / 2) + QTConfigs.effectOffsetX;
+                        x = (event.resolution.getScaledWidth() / 2) + effectOffsetX;
                         break;
                     case 2:
                     default:
-                        x = event.resolution.getScaledWidth() + QTConfigs.effectOffsetX;
+                        x = event.resolution.getScaledWidth() + effectOffsetX;
                         break;
                 }
-                switch (QTConfigs.effectAnchorY)
+                switch (effectAnchorY)
                 {
                     case 0:
-                        y = QTConfigs.effectOffsetY;
+                        y = effectOffsetY;
                         break;
                     case 1:
-                        y = (event.resolution.getScaledHeight() / 2) + QTConfigs.effectOffsetY;
+                        y = (event.resolution.getScaledHeight() / 2) + effectOffsetY;
                         break;
                     case 2:
                     default:
-                        y = event.resolution.getScaledHeight() + QTConfigs.effectOffsetY;
+                        y = event.resolution.getScaledHeight() + effectOffsetY;
                         heartcheck = true;
                         break;
                 }
@@ -317,9 +343,9 @@ public class QT_GUIHandler {
 			
 			GL11.glColor4f(1, 1, 1, 1);
 
-			if (QTConfigs.effectBackgroundType != -1) {
+			if (effectBackgroundType != -1) {
 			    String type = "rounded";
-			    switch(QTConfigs.effectBackgroundType)
+			    switch(effectBackgroundType)
                 {
                     case 1:
                         type = "square";
@@ -426,7 +452,7 @@ public class QT_GUIHandler {
 	@SubscribeEvent
 	public void onRendergui(RenderGameOverlayEvent.Pre event)
 	{
-		if (QTConfigs.enableArmor && event.type == ElementType.ARMOR)
+		if (event.type == ElementType.ARMOR)
 		{
 			event.setCanceled(true);
 		}

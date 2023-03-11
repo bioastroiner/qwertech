@@ -1,13 +1,11 @@
 package com.kbi.qwertech;
 
-import codechicken.core.launch.CodeChickenCorePlugin;
 import com.kbi.qwertech.api.armor.IArmorStats;
 import com.kbi.qwertech.api.armor.MultiItemArmor;
 import com.kbi.qwertech.api.armor.upgrades.IArmorUpgrade;
 import com.kbi.qwertech.api.data.QTI;
 import com.kbi.qwertech.items.stats.IAOE_Tool;
 import com.kbi.qwertech.loaders.RegisterArmor;
-import com.kbi.qwertech.loaders.RegisterMobs;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.event.*;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -22,25 +20,9 @@ import gregapi.util.UT;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.AnvilUpdateEvent;
-import net.minecraftforge.event.CommandEvent;
-import net.minecraftforge.event.ServerChatEvent;
-import net.minecraftforge.event.brewing.PotionBrewEvent;
-import net.minecraftforge.event.entity.EntityEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
-import net.minecraftforge.event.entity.EntityStruckByLightningEvent;
-import net.minecraftforge.event.entity.PlaySoundAtEntityEvent;
-import net.minecraftforge.event.entity.item.ItemEvent;
-import net.minecraftforge.event.entity.item.ItemExpireEvent;
-import net.minecraftforge.event.entity.item.ItemTossEvent;
 import net.minecraftforge.event.entity.living.*;
-import net.minecraftforge.event.entity.minecart.MinecartCollisionEvent;
-import net.minecraftforge.event.entity.minecart.MinecartEvent;
-import net.minecraftforge.event.entity.minecart.MinecartUpdateEvent;
 import net.minecraftforge.event.entity.player.*;
-import net.minecraftforge.event.terraingen.*;
-import net.minecraftforge.event.world.*;
-import vazkii.botania.api.mana.ManaItemHandler;
 
 import static com.kbi.qwertech.api.armor.MultiItemArmor.getUpgrades;
 
@@ -99,41 +81,6 @@ public class CommonProxy extends Abstract_Proxy {
 
     @Override
     public void onProxyAfterServerStopped(Abstract_Mod aMod, FMLServerStoppedEvent aEvent) {/**/}
-
-    @SubscribeEvent
-    public void entityJoinWorld(EntityJoinWorldEvent event) {
-        RegisterMobs.instance.onAdded(event);
-    }
-
-    @SubscribeEvent
-    public void livingDrops(LivingDropsEvent event) {
-        RegisterMobs.instance.onDrop(event);
-    }
-
-    @SubscribeEvent
-    public void livingUpdated(LivingEvent.LivingUpdateEvent event) {
-        RegisterArmor.instance.updateEntityArmor(event);
-    }
-
-    @SubscribeEvent
-    public void livingHurt(LivingHurtEvent event) {
-        RegisterMobs.instance.onLivingHurt(event);
-    }
-
-    @SubscribeEvent
-    public void checkSpawn(LivingSpawnEvent.CheckSpawn event) {
-        RegisterMobs.instance.checkSpawn(event);
-    }
-
-    @SubscribeEvent
-    public void specialSpawn(LivingSpawnEvent.SpecialSpawn event) {
-        RegisterMobs.instance.specialSpawn(event);
-    }
-
-    @SubscribeEvent
-    public void onPlayerEntityInteraction(EntityInteractEvent event) {
-        RegisterMobs.instance.onInteracted(event);
-    }
 
     @SubscribeEvent
     public void onPlayerWorldInteraction(PlayerInteractEvent event) {

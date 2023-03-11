@@ -1,7 +1,5 @@
 package com.kbi.qwertech.entities.projectile;
 
-import com.kbi.qwertech.QwerTech;
-import com.kbi.qwertech.api.data.QTConfigs;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregapi.data.MT;
@@ -231,7 +229,7 @@ public class EntityRock extends EntityThrowable {
 						mop.entityHit.setFire(2);
 					}
 					
-					if (this.getMaterial().contains(TD.Properties.EXPLOSIVE) && QTConfigs.slingshotExplode && (new Random().nextFloat() > 0.5 || this.isBurning()))
+					if (this.getMaterial().contains(TD.Properties.EXPLOSIVE) && (new Random().nextFloat() > 0.5 || this.isBurning()))
 					{
 						this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, 2, true);
 						this.setDead();
@@ -240,7 +238,7 @@ public class EntityRock extends EntityThrowable {
 				
 				bounce = true; //bounce off mob
 			} else if (mop.typeOfHit == MovingObjectType.BLOCK) {
-				if (this.worldObj.getBlock(mop.blockX, mop.blockY, mop.blockZ).getMaterial() == Material.glass && QTConfigs.slingshotGlass && (!(this.getThrower() instanceof EntityPlayerMP) || this.worldObj.canMineBlock((EntityPlayer)this.getThrower(), mop.blockX, mop.blockY, mop.blockZ))) {
+				if (this.worldObj.getBlock(mop.blockX, mop.blockY, mop.blockZ).getMaterial() == Material.glass && (!(this.getThrower() instanceof EntityPlayerMP) || this.worldObj.canMineBlock((EntityPlayer)this.getThrower(), mop.blockX, mop.blockY, mop.blockZ))) {
 					double speed = Math.abs(this.motionX) + Math.abs(this.motionY) + Math.abs(this.motionZ);
 					Block block = this.worldObj.getBlock(mop.blockX, mop.blockY, mop.blockZ);
 					if (!(this.worldObj.isRemote) && ((block.getBlockBoundsMaxX() == 1 && block.getBlockBoundsMaxZ() == 1) && speed > 2) || speed > 1) {
@@ -296,7 +294,7 @@ public class EntityRock extends EntityThrowable {
 				}
 				if (!this.worldObj.isRemote && ((Math.abs(this.motionX) + Math.abs(this.motionY) + Math.abs(this.motionZ)) < 0.1)) {
 					Random rand = new Random();
-					if (this.getMaterial().contains(TD.Properties.EXPLOSIVE) && QTConfigs.slingshotExplode && rand.nextFloat() > 0.5)
+					if (this.getMaterial().contains(TD.Properties.EXPLOSIVE) && rand.nextFloat() > 0.5)
 					{
 						this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, 2, true);
 						this.setDead();

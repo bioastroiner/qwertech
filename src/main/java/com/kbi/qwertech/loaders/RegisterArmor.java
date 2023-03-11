@@ -1,5 +1,7 @@
 package com.kbi.qwertech.loaders;
 
+import codechicken.nei.recipe.CatalystInfo;
+import codechicken.nei.recipe.RecipeCatalysts;
 import com.kbi.qwertech.api.armor.IArmorStats;
 import com.kbi.qwertech.api.armor.MultiItemArmor;
 import com.kbi.qwertech.api.armor.upgrades.IArmorUpgrade;
@@ -229,11 +231,11 @@ public class RegisterArmor {
 		upgrade = new Upgrade_Feather();
 		upgrade.addUpgradeStack(ST.make(Items.feather, 1, 0));
 		ArmorUpgradeRegistry.instance.addUpgrade(18, upgrade);
-		
-		upgrade = new Upgrade_Feather();
-		upgrade.addUpgradeStack(QTI.turkeyFeather.get(1));
-		((Upgrade_Feather)upgrade).setRGBa(MT.WoodPolished.mRGBaSolid);
-		ArmorUpgradeRegistry.instance.addUpgrade(19, upgrade);
+
+//		upgrade = new Upgrade_Feather();
+//		upgrade.addUpgradeStack(QTI.turkeyFeather.get(1));
+//		((Upgrade_Feather)upgrade).setRGBa(MT.WoodPolished.mRGBaSolid);
+//		ArmorUpgradeRegistry.instance.addUpgrade(19, upgrade);
 
 		upgrade = new Upgrade_ThaumicGoggles();
 		Item thaumicGoggles = GameRegistry.findItem(MD.TC.mName, "ItemGoggles");
@@ -241,7 +243,7 @@ public class RegisterArmor {
 		{
 			upgrade.addUpgradeStack(ST.make(thaumicGoggles, 1, CS.W));
 		}
-		ArmorUpgradeRegistry.instance.addUpgrade(20, upgrade);
+		ArmorUpgradeRegistry.instance.addUpgrade(19, upgrade);
 
 		//for (OreDictMaterial mat:MultiItemArmor.example_materials)
 		for (OreDictMaterial mat:new OreDictMaterial[]{MT.NULL})
@@ -261,6 +263,7 @@ public class RegisterArmor {
 		for (int i = 0; i < 6; i++) {
 			// Upgrade Desks
 			RM_UPGRADE.mRecipeMachineList.add(ST.make(1027,1,401+i).setStackDisplayName(GOLD+LH.Chat.ITALIC+"Right Click with Armor Then Apply an Upgrade"));
+			//RecipeCatalysts.addRecipeCatalyst(RM_UPGRADE.mNameNEI,new CatalystInfo(ST.make(1027,1,401+i),i));
 		}
 	}
 	

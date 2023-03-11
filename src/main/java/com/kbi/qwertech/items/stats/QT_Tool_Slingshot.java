@@ -6,6 +6,7 @@ import gregapi.data.MT;
 import gregapi.item.multiitem.MultiItemTool;
 import gregapi.item.multiitem.tools.ToolStats;
 import gregapi.render.IIconContainer;
+import gregapi.render.TextureSet;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 
@@ -28,11 +29,12 @@ public class QT_Tool_Slingshot extends ToolStats {
 	  {
 		  aItem.addItemBehavior(aID, new Behavior_Slingshot("random.bow", 50));
 	  }
-	
+	public static final int slingshotTexID = TextureSet.addToAll(QwerTech.MODID, true, "slingshot");
+	public static final int stringshotTexID = TextureSet.addToAll(QwerTech.MODID, true, "slingstring");
 	@Override
 	  public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack)
 	  {
-	    return aIsToolHead ? MultiItemTool.getPrimaryMaterial(aStack, MT.Steel).mTextureSetsItems.get(QwerTech.slingshotTexID) : MultiItemTool.getPrimaryMaterial(aStack, MT.Steel).mTextureSetsItems.get(QwerTech.stringshotTexID);
+	    return aIsToolHead ? MultiItemTool.getPrimaryMaterial(aStack, MT.Steel).mTextureSetsItems.get(slingshotTexID) : MultiItemTool.getPrimaryMaterial(aStack, MT.Steel).mTextureSetsItems.get(stringshotTexID);
 	  }
 	  
 		@Override

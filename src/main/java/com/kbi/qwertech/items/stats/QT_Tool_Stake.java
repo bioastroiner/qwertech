@@ -5,6 +5,7 @@ import gregapi.data.MT;
 import gregapi.item.multiitem.MultiItemTool;
 import gregapi.item.multiitem.tools.ToolStats;
 import gregapi.render.IIconContainer;
+import gregapi.render.TextureSet;
 import gregapi.util.UT;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -92,11 +93,12 @@ public class QT_Tool_Stake extends ToolStats {
 	  {
 		  //aItem.addItemBehavior(aID, new Behavior_Slingshot("", 50));
 	  }
-	
+
+	  public static final int stakeTexID = TextureSet.addToAll(QwerTech.MODID, true, "stake");
 		@Override
 	  public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack)
 	  {
-	    return MultiItemTool.getPrimaryMaterial(aStack, MT.Steel).mTextureSetsItems.get(QwerTech.stakeTexID);
+	    return MultiItemTool.getPrimaryMaterial(aStack, MT.Steel).mTextureSetsItems.get(stakeTexID);
 	  }
 	  
 		@Override
