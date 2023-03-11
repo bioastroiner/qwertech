@@ -14,6 +14,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregapi.data.*;
 import gregapi.item.multiitem.MultiItemRandom;
 import gregapi.oredict.OreDictMaterial;
+import gregapi.recipes.Recipe;
 import gregapi.util.ST;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.entity.RenderManager;
@@ -34,12 +35,27 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import static gregapi.data.CS.*;
+import static gregapi.data.CS.F;
+import static gregapi.data.LH.Chat.GOLD;
+import static gregapi.data.LH.Chat.GREEN;
+
 public class RegisterArmor {
 	
 	private static MultiItemArmor armor;
 	public static HashMap<String, Object> iconTitle = new HashMap();
 	private static List<String> types = new ArrayList();
 	public static RegisterArmor instance;
+
+	public static final Recipe.RecipeMap RM_UPGRADE= new Recipe.RecipeMap(null,
+			"qt.recipe.upgrade",
+			"Upgrade Your Armors",
+			null, 0,
+			1,
+			RES_PATH_GUI+"machines/Boxinator",/*IN-OUT-MIN-ITEM=*/ 2, 1, 0,
+			/*IN-OUT-MIN-FLUID=*/ 0, 0, 0,/*MIN*/ 1,/*AMP=*/ 1,
+			"",1, "" , F, T, F, F, F, F, F);
+
 
 	public static MultiItemRandom qt_armor_upgrades;
 	
@@ -112,6 +128,8 @@ public class RegisterArmor {
 		//addUpgrades();
 		
 		//FMLCommonHandler.instance().bus().register(this);
+
+		//RM.DidYouKnow.addFakeRecipe(true,new ItemStack[]{},new ItemStack[]{});
 	}
 	
 	public void addUpgrades()
@@ -224,6 +242,26 @@ public class RegisterArmor {
 			upgrade.addUpgradeStack(ST.make(thaumicGoggles, 1, CS.W));
 		}
 		ArmorUpgradeRegistry.instance.addUpgrade(20, upgrade);
+
+		//for (OreDictMaterial mat:MultiItemArmor.example_materials)
+		for (OreDictMaterial mat:new OreDictMaterial[]{MT.NULL})
+			armor.mArmorStats.forEach((id,stats)->{
+				ItemStack armorStack = armor.getArmorWithStats(id,mat);
+				for(ItemStack upgradeStack:ArmorUpgradeRegistry.upgradeItems.keySet()){
+					if(ArmorUpgradeRegistry.instance.getUpgrade(upgradeStack).isCompatibleWith(armorStack)) {
+						ItemStack upgradedArmorStack = MultiItemArmor.addUpgrade(armorStack.copy(), ArmorUpgradeRegistry.instance.getUpgradeID(upgradeStack));
+						RM_UPGRADE.addFakeRecipe(false,
+								ST.array(armorStack.copy().setStackDisplayName(GOLD+"Any Material"),upgradeStack),
+								ST.array(upgradedArmorStack.copy().setStackDisplayName(GREEN+"You Can Have Multiple Upgrades!")),
+								null,null,null,null,0,0,0);
+						//RM.DidYouKnow.addFakeRecipe(false,new ItemStack[]{upgrade_},new ItemStack[]{null},null,null,null,null,0,0,0);
+					}
+				}
+			});
+		for (int i = 0; i < 6; i++) {
+			// Upgrade Desks
+			RM_UPGRADE.mRecipeMachineList.add(ST.make(1027,1,401+i).setStackDisplayName(GOLD+LH.Chat.ITALIC+"Right Click with Armor Then Apply an Upgrade"));
+		}
 	}
 	
 	private void addType(String type)

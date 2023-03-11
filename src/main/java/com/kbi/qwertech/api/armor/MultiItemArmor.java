@@ -79,6 +79,8 @@ import static gregapi.data.CS.*;
 		})
 public class MultiItemArmor extends ItemArmor implements IItemProjectile, IItemUpdatable, IItemGT, IItemNoGTOverride, IItemEnergy, thaumcraft.api.IGoggles, thaumcraft.api.nodes.IRevealer, thaumcraft.api.IVisDiscountGear {
 
+	// Armor Materials that show up in NEI
+	public static final OreDictMaterial[] example_materials = new OreDictMaterial[]{MT.CosmicNeutronium};
 	public boolean showIngamePopups(ItemStack itemStack, EntityLivingBase entityLivingBase) {
 		IArmorUpgrade[] upgrades = getUpgrades(itemStack);
 		for (int q = 0; q < upgrades.length; q++)
@@ -183,7 +185,8 @@ public class MultiItemArmor extends ItemArmor implements IItemProjectile, IItemU
 		}
 		return aStack;
 	}
-	
+
+	// aStack is an armor
 	public static final ItemStack addUpgrade(ItemStack aStack, short aUpgradeID)
 	{
 		IArmorUpgrade[] upgrades = getUpgrades(aStack);
@@ -919,16 +922,15 @@ public class MultiItemArmor extends ItemArmor implements IItemProjectile, IItemU
 	@Override
 	@SideOnly(Side.CLIENT)
 	public final void getSubItems(Item var1, CreativeTabs aCreativeTab, List aList) {
-		OreDictMaterial[] example = new OreDictMaterial[]{MT.Al, MT.Bronze, MT.Cu, MT.Electrum, MT.Au, MT.Fe, MT.Pb, MT.Ni, MT.ObsidianSteel, MT.Plastic, MT.Rubber, MT.Steel, MT.Ti, MT.U_235, MT.Vibramantium, MT.WroughtIron};
-		for (int i = 0; i < 32766; i+=1) if (getArmorStats(ST.make(this, 1, i)) != null) {
+	for (int i = 0; i < 32766; i+=1) if (getArmorStats(ST.make(this, 1, i)) != null) {
 			ItemStack tStack = ST.make(this, 1, i);
 			isItemStackUsable(tStack);
 			aList.add(tStack);
 			if (i < 8)
 			{
-				for (int w = 0; w < example.length; w++)
+				for (int w = 0; w < example_materials.length; w++)
 				{
-					ItemStack returnable = getArmorWithStats(i, example[w]);
+					ItemStack returnable = getArmorWithStats(i, example_materials[w]);
 					isItemStackUsable(returnable);
 					aList.add(returnable);
 				}

@@ -126,20 +126,18 @@ public class UpgradeDesk extends TileEntityBase09FacingSingle implements IMTE_Ge
 	
 	@Override
 	public boolean onBlockActivated3(EntityPlayer aPlayer, byte aSide, float aHitX, float aHitY, float aHitZ) {
+		//
 		if (!isServerSide()) return true;
 		if (aSide == CS.SIDE_DOWN) return false;
 		ItemStack aStack = aPlayer.getHeldItem();
 		ItemStack currentOne = this.slot(0);
 		mUpdated = true; //force a refresh
-		if (aStack != null)
-		{
-			if (currentOne != null)
-			{
-				if (currentOne.getItem() instanceof MultiItemArmor)
-				{
+		//
+		if (aStack != null) {
+			if (currentOne != null) {
+				if (currentOne.getItem() instanceof MultiItemArmor) {
 					IArmorUpgrade upgrade = ArmorUpgradeRegistry.instance.getUpgrade(aStack);
-					if (upgrade != null && upgrade.isCompatibleWith(currentOne))
-					{
+					if (upgrade != null && upgrade.isCompatibleWith(currentOne)) {
 						MultiItemArmor.addUpgrade(currentOne, ArmorUpgradeRegistry.instance.getUpgradeID(aStack));
 						aStack.stackSize = aStack.stackSize - 1;
 						aPlayer.setCurrentItemOrArmor(0, aStack.stackSize > 0 ? aStack : null);
