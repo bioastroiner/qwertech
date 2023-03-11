@@ -9,18 +9,20 @@ import gregapi.render.IIconContainer;
 import gregtech.items.tools.early.GT_Tool_Pickaxe;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.play.server.S23PacketBlockChange;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.event.world.BlockEvent;
 
 import java.util.List;
 
-public class QT_Tool_SturdyPickaxe extends GT_Tool_Pickaxe {
-    int blocksBroke = 1;
-    private boolean doAOE = false;
+import static com.kbi.qwertech.items.stats.ToolsVector.raytraceFromEntity;
 
+public class QT_Tool_SturdyPickaxe extends GT_Tool_Pickaxe implements IAOE_Tool {
     @Override
     public boolean canCollect() {
         return true;
@@ -33,7 +35,7 @@ public class QT_Tool_SturdyPickaxe extends GT_Tool_Pickaxe {
 
     @Override
     public float getMaxDurabilityMultiplier() {
-        return 2F;
+        return 1.2F;
     }
 
     @Override
@@ -47,56 +49,121 @@ public class QT_Tool_SturdyPickaxe extends GT_Tool_Pickaxe {
     }
 
     @Override
-    public int convertBlockDrops(List<ItemStack> aDrops, ItemStack aStack, EntityPlayer aPlayer, Block aBlock, long aAvailableDurability, int aX, int aY, int aZ, byte aMetaData, int aFortune, boolean aSilkTouch, BlockEvent.HarvestDropsEvent aEvent) {
-        //determinateAOE(aX,aY,aZ,aPlayer,aPlayer.worldObj);
-        if (blocksBroke > 1) return 1;
-        if (isBlockHarvestable(aX, aY - 1, aZ, aPlayer, aPlayer.worldObj) && doAOE) {
-            blocksBroke++;
-            aPlayer.worldObj.func_147480_a(aX, aY - 1, aZ, true);
+    public boolean onBlockStartBreak(ItemStack itemstack, int X, int Y, int Z, EntityPlayer player) {
+        if(player.isSneaking()) return false;
+        // IMPORTED FROM IMPACT IT WORKED BETTER THAN MINE!!
+        Block block = player.worldObj.getBlock(X, Y, Z);
+        int meta = player.worldObj.getBlockMetadata(X, Y, Z);
+
+        if (block == null || !itemstack.hasTagCompound())
+            return false;
+
+        MovingObjectPosition mop = raytraceFromEntity(player.worldObj, player, false, 4.5d);
+        if (mop == null)
+            return false;
+        int sideHit = mop.sideHit;
+        // we successfully destroyed a block. time to do AOE!
+        switch (sideHit) {
+            case 0:
+            case 1:
+                breakBlock(player.worldObj, X, Y, Z, sideHit, player, X, Y, Z);
+                break;
+            case 2:
+            case 3:
+            case 4:
+            case 5:
+                breakBlock(player.worldObj, X, Y, Z, sideHit, player, X, Y, Z);
+                breakBlock(player.worldObj, X, Y-1, Z, sideHit, player, X, Y, Z);
+                break;
         }
-        return blocksBroke;
+        return false;
     }
 
     @Override
-    public float getMiningSpeed(Block aBlock, byte aMetaData, float aDefault, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ) {
-        return determinateAOE(aX, aY, aZ, aPlayer, aWorld, aDefault);
-    }
+    public float getMiningSpeed(Block aBlock, byte aMetaData, float aDefault, EntityPlayer player, World aWorld, int X, int Y, int Z) {
+        if(player.isSneaking()) return aDefault;
+        Block block = player.worldObj.getBlock(X, Y, Z);
+        int meta = player.worldObj.getBlockMetadata(X, Y, Z);
+        float speed_all=aDefault;
 
-    private float determinateAOE(int x, int y, int z, EntityPlayer aPlayer, World aWorld, float aDefault) {
-        float speed_f = aDefault;
-        doAOE = false;
-        blocksBroke = 1;
-        if (aPlayer.posY >= y) {
-            doAOE = false;
-            return speed_f;
+        if (block == null)
+            return aDefault;
+
+        MovingObjectPosition mop = raytraceFromEntity(player.worldObj, player, false, 4.5d);
+        if (mop == null)
+            return aDefault;
+        int sideHit = mop.sideHit;
+        switch (sideHit) {
+            case 0:
+            case 1:
+                speed_all+=getMiningSpeed(block, (byte) aWorld.getBlockMetadata(X,Y,Z));
+                break;
+            case 2:
+            case 3:
+            case 4:
+            case 5:
+                speed_all+=getMiningSpeed(block, (byte) aWorld.getBlockMetadata(X,Y,Z));
+                speed_all+=getMiningSpeed(block, (byte) aWorld.getBlockMetadata(X,Y-1,Z));
+                break;
         }
-        MovingObjectPosition ray = EntityHelperFunctions.getEntityLookTrace(aWorld, aPlayer, false, 5D);
-        try {
-            if (ray.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK) {
-                switch (ray.sideHit) {
-                    case -1:
-                    case 0:
-                    case 1:
-                        break;
-                    case 2: // east
-                    case 3: // west
-                    case 4: // north -> only mine Vertically for tunnel down, mine horz (X+-) and vert in odd
-                    case 5: // south
-                        // do simple tunnel
-                        if (isBlockHarvestable(x, y - 1, z, aPlayer, aWorld)) {
-                            doAOE = true;
-                            speed_f = Math.max(speed_f, super.getMiningSpeed(aWorld.getBlock(x, y, z), (byte) aWorld.getBlockMetadata(x, y, z)));
-                        }
+        // 1.8 means very small penalty if two blocks are the same type!
+        return aDefault*1.8f/speed_all;
+    }
+    public void breakBlock(World world, int x, int y, int z, int sideHit, EntityPlayer playerEntity, int refX, int refY, int refZ) {
+        if (world.isAirBlock(x, y, z)) return;
+
+        if (!(playerEntity instanceof EntityPlayerMP)) return;
+        EntityPlayerMP player = (EntityPlayerMP) playerEntity;
+
+        Block block = world.getBlock(x, y, z);
+        int meta = world.getBlockMetadata(x, y, z);
+
+        Block refBlock = world.getBlock(refX, refY, refZ);
+        float refStrength = ForgeHooks.blockStrength(refBlock, player, world, refX, refY, refZ);
+        float strength = ForgeHooks.blockStrength(block, player, world, x, y, z);
+
+        if (!ForgeHooks.canHarvestBlock(block, player, meta) || refStrength / strength > 10f) return;
+
+        BlockEvent.BreakEvent event = ForgeHooks.onBlockBreakEvent(world, player.theItemInWorldManager.getGameType(), player, x, y, z);
+        if (event.isCanceled())
+            return;
+
+        if (player.capabilities.isCreativeMode) {
+            block.onBlockHarvested(world, x, y, z, meta, player);
+            if (block.removedByPlayer(world, player, x, y, z, false))
+                block.onBlockDestroyedByPlayer(world, x, y, z, meta);
+            if (!world.isRemote) {
+                player.playerNetServerHandler.sendPacket(new S23PacketBlockChange(x, y, z, world));
+            }
+            return;
+        }
+        ItemStack currentItem = player.getCurrentEquippedItem();
+        if (currentItem != null) {
+            currentItem.func_150999_a(world, block, x, y, z, player);
+        }
+        if (!world.isRemote) {
+            block.onBlockHarvested(world, x, y, z, meta, player);
+
+            if (block.removedByPlayer(world, player, x, y, z, true)) {
+                block.onBlockDestroyedByPlayer(world, x, y, z, meta);
+                block.harvestBlock(world, player, x, y, z, meta);
+                block.dropXpOnBlockBreak(world, x, y, z, event.getExpToDrop());
+            }
+
+            player.playerNetServerHandler.sendPacket(new S23PacketBlockChange(x, y, z, world));
+        } else {
+            world.playAuxSFX(2001, x, y, z, Block.getIdFromBlock(block) + (meta << 12));
+            if (block.removedByPlayer(world, player, x, y, z, true)) {
+                block.onBlockDestroyedByPlayer(world, x, y, z, meta);
+            }
+            ItemStack itemstack = player.getCurrentEquippedItem();
+            if (itemstack != null) {
+                itemstack.func_150999_a(world, block, x, y, z, player);
+
+                if (itemstack.stackSize == 0) {
+                    player.destroyCurrentEquippedItem();
                 }
             }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
-        return speed_f;
-    }
-
-    private boolean isBlockHarvestable(int x, int y, int z, EntityPlayer mPlayer, World mWorld) {
-        Block aBlock = mWorld.getBlock(x, y, z);
-        return aBlock.canHarvestBlock(mPlayer, mWorld.getBlockMetadata(x, y, z)) && this.isMinableBlock(mWorld.getBlock(x, y, z), (byte) mWorld.getBlockMetadata(x, y, z));
     }
 }
