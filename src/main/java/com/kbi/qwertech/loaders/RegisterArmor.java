@@ -1,5 +1,7 @@
 package com.kbi.qwertech.loaders;
 
+import codechicken.nei.recipe.CatalystInfo;
+import codechicken.nei.recipe.RecipeCatalysts;
 import com.kbi.qwertech.api.armor.IArmorStats;
 import com.kbi.qwertech.api.armor.MultiItemArmor;
 import com.kbi.qwertech.api.armor.upgrades.IArmorUpgrade;
@@ -11,10 +13,14 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregapi.code.ICondition;
 import gregapi.data.*;
 import gregapi.item.multiitem.MultiItemRandom;
 import gregapi.oredict.OreDictMaterial;
+import gregapi.oredict.OreDictMaterialCondition;
+import gregapi.oredict.event.IOreDictListenerEvent;
 import gregapi.recipes.Recipe;
+import gregapi.util.CR;
 import gregapi.util.ST;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.entity.RenderManager;
@@ -112,18 +118,32 @@ public class RegisterArmor {
 		
 		armor = new MultiItemArmor(MD.QT.mID, "qt.armor");
 		QTI.qwerArmor.set(armor);
-		armor.addArmor(0, "Chain Helmet", "Rattles worse than bones", new HelmetBase().setMaterialAmount(CS.U * 6), "armorHelmet");
+		armor.addArmor(0, "Chain Helmet", "Rattles worse than bones", new HelmetBase().setMaterialAmount(CS.U * 5), "armorHelmet");
 		armor.addArmor(1, "Chainmail Shirt", "Thy mother was a hamster!", new ChestBase().setMaterialAmount(CS.U * 9), "armorChest");
 		armor.addArmor(2, "Chainmail Leggings", "Thy father smelt of elderberries!", new PantBase().setMaterialAmount(CS.U * 8), "armorLegs");
 		armor.addArmor(3, "Chain Boots", "Linked to the Past", new BootBase().setMaterialAmount(CS.U * 4), "armorBoots");
-		armor.addArmor(4, "Plated Helmet", "Always wear your helmet", new HelmetPlate().setMaterialAmount(CS.U * 10), "armorHelmet");
+		armor.addArmor(4, "Plated Helmet", "Always wear your helmet", new HelmetPlate().setMaterialAmount(CS.U * 8), "armorHelmet");
 		armor.addArmor(5, "Chestplate", "The classic look", new ChestPlate().setMaterialAmount(CS.U * 14), "armorChest");
 		armor.addArmor(6, "Plated Pants", "Not to be confused with pleated pants", new PantPlate().setMaterialAmount(CS.U * 14), "armorLegs");
-		armor.addArmor(7, "Plated Boots", "Clanky and clunky", new BootPlate().setMaterialAmount(CS.U * 6), "armorBoots");		
-		
-		armor.addArmor(8, "Galoshes", "", new BootWet().setMaterialAmount(CS.U * 4), "armorBoots");
-		armor.addArmor(9, "Rainhat", "", new HelmetWet().setMaterialAmount(CS.U * 5), "armorHelmet");
-		armor.addArmor(10, "Raincoat", "", new ChestWet().setMaterialAmount(CS.U * 8), "armorChest");
+		armor.addArmor(7, "Plated Boots", "Clanky and clunky", new BootPlate().setMaterialAmount(CS.U * 6), "armorBoots");
+
+		OP.chain.addListener(e -> { if(new ICondition.And(MT.Wood.NOT, OreDictMaterialCondition.typemin(2)).isTrue(e.mMaterial)){
+		CR.shaped(RegisterArmor.armor.getArmorWithStats(0, e.mMaterial),CR.DEF,"CCC","ChC","   ",'C',OP.chain.mat(e.mMaterial,1),'D',OP.plateDouble.mat(e.mMaterial,1));
+		CR.shaped( RegisterArmor.armor.getArmorWithStats(1, e.mMaterial),CR.DEF,"ChC","CCC","CCC",'C',OP.chain.mat(e.mMaterial,1),'D',OP.plateDouble.mat(e.mMaterial,1));
+		CR.shaped( RegisterArmor.armor.getArmorWithStats(2, e.mMaterial),CR.DEF,"CCC","ChC","C C",'C',OP.chain.mat(e.mMaterial,1),'D',OP.plateDouble.mat(e.mMaterial,1));
+		CR.shaped( RegisterArmor.armor.getArmorWithStats(3, e.mMaterial),CR.DEF,"   ","ChC","C C",'C',OP.chain.mat(e.mMaterial,1),'D',OP.plateDouble.mat(e.mMaterial,1));
+		}});
+
+		OP.plateCurved.addListener(e -> {if(new ICondition.And(MT.Wood.NOT, OreDictMaterialCondition.typemin(2)).isTrue(e.mMaterial)){
+			CR.shaped(RegisterArmor.armor.getArmorWithStats(4, e.mMaterial),CR.DEF,"DDD","ChC","   ",'C',OP.plateCurved.mat(e.mMaterial,1),'D',OP.plateDouble.mat(e.mMaterial,1));
+			CR.shaped( RegisterArmor.armor.getArmorWithStats(5, e.mMaterial),CR.DEF,"DhD","DDD","CDC",'C',OP.plateCurved.mat(e.mMaterial,1),'D',OP.plateDouble.mat(e.mMaterial,1));
+			CR.shaped( RegisterArmor.armor.getArmorWithStats(6, e.mMaterial),CR.DEF,"DDD","DhD","D D",'C',OP.plateCurved.mat(e.mMaterial,1),'D',OP.plateDouble.mat(e.mMaterial,1));
+			CR.shaped( RegisterArmor.armor.getArmorWithStats(7, e.mMaterial),CR.DEF,"   ","DhD","C C",'C',OP.plateCurved.mat(e.mMaterial,1),'D',OP.plateDouble.mat(e.mMaterial,1));
+		}});
+
+//		armor.addArmor(8, "Galoshes", "", new BootWet().setMaterialAmount(CS.U * 4), "armorBoots");
+//		armor.addArmor(9, "Rainhat", "", new HelmetWet().setMaterialAmount(CS.U * 5), "armorHelmet");
+//		armor.addArmor(10, "Raincoat", "", new ChestWet().setMaterialAmount(CS.U * 8), "armorChest");
 		
 		//addUpgrades();
 		
@@ -261,6 +281,7 @@ public class RegisterArmor {
 		for (int i = 0; i < 6; i++) {
 			// Upgrade Desks
 			RM_UPGRADE.mRecipeMachineList.add(ST.make(1027,1,401+i).setStackDisplayName(GOLD+LH.Chat.ITALIC+"Right Click with Armor Then Apply an Upgrade"));
+			RecipeCatalysts.addRecipeCatalyst(RM_UPGRADE.mNameNEI,new CatalystInfo(ST.make(1027,1,401+i),i));
 		}
 	}
 	
