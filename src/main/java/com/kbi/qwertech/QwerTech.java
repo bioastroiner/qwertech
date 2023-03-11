@@ -522,7 +522,7 @@ public final class QwerTech extends Abstract_Mod {
         OM.reg(OD.craftingChest, machines.getItem(1510));
         OM.reg("craftingChestWood", machines.getItem(1510));
         // TODO make config
-        //GameRegistry.addRecipe(new WoodSpecificCrafting(machines.getItem(1510), "PPP", "P P", "PPP", 'P', "plankWood"));
+        GameRegistry.addRecipe(new WoodSpecificCrafting(machines.getItem(1510), "PPP", "P P", "PPP", 'P', "plankWood"));
         // [SHammer,<ore:plateAnyWood>,<ore:craftingToolSawAxe>],[<ore:ringAnyWood>,<ore:stickAnyWood>,<ore:ringAnyWood>],[<ore:plateAnyWood>,<ore:beamWood>,<ore:plateAnyWood>]
 
         for (int q = 1; q < WOOD.woodList.length; q++) {
