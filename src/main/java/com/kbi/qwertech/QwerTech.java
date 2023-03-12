@@ -525,12 +525,15 @@ public final class QwerTech extends Abstract_Mod {
                 if (woodType != null && !woodType.mHidden) {
                     chest_registry.add(woodType.mNameLocal + " Chest", "Chests", q, 0, ChestTileEntity.class, 0, 64, wood, UT.NBT.make(NullBT, CS.NBT_MATERIAL, woodType, CS.NBT_INV_SIZE, 27, CS.NBT_TEXTURE, "woodenchest", CS.NBT_HARDNESS, 3.0F, CS.NBT_RESISTANCE, 3.0F, CS.NBT_COLOR, UT.Code.getRGBInt(woodType.fRGBaSolid)));
                     CR.shapeless(ST.make(Blocks.chest, 1, 0), CR.DEF, new Object[]{chest_registry.getItem(q)});
-                    if(QTConfigs.chest_enabled_recipe){ItemStack plank = OreDictionary.getOres("plank"+woodType.mNameInternal).stream().findFirst().get();
-                        if(QTConfigs.chest_enabled_hard_recipe){
+                    if(QTConfigs.chest_enabled_recipe){
+                        if(!OreDictionary.getOres("plank"+woodType.mNameInternal).isEmpty()){
+                            List<ItemStack> plank = OreDictionary.getOres("plank"+woodType.mNameInternal);
+                            if(QTConfigs.chest_enabled_hard_recipe){
+                                CR.shaped(chest_registry.getItem(q),CR.DEF,"rPa", "RSR", "PWP", 'P', plank, 'S', OP.stick.mat(woodType,1), 'W', plank, 'R', OP.ring.mat(woodType,1));
+                                CR.shaped(chest_registry.getItem(q),CR.DEF,"rPs", "RSR", "PWP", 'P', plank, 'S', OP.stick.mat(woodType,1), 'W', plank, 'R', OP.ring.mat(woodType,1));
+                            }
                             CR.shaped(chest_registry.getItem(q),CR.DEF,"PPP","PsP","PPP",'P',plank);
-                            CR.shaped(chest_registry.getItem(q),CR.DEF,"rPa", "RSR", "PWP", 'P', plank, 'S', OP.stick.mat(woodType,1), 'W', plank, 'R', OP.ring.mat(woodType,1));
-                        }
-                        CR.shaped(chest_registry.getItem(q),CR.DEF,"rPs", "RSR", "PWP", 'P', plank, 'S', OP.stick.mat(woodType,1), 'W', plank, 'R', OP.ring.mat(woodType,1));
+                        } else CR.shapeless(chest_registry.getItem(q),CR.DEF,new Object[]{OP.plate.mat(woodType,1)}); // this chest's plank wasn't found
                     }
                     OM.reg(OD.craftingChest, chest_registry.getItem(q));
                     OM.reg("craftingChestWood", chest_registry.getItem(q));
