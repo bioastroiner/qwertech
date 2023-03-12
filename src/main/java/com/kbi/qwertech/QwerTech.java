@@ -408,8 +408,8 @@ public final class QwerTech extends Abstract_Mod {
             OP.stick.addListener(new OreProcessing_QTTool(10, ConfigCategories.Recipes.gregtechtools + "." + "Stake", true, false, 0L, 0L, null, new String[][]{{"kS"}, {"Sk"}}, null, null, null, null, null, null, TD.Atomic.ANTIMATTER.NOT));
             OP.stick.addListener(new OreProcessing_NonCrafting(RM.Sharpening, (ItemStack) null, qwerTool.getToolWithStats(10, MT.Empty, MT.Empty), TD.Atomic.ANTIMATTER.NOT));
             qwerTool.addTool(12, "Bat", "Underwood Light Switch", new QT_Tool_Bat().setMaterialAmount(OP.stick.mAmount), TC.stack(TC.TELUM, 2), "toolBat");
-            //OP.stickLong.addListener(new OreProcessing_QTTool(12, ConfigCategories.Recipes.gregtechtools + "." + "Bat", false, false, 0L, 0L, MT.Empty, new String[][]{{"yL"}, {"Ly"}}, null, null, null, null, null, null, TD.Atomic.ANTIMATTER.NOT));
-            GameRegistry.addRecipe(new AdvancedCraftingTool(qwerTool, 12, OP.stickLong, MT.WoodTreated));
+            OP.stickLong.addListener(new OreProcessing_QTTool(12, ConfigCategories.Recipes.gregtechtools + "." + "Bat", false, false, 0L, 0L, MT.Empty, new String[][]{{"yL"}, {"Ly"}}, null, null, null, null, null, null, TD.Atomic.ANTIMATTER.NOT));
+            //GameRegistry.addRecipe(new AdvancedCraftingTool(qwerTool, 12, OP.stickLong, MT.WoodTreated));
             qwerTool.addTool(14, "LumberAxe", "Jack Jack", new QT_Tool_Lumberaxe().setMaterialAmount(OP.toolHeadAxe.mAmount), "craftingToolAxe", TC.stack(TC.INSTRUMENTUM, 2), TC.stack(TC.ARBOR, 1), TC.stack(TC.MACHINA, 1), "axe");
             GameRegistry.addRecipe(new AdvancedCraftingTool(qwerTool, 14, sturdyAxeHead,MT.Steel));
             qwerTool.addTool(16, "Sturdy Pickaxe", "Mines a simple 1x2 tunnel, Pretty safe won't dig the tunnel if the block isn't right in front of you", new QT_Tool_SturdyPickaxe().setMaterialAmount(OP.toolHeadPickaxe.mAmount), "craftingToolPickaxe", TC.stack(TC.INSTRUMENTUM, 2), TC.stack(TC.PERDITIO, 1), "pickaxe");
