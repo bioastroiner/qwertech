@@ -108,13 +108,23 @@ public final class QwerTech extends Abstract_Mod {
     public static int batTexID;
     public static int batSpikeTexID;
     public static int maxChiselTex = 4;
-    public static MultiTileEntityRegistry machines;
-    public static MultiTileEntityRegistry armor_upgrade_desk;
+    public static MultiTileEntityRegistry machines_registry;
+    public static MultiTileEntityRegistry upgradeArmorDesk_registry;
+    public static MultiTileEntityRegistry chest_registry;
     public static MultiTileEntityBlock metal;
     public static MultiTileEntityBlock wood;
     public static MultiTileEntityBlock air;
     private static MultiItemTool qwerTool;
     private static MultiItemRandom qwerFood;
+
+    // TODO move all configuration here
+    public static class Conifg{
+        public boolean tools;
+        public void init(){
+            File QT_Dir = new File(CS.DirectoriesGT.CONFIG_GT, "QwerTech-new");
+            Configuration tMainConfig = new Configuration(new File(QT_Dir, "QwerTech_main.cfg"));
+        }
+    }
 
     // Do not change these 7 Functions. Just keep them this way.
     @Mod.EventHandler
@@ -208,7 +218,8 @@ public final class QwerTech extends Abstract_Mod {
         QTConfigs.enableTools = tSections.get("tools", "enableTools", true, "Allow the creation of QwerTech tools like maces and mattocks").setShowInGui(true).getBoolean(true);
 
         QTConfigs.enableArmor = tSections.get("armor", "enableArmor", true, "Allow the creation of QwerTech armor").setShowInGui(true).getBoolean(true);
-
+        QTConfigs.chest_enabled = tSections.get("wooden chest", "enable", true, "Allow registiration wooden chests").setShowInGui(true).getBoolean(true);
+        QTConfigs.chest_enabled_recipe = tSections.get("wooden chest", "enable recipe", true, "Do they have recipe? configuration exists to make removing their recipe not pain.").setShowInGui(true).getBoolean(true);
         tSections.save();
 
         Configuration UI = new Configuration(new File(CS.DirectoriesGT.CONFIG_GT, "QwerTech_UI_Display.cfg"));
@@ -296,8 +307,9 @@ public final class QwerTech extends Abstract_Mod {
         OreDictManager.INSTANCE.setTarget(OP.blockDust, QTMT.CompostRaw, ST.make(QwerTech.soilBlock, 1, 3));
         OreDictManager.INSTANCE.setTarget(OP.blockDust, QTMT.Compost, ST.make(QwerTech.soilBlock, 1, 4));
 
-        machines = new MultiTileEntityRegistry("qwertech.machines");
-        armor_upgrade_desk = new MultiTileEntityRegistry("qwertech.upgrade_desks");
+        machines_registry = new MultiTileEntityRegistry("qwertech.machines");
+        upgradeArmorDesk_registry = new MultiTileEntityRegistry("qwertech.upgrade_desks");
+        chest_registry = new MultiTileEntityRegistry("qwertech.chests");
 
         metal = MultiTileEntityBlock.getOrCreate(MODID, "iron", Material.iron, Block.soundTypeMetal, CS.TOOL_pickaxe, 0, 0, 15, false, false);
         wood = MultiTileEntityBlock.getOrCreate(MODID, "wood", Material.wood, Block.soundTypeWood, CS.TOOL_axe, 0, 0, 15, false, false);
@@ -492,6 +504,7 @@ public final class QwerTech extends Abstract_Mod {
 //
 //        GameRegistry.addRecipe(new AnyQTTool(18L, new And(TD.Atomic.ANTIMATTER.NOT), true, new Object[]{OP.toolHeadPickaxe, OP.plate}, new Object[]{OP.stickLong}));
 
+        // TODO CONFIG
         OreDictMaterial[] wallmats = new OreDictMaterial[]{MT.Fe, MT.Al, MT.Au, MT.Steel, MT.Bronze, MT.Brass, MT.Ag, MT.StainlessSteel, MT.WroughtIron, MT.Plastic, MT.Ti, MT.TungstenSteel, MT.Invar, MT.TinAlloy, MT.SteelGalvanized, MT.Electrum};
         for (int q = 0; q < 16; q++) {
             RM.RollFormer.addRecipe1(true, 16, 768, OP.plateDouble.mat(wallmats[q], 1), ST.make(corrugatedBlock, 4, q));
@@ -500,45 +513,50 @@ public final class QwerTech extends Abstract_Mod {
             CR.shaped(ST.make(corrugatedBlock, 12, q), new Object[]{"PPP","PPP"," h ",'P', OP.plate.mat(wallmats[q], 1)});
         }
 
+        // TODO CONFIG
         OreDictMaterial[] upgradeDeskMats = new OreDictMaterial[]{MT.Bronze, MT.Co, MT.Au, MT.Obsidian, MT.Plastic, MT.Ag};
         for (int q = 0; q < upgradeDeskMats.length; q++) {
             OreDictMaterial mat = upgradeDeskMats[q];
-            ItemStack desk = armor_upgrade_desk.add(mat.mNameLocal + " Upgrade Desk", "Upgrade Desks", 0 + q, 0, UpgradeDesk.class, 0, 16, metal, UT.NBT.make(NullBT, CS.NBT_MATERIAL, mat, CS.NBT_INV_SIZE, 1, CS.NBT_TEXTURE, "qwertech:metal", CS.NBT_HARDNESS, 3.0F, CS.NBT_RESISTANCE, 3.0F, CS.NBT_COLOR, UT.Code.getRGBInt(mat.fRGBaSolid)), "RfR", "RSR", "CCC", 'C', OP.plate.dat(mat), 'R', OP.stick.dat(ANY.Steel), 'S', OP.springSmall.dat(ANY.Steel));
+            ItemStack desk = upgradeArmorDesk_registry.add(mat.mNameLocal + " Upgrade Desk", "Upgrade Desks", 0 + q, 0, UpgradeDesk.class, 0, 16, metal, UT.NBT.make(NullBT, CS.NBT_MATERIAL, mat, CS.NBT_INV_SIZE, 1, CS.NBT_TEXTURE, "qwertech:metal", CS.NBT_HARDNESS, 3.0F, CS.NBT_RESISTANCE, 3.0F, CS.NBT_COLOR, UT.Code.getRGBInt(mat.fRGBaSolid)), "RfR", "RSR", "CCC", 'C', OP.plate.dat(mat), 'R', OP.stick.dat(ANY.Steel), 'S', OP.springSmall.dat(ANY.Steel));
             OreDictManager.INSTANCE.registerOre("upgradeDesk",desk);
         }
 
+        if(QTConfigs.chest_enabled){
+            for (int q = 1; q < WOOD.woodList.length; q++) {
+                OreDictMaterial woodType = WOOD.woodList[q];
+                if (woodType != null && !woodType.mHidden) {
+                    chest_registry.add(woodType.mNameLocal + " Chest", "Chests", q, 0, ChestTileEntity.class, 0, 64, wood, UT.NBT.make(NullBT, CS.NBT_MATERIAL, woodType, CS.NBT_INV_SIZE, 27, CS.NBT_TEXTURE, "woodenchest", CS.NBT_HARDNESS, 3.0F, CS.NBT_RESISTANCE, 3.0F, CS.NBT_COLOR, UT.Code.getRGBInt(woodType.fRGBaSolid)));
+                    if(QTConfigs.chest_enabled_recipe){
+                        CR.shapeless(ST.make(Blocks.chest, 1, 0), CR.DEF, new Object[]{chest_registry.getItem(q)});
+                        CR.shaped(chest_registry.getItem(q),CR.DEF,"rPa", "RSR", "PWP", 'P', OP.plank.mat(woodType,1), 'S', OP.stick.mat(woodType,1), 'W', OP.plank.mat(woodType,1), 'R', OP.ring.mat(woodType,1));
+                        CR.shaped(chest_registry.getItem(q),CR.DEF,"rPs", "RSR", "PWP", 'P', OP.plank.mat(woodType,1), 'S', OP.stick.mat(woodType,1), 'W', OP.plank.mat(woodType,1), 'R', OP.ring.mat(woodType,1));
+                    }
+                    OM.reg(OD.craftingChest, chest_registry.getItem(q));
+                    OM.reg("craftingChestWood", chest_registry.getItem(q));
+                }
+            }
+            chest_registry.add("Wooden Chest", "Chests", 0, 0, ChestTileEntity.class, 0, 64, wood, UT.NBT.make(NullBT, CS.NBT_MATERIAL, MT.Wood, CS.NBT_INV_SIZE, 27, CS.NBT_TEXTURE, "woodenchest", CS.NBT_HARDNESS, 3.0F, CS.NBT_RESISTANCE, 3.0F, CS.NBT_COLOR, UT.Code.getRGBInt(MT.Wood.fRGBaSolid)));
+            CR.shapeless(ST.make(Blocks.chest, 1, 0), CR.DEF, new Object[]{chest_registry.getItem(1510)});
+            OM.reg(OD.craftingChest, chest_registry.getItem(0));
+            OM.reg("craftingChestWood", chest_registry.getItem(0));
+            OreDictManager.INSTANCE.registerOre("chestSpecialWooden",chest_registry.getItem());
+            if(QTConfigs.chest_enabled_recipe)
+                GameRegistry.addRecipe(new WoodSpecificCrafting(chest_registry.getItem(0), "PPP", "P P", "PPP", 'P', "plankWood"));
+            // [SHammer,<ore:plateAnyWood>,<ore:craftingToolSawAxe>],[<ore:ringAnyWood>,<ore:stickAnyWood>,<ore:ringAnyWood>],[<ore:plateAnyWood>,<ore:beamWood>,<ore:plateAnyWood>]
+        }
+
+        // TODO CONFIG
         for (int q = 1; q < WOOD.woodList.length; q++) {
             OreDictMaterial woodType = WOOD.woodList[q];
             if (woodType != null && !woodType.mHidden) {
-                machines.add(woodType.mNameLocal + " Chest", "Chests", 1510 + q, 0, ChestTileEntity.class, 0, 64, wood, UT.NBT.make(NullBT, CS.NBT_MATERIAL, woodType, CS.NBT_INV_SIZE, 27, CS.NBT_TEXTURE, "woodenchest", CS.NBT_HARDNESS, 3.0F, CS.NBT_RESISTANCE, 3.0F, CS.NBT_COLOR, UT.Code.getRGBInt(woodType.fRGBaSolid)));
-                CR.shapeless(ST.make(Blocks.chest, 1, 0), CR.DEF, new Object[]{machines.getItem(1510 + q)});
-                CR.shaped(machines.getItem(1510 + q),CR.DEF,"rPa", "RSR", "PWP", 'P', OP.plank.mat(woodType,1), 'S', OP.stick.mat(woodType,1), 'W', OP.plank.mat(woodType,1), 'R', OP.ring.mat(woodType,1));
-                CR.shaped(machines.getItem(1510 + q),CR.DEF,"rPs", "RSR", "PWP", 'P', OP.plank.mat(woodType,1), 'S', OP.stick.mat(woodType,1), 'W', OP.plank.mat(woodType,1), 'R', OP.ring.mat(woodType,1));
-
-                OM.reg(OD.craftingChest, machines.getItem(1510 + q));
-                OM.reg("craftingChestWood", machines.getItem(1510 + q));
-                machines.add(woodType.mNameLocal + " Nesting Box", "Nesting Boxes", 1780 + q, 0, NestBoxTileEntity.class, 0, 16, wood, UT.NBT.make(NullBT, CS.NBT_MATERIAL, woodType, CS.NBT_INV_SIZE, 5, CS.NBT_TEXTURE, "qwertech:wood", CS.NBT_HARDNESS, 3.0F, CS.NBT_RESISTANCE, 3.0F, CS.NBT_COLOR, UT.Code.getRGBInt(woodType.fRGBaSolid)), "GGP", "PPP", 'P', "plank" + woodType.mNameInternal, 'G', IL.Grass.get(1));
+                machines_registry.add(woodType.mNameLocal + " Nesting Box", "Nesting Boxes", 1780 + q, 0, NestBoxTileEntity.class, 0, 16, wood, UT.NBT.make(NullBT, CS.NBT_MATERIAL, woodType, CS.NBT_INV_SIZE, 5, CS.NBT_TEXTURE, "qwertech:wood", CS.NBT_HARDNESS, 3.0F, CS.NBT_RESISTANCE, 3.0F, CS.NBT_COLOR, UT.Code.getRGBInt(woodType.fRGBaSolid)), "GGP", "PPP", 'P', "plank" + woodType.mNameInternal, 'G', IL.Grass.get(1));
             }
         }
-        machines.add("Wooden Chest", "Chests", 1510, 0, ChestTileEntity.class, 0, 64, wood, UT.NBT.make(NullBT, CS.NBT_MATERIAL, MT.Wood, CS.NBT_INV_SIZE, 27, CS.NBT_TEXTURE, "woodenchest", CS.NBT_HARDNESS, 3.0F, CS.NBT_RESISTANCE, 3.0F, CS.NBT_COLOR, UT.Code.getRGBInt(MT.Wood.fRGBaSolid)));
-        CR.shapeless(ST.make(Blocks.chest, 1, 0), CR.DEF, new Object[]{machines.getItem(1510)});
-        OM.reg(OD.craftingChest, machines.getItem(1510));
-        OM.reg("craftingChestWood", machines.getItem(1510));
-        // TODO make config
-        GameRegistry.addRecipe(new WoodSpecificCrafting(machines.getItem(1510), "PPP", "P P", "PPP", 'P', "plankWood"));
-        // [SHammer,<ore:plateAnyWood>,<ore:craftingToolSawAxe>],[<ore:ringAnyWood>,<ore:stickAnyWood>,<ore:ringAnyWood>],[<ore:plateAnyWood>,<ore:beamWood>,<ore:plateAnyWood>]
-
-        for (int q = 1; q < WOOD.woodList.length; q++) {
-            OreDictMaterial woodType = WOOD.woodList[q];
-            if (woodType != null && !woodType.mHidden) {
-                machines.add(woodType.mNameLocal + " Nesting Box", "Nesting Boxes", 1780 + q, 0, NestBoxTileEntity.class, 0, 16, wood, UT.NBT.make(NullBT, CS.NBT_MATERIAL, woodType, CS.NBT_INV_SIZE, 5, CS.NBT_TEXTURE, "qwertech:wood", CS.NBT_HARDNESS, 3.0F, CS.NBT_RESISTANCE, 3.0F, CS.NBT_COLOR, UT.Code.getRGBInt(woodType.fRGBaSolid)), "GGP", "PPP", 'P', "plank" + woodType.mNameInternal, 'G', IL.Grass.get(1));
-            }
-        }
-        machines.add("Nest (ground)", "Natural", 1770, -1, NestTileEntity.class, 0, 1, wood, UT.NBT.make(NullBT, CS.NBT_INV_SIZE, 5, CS.NBT_HARDNESS, 1.0F, CS.NBT_RESISTANCE, 1.0F));
+        machines_registry.add("Nest (ground)", "Natural", 1770, -1, NestTileEntity.class, 0, 1, wood, UT.NBT.make(NullBT, CS.NBT_INV_SIZE, 5, CS.NBT_HARDNESS, 1.0F, CS.NBT_RESISTANCE, 1.0F));
         OreDictMaterial[] nestBoxMats = new OreDictMaterial[]{MT.Plastic, MT.Steel, MT.Bronze, MT.Brass, MT.Cu, MT.Ag, MT.Au, MT.Invar, MT.Electrum, MT.Concrete, MT.Asphalt, MT.Al, MT.Ti, MT.StainlessSteel, MT.SteelGalvanized, MT.Pt, MT.Ceramic};
         for (int q = 0; q < nestBoxMats.length; q++) {
             OreDictMaterial mat = nestBoxMats[q];
-            machines.add(mat.mNameLocal + " Nesting Box", "Nesting Boxes", 2040 + q, 0, NestBoxTileEntity.class, 0, 16, metal, UT.NBT.make(NullBT, CS.NBT_MATERIAL, mat, CS.NBT_INV_SIZE, 5, CS.NBT_HARDNESS, 3.0F, CS.NBT_RESISTANCE, 3.0F, CS.NBT_COLOR, UT.Code.getRGBInt(mat.fRGBaSolid)), "GGP", "PPP", 'P', "plate" + mat.mNameInternal, 'G', IL.Grass.get(1));
+            machines_registry.add(mat.mNameLocal + " Nesting Box", "Nesting Boxes", 2040 + q, 0, NestBoxTileEntity.class, 0, 16, metal, UT.NBT.make(NullBT, CS.NBT_MATERIAL, mat, CS.NBT_INV_SIZE, 5, CS.NBT_HARDNESS, 3.0F, CS.NBT_RESISTANCE, 3.0F, CS.NBT_COLOR, UT.Code.getRGBInt(mat.fRGBaSolid)), "GGP", "PPP", 'P', "plate" + mat.mNameInternal, 'G', IL.Grass.get(1));
         }
     }
 

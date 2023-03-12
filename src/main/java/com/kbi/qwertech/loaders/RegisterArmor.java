@@ -19,7 +19,6 @@ import gregapi.data.*;
 import gregapi.item.multiitem.MultiItemRandom;
 import gregapi.oredict.OreDictMaterial;
 import gregapi.oredict.OreDictMaterialCondition;
-import gregapi.oredict.event.IOreDictListenerEvent;
 import gregapi.recipes.Recipe;
 import gregapi.util.CR;
 import gregapi.util.ST;
@@ -279,10 +278,10 @@ public class RegisterArmor {
 					}
 				}
 			});
-		for (int i = 0; i < QwerTech.armor_upgrade_desk.mLastRegisteredID+1; i++) {
+		for (int i = 0; i < QwerTech.upgradeArmorDesk_registry.mLastRegisteredID+1; i++) {
 			// Upgrade Desks
-			RM_UPGRADE.mRecipeMachineList.add(QwerTech.armor_upgrade_desk.getItem(i).setStackDisplayName(GOLD+LH.Chat.ITALIC+"Right Click with Armor Then Apply an Upgrade"));
-			RecipeCatalysts.addRecipeCatalyst(RM_UPGRADE.mNameNEI,new CatalystInfo(QwerTech.armor_upgrade_desk.getItem(i),i));
+			RM_UPGRADE.mRecipeMachineList.add(QwerTech.upgradeArmorDesk_registry.getItem(i).setStackDisplayName(GOLD+LH.Chat.ITALIC+"Right Click with Armor Then Apply an Upgrade"));
+			RecipeCatalysts.addRecipeCatalyst(RM_UPGRADE.mNameNEI,new CatalystInfo(QwerTech.upgradeArmorDesk_registry.getItem(i),i));
 		}
 	}
 	

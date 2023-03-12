@@ -188,7 +188,7 @@ public class WoodSpecificCrafting implements IRecipe
     	{
     		woodType = 0;
     	}
-    	return QwerTech.machines.getItem(output.getItemDamage() + woodType);
+    	return QwerTech.machines_registry.getItem(output.getItemDamage() + woodType);
     }
 
     /**

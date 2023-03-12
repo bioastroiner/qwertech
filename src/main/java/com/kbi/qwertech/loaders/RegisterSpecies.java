@@ -199,7 +199,7 @@ public class RegisterSpecies {
 
     public static Taggable setNesting(Taggable spec, boolean usesNest)
     {
-        return setNesting(spec, usesNest, QwerTech.machines.getItem(1770));
+        return setNesting(spec, usesNest, QwerTech.machines_registry.getItem(1770));
     }
 
     public static Taggable setNesting(Taggable spec, boolean usesNest, ItemStack nestItem)

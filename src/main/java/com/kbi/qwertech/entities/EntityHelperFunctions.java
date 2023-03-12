@@ -72,7 +72,7 @@ public class EntityHelperFunctions {
 						if (theKind.hasTag(NEST_ITEM)) {
 							entity.tasks.addTask(1, new EntityAINesting(entity, (ItemStack)theKind.getTag(NEST_ITEM)));
 						} else {
-							entity.tasks.addTask(1, new EntityAINesting(entity, QwerTech.machines.getItem(1770)));
+							entity.tasks.addTask(1, new EntityAINesting(entity, QwerTech.machines_registry.getItem(1770)));
 						}
 					} else {
 						List tasks = entity.tasks.taskEntries;
