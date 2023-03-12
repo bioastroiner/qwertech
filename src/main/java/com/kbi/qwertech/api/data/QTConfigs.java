@@ -43,4 +43,5 @@ public class QTConfigs {
 
 	public static boolean chest_enabled = true;
 	public static boolean chest_enabled_recipe = true;
+	public static boolean chest_enabled_hard_recipe = false;
 }

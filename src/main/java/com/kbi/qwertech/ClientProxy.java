@@ -13,6 +13,7 @@ import com.kbi.qwertech.api.registry.MobSpeciesRegistry;
 import com.kbi.qwertech.client.render.FluidContainerRenderer;
 import com.kbi.qwertech.client.render.QT_Armor_Renderer;
 import com.kbi.qwertech.client.render.QT_Machine_Renderer;
+import com.kbi.qwertech.client.render.QT_UpgradeDesk_Renderer;
 import com.kbi.qwertech.client.render.blocks.RenderCorrugated;
 import com.kbi.qwertech.client.render.entity.genetic.RenderGeneticEntity;
 import com.kbi.qwertech.client.render.entity.neutral.RenderTurkey;
@@ -65,8 +66,10 @@ public final class ClientProxy extends CommonProxy { // NO_UCD (unused code)
 		{
 			MinecraftForgeClient.registerItemRenderer(QTI.qwerArmor.getItem(), new QT_Armor_Renderer());
 		}
-		MinecraftForgeClient.registerItemRenderer(MultiTileEntityRegistry.getRegistry("qwertech.machines").getItem(401).getItem(), new QT_Machine_Renderer());
-		
+		//MinecraftForgeClient.registerItemRenderer(QwerTech.machines_registry.getItem(401).getItem(), new QT_Machine_Renderer(QwerTech.machines_registry));
+
+		MinecraftForgeClient.registerItemRenderer(QwerTech.upgradeArmorDesk_registry.getItem().getItem(), new QT_UpgradeDesk_Renderer(QwerTech.upgradeArmorDesk_registry));
+
 		RenderingRegistry.registerEntityRenderingHandler(EntityFoil.class,
 				new RenderEntityFoil());
 		RenderingRegistry.registerEntityRenderingHandler(EntityBall.class,

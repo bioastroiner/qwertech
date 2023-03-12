@@ -77,6 +77,7 @@ import java.util.List;
 
 import static gregapi.data.TD.Prefix.*;
 import static gregapi.data.TD.Properties.HAS_TOOL_STATS;
+import static gregapi.oredict.OreDictMaterialCondition.plasmax;
 import static gregapi.oredict.OreDictMaterialCondition.typemin;
 
 @InterfaceList(value = {
@@ -220,6 +221,7 @@ public final class QwerTech extends Abstract_Mod {
         QTConfigs.enableArmor = tSections.get("armor", "enableArmor", true, "Allow the creation of QwerTech armor").setShowInGui(true).getBoolean(true);
         QTConfigs.chest_enabled = tSections.get("wooden chest", "enable", true, "Allow registiration wooden chests").setShowInGui(true).getBoolean(true);
         QTConfigs.chest_enabled_recipe = tSections.get("wooden chest", "enable recipe", true, "Do they have recipe? configuration exists to make removing their recipe not pain.").setShowInGui(true).getBoolean(true);
+        QTConfigs.chest_enabled_hard_recipe = tSections.get("wooden chest", "enable HARD recipe", true, "Are You ready?! chests now need tools and components, tough it's all with wood rings and sticks").setShowInGui(true).getBoolean(true);
         tSections.save();
 
         Configuration UI = new Configuration(new File(CS.DirectoriesGT.CONFIG_GT, "QwerTech_UI_Display.cfg"));
@@ -432,6 +434,12 @@ public final class QwerTech extends Abstract_Mod {
             GameRegistry.addRecipe(new AdvancedCraftingTool(qwerTool, 20, miningHammerHead,MT.Steel));
             qwerTool.addTool(22, "Excavator", "Digs up a 3x3 Area", new QT_Tool_Excavator().setMaterialAmount(excavatorHead.mAmount), "craftingToolShovel", TC.stack(TC.INSTRUMENTUM, 10), TC.stack(TC.PERDITIO, 7), "shovel");
             GameRegistry.addRecipe(new AdvancedCraftingTool(qwerTool, 22, excavatorHead,MT.Steel));
+
+            CR.shaped(qwerTool.getToolWithStats(2, MT.Wood, MT.Wood), CR.DEF, "AAA", "BfB", " B ", 'A', ST.make(Items.string, 1, 0), 'B', OP.stick.mat(ANY.Wood, 1));
+            CR.shaped(qwerTool.getToolWithStats(2, MT.Bone, MT.Bone), CR.DEF, "AAA", "BfB", " B ", 'A', ST.make(Items.string, 1, 0), 'B', ST.make(Items.bone, 1, 0));
+            CR.shaped(qwerTool.getToolWithStats(2, MT.Rubber, MT.Rubber), CR.DEF, "AAA", "BfB", " B ", 'A', ST.make(Items.string, 1, 0), 'B', OP.stick.mat(MT.Rubber, 1));
+            CR.shaped(qwerTool.getToolWithStats(2, MT.Blaze, MT.Blaze), CR.DEF, "AAA", "BfB", " B ", 'A', ST.make(Items.string, 1, 0), 'B', ST.make(Items.blaze_rod, 1, 0));
+
         }
         if (QTConfigs.enableArmor) {
             MinecraftForge.EVENT_BUS.register(new RegisterArmor());
@@ -444,14 +452,9 @@ public final class QwerTech extends Abstract_Mod {
         //MinecraftForge.EVENT_BUS.register(new RegisterMobs());
         new RegisterMobs();
         MinecraftForge.EVENT_BUS.register(new QT_GUIHandler());
-
         RegisterMaterials.instance.registerRecipes();
-
         RegisterLoot.init();
-
         ModLoadBase.runInit();
-
-        // TODO what is this?! //CS.ToolsGT.sMetaTool.addItemBehavior(CS.ToolsGT.WRENCH, new Behavior_Slingshot("", 20, 40));
 
         CR.shaped(ST.make(soilBlock, 2, 8), CR.DEF, "AA", "AA", 'A', "treeLeaves");
         CR.shaped(ST.make(soilBlock, 1, 5), CR.DEF, "AA", 'A', ST.make(Blocks.leaves, 1, 1));
@@ -462,11 +465,6 @@ public final class QwerTech extends Abstract_Mod {
 
         RM.Crusher.addRecipe1(true, 16L, 16L, ST.make(Items.stick, 8, 0), (FluidStack) null, null, ST.make(soilBlock, 1, 1));
         RM.Crusher.addRecipe1(true, 16L, 16L, IL.Bark_Dry.get(8), (FluidStack) null, null, ST.make(soilBlock, 1, 2));
-
-        CR.shaped(qwerTool.getToolWithStats(2, MT.Wood, MT.Wood), CR.DEF, "AAA", "BfB", " B ", 'A', ST.make(Items.string, 1, 0), 'B', OP.stick.mat(ANY.Wood, 1));
-        CR.shaped(qwerTool.getToolWithStats(2, MT.Bone, MT.Bone), CR.DEF, "AAA", "BfB", " B ", 'A', ST.make(Items.string, 1, 0), 'B', ST.make(Items.bone, 1, 0));
-        CR.shaped(qwerTool.getToolWithStats(2, MT.Rubber, MT.Rubber), CR.DEF, "AAA", "BfB", " B ", 'A', ST.make(Items.string, 1, 0), 'B', OP.stick.mat(MT.Rubber, 1));
-        CR.shaped(qwerTool.getToolWithStats(2, MT.Blaze, MT.Blaze), CR.DEF, "AAA", "BfB", " B ", 'A', ST.make(Items.string, 1, 0), 'B', ST.make(Items.blaze_rod, 1, 0));
 
         if (OreDictionary.doesOreNameExist("cropOnion") && OreDictionary.doesOreNameExist("cropGarlic") && OreDictionary.doesOreNameExist("cropSpiceleaf")) {
             RM.Mixer.addRecipe2(true, 16L, 16L, OreDictionary.getOres("cropGarlic").get(0), OreDictionary.getOres("cropOnion").get(0), UT.Fluids.make("binnie.juicetomato", 500), UT.Fluids.make("mildsalsa", 500), (ItemStack[]) null);
@@ -526,10 +524,13 @@ public final class QwerTech extends Abstract_Mod {
                 OreDictMaterial woodType = WOOD.woodList[q];
                 if (woodType != null && !woodType.mHidden) {
                     chest_registry.add(woodType.mNameLocal + " Chest", "Chests", q, 0, ChestTileEntity.class, 0, 64, wood, UT.NBT.make(NullBT, CS.NBT_MATERIAL, woodType, CS.NBT_INV_SIZE, 27, CS.NBT_TEXTURE, "woodenchest", CS.NBT_HARDNESS, 3.0F, CS.NBT_RESISTANCE, 3.0F, CS.NBT_COLOR, UT.Code.getRGBInt(woodType.fRGBaSolid)));
-                    if(QTConfigs.chest_enabled_recipe){
-                        CR.shapeless(ST.make(Blocks.chest, 1, 0), CR.DEF, new Object[]{chest_registry.getItem(q)});
-                        CR.shaped(chest_registry.getItem(q),CR.DEF,"rPa", "RSR", "PWP", 'P', OP.plank.mat(woodType,1), 'S', OP.stick.mat(woodType,1), 'W', OP.plank.mat(woodType,1), 'R', OP.ring.mat(woodType,1));
-                        CR.shaped(chest_registry.getItem(q),CR.DEF,"rPs", "RSR", "PWP", 'P', OP.plank.mat(woodType,1), 'S', OP.stick.mat(woodType,1), 'W', OP.plank.mat(woodType,1), 'R', OP.ring.mat(woodType,1));
+                    CR.shapeless(ST.make(Blocks.chest, 1, 0), CR.DEF, new Object[]{chest_registry.getItem(q)});
+                    if(QTConfigs.chest_enabled_recipe){ItemStack plank = OreDictionary.getOres("plank"+woodType.mNameInternal).stream().findFirst().get();
+                        if(QTConfigs.chest_enabled_hard_recipe){
+                            CR.shaped(chest_registry.getItem(q),CR.DEF,"PPP","PsP","PPP",'P',plank);
+                            CR.shaped(chest_registry.getItem(q),CR.DEF,"rPa", "RSR", "PWP", 'P', plank, 'S', OP.stick.mat(woodType,1), 'W', plank, 'R', OP.ring.mat(woodType,1));
+                        }
+                        CR.shaped(chest_registry.getItem(q),CR.DEF,"rPs", "RSR", "PWP", 'P', plank, 'S', OP.stick.mat(woodType,1), 'W', plank, 'R', OP.ring.mat(woodType,1));
                     }
                     OM.reg(OD.craftingChest, chest_registry.getItem(q));
                     OM.reg("craftingChestWood", chest_registry.getItem(q));
@@ -539,7 +540,7 @@ public final class QwerTech extends Abstract_Mod {
             CR.shapeless(ST.make(Blocks.chest, 1, 0), CR.DEF, new Object[]{chest_registry.getItem(1510)});
             OM.reg(OD.craftingChest, chest_registry.getItem(0));
             OM.reg("craftingChestWood", chest_registry.getItem(0));
-            OreDictManager.INSTANCE.registerOre("chestSpecialWooden",chest_registry.getItem());
+            //OreDictManager.INSTANCE.registerOre("chestSpecialWooden",chest_registry.getItem());
             if(QTConfigs.chest_enabled_recipe)
                 GameRegistry.addRecipe(new WoodSpecificCrafting(chest_registry.getItem(0), "PPP", "P P", "PPP", 'P', "plankWood"));
             // [SHammer,<ore:plateAnyWood>,<ore:craftingToolSawAxe>],[<ore:ringAnyWood>,<ore:stickAnyWood>,<ore:ringAnyWood>],[<ore:plateAnyWood>,<ore:beamWood>,<ore:plateAnyWood>]

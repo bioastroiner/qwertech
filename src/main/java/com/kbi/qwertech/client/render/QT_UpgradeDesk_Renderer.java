@@ -15,19 +15,18 @@ import net.minecraftforge.client.IItemRenderer;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
-public class QT_Machine_Renderer implements IItemRenderer {
-	
+public class QT_UpgradeDesk_Renderer implements IItemRenderer {
+
 	private float transparency = 0.5F;
 	private MultiTileEntityRegistry Q;
-	
-	public QT_Machine_Renderer(MultiTileEntityRegistry reg)
+
+	public QT_UpgradeDesk_Renderer(MultiTileEntityRegistry reg)
 	{
-		Q = reg;
+		Q=reg;
 	}
 
 	@Override
 	public boolean handleRenderType(ItemStack item, ItemRenderType type) {
-        //return item.getItemDamage() > 400 && item.getItemDamage() < 410;
         return true;
     }
 
