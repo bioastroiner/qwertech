@@ -109,6 +109,7 @@ public final class QwerTech extends Abstract_Mod {
     public static int batSpikeTexID;
     public static int maxChiselTex = 4;
     public static MultiTileEntityRegistry machines;
+    public static MultiTileEntityRegistry armor_upgrade_desk;
     public static MultiTileEntityBlock metal;
     public static MultiTileEntityBlock wood;
     public static MultiTileEntityBlock air;
@@ -296,6 +297,7 @@ public final class QwerTech extends Abstract_Mod {
         OreDictManager.INSTANCE.setTarget(OP.blockDust, QTMT.Compost, ST.make(QwerTech.soilBlock, 1, 4));
 
         machines = new MultiTileEntityRegistry("qwertech.machines");
+        armor_upgrade_desk = new MultiTileEntityRegistry("qwertech.upgrade_desks");
 
         metal = MultiTileEntityBlock.getOrCreate(MODID, "iron", Material.iron, Block.soundTypeMetal, CS.TOOL_pickaxe, 0, 0, 15, false, false);
         wood = MultiTileEntityBlock.getOrCreate(MODID, "wood", Material.wood, Block.soundTypeWood, CS.TOOL_axe, 0, 0, 15, false, false);
@@ -501,7 +503,8 @@ public final class QwerTech extends Abstract_Mod {
         OreDictMaterial[] upgradeDeskMats = new OreDictMaterial[]{MT.Bronze, MT.Co, MT.Au, MT.Obsidian, MT.Plastic, MT.Ag};
         for (int q = 0; q < upgradeDeskMats.length; q++) {
             OreDictMaterial mat = upgradeDeskMats[q];
-            machines.add(mat.mNameLocal + " Upgrade Desk", "Upgrade Desks", 401 + q, 0, UpgradeDesk.class, 0, 16, metal, UT.NBT.make(NullBT, CS.NBT_MATERIAL, mat, CS.NBT_INV_SIZE, 1, CS.NBT_TEXTURE, "qwertech:metal", CS.NBT_HARDNESS, 3.0F, CS.NBT_RESISTANCE, 3.0F, CS.NBT_COLOR, UT.Code.getRGBInt(mat.fRGBaSolid)), "RfR", "RSR", "CCC", 'C', OP.plate.dat(mat), 'R', OP.stick.dat(ANY.Steel), 'S', OP.springSmall.dat(ANY.Steel));
+            ItemStack desk = armor_upgrade_desk.add(mat.mNameLocal + " Upgrade Desk", "Upgrade Desks", 0 + q, 0, UpgradeDesk.class, 0, 16, metal, UT.NBT.make(NullBT, CS.NBT_MATERIAL, mat, CS.NBT_INV_SIZE, 1, CS.NBT_TEXTURE, "qwertech:metal", CS.NBT_HARDNESS, 3.0F, CS.NBT_RESISTANCE, 3.0F, CS.NBT_COLOR, UT.Code.getRGBInt(mat.fRGBaSolid)), "RfR", "RSR", "CCC", 'C', OP.plate.dat(mat), 'R', OP.stick.dat(ANY.Steel), 'S', OP.springSmall.dat(ANY.Steel));
+            OreDictManager.INSTANCE.registerOre("upgradeDesk",desk);
         }
 
         for (int q = 1; q < WOOD.woodList.length; q++) {

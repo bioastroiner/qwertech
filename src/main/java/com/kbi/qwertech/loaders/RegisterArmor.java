@@ -2,6 +2,7 @@ package com.kbi.qwertech.loaders;
 
 import codechicken.nei.recipe.CatalystInfo;
 import codechicken.nei.recipe.RecipeCatalysts;
+import com.kbi.qwertech.QwerTech;
 import com.kbi.qwertech.api.armor.IArmorStats;
 import com.kbi.qwertech.api.armor.MultiItemArmor;
 import com.kbi.qwertech.api.armor.upgrades.IArmorUpgrade;
@@ -278,10 +279,10 @@ public class RegisterArmor {
 					}
 				}
 			});
-		for (int i = 0; i < 6; i++) {
+		for (int i = 0; i < QwerTech.armor_upgrade_desk.mLastRegisteredID+1; i++) {
 			// Upgrade Desks
-			RM_UPGRADE.mRecipeMachineList.add(ST.make(1027,1,401+i).setStackDisplayName(GOLD+LH.Chat.ITALIC+"Right Click with Armor Then Apply an Upgrade"));
-			RecipeCatalysts.addRecipeCatalyst(RM_UPGRADE.mNameNEI,new CatalystInfo(ST.make(1027,1,401+i),i));
+			RM_UPGRADE.mRecipeMachineList.add(QwerTech.armor_upgrade_desk.getItem(i).setStackDisplayName(GOLD+LH.Chat.ITALIC+"Right Click with Armor Then Apply an Upgrade"));
+			RecipeCatalysts.addRecipeCatalyst(RM_UPGRADE.mNameNEI,new CatalystInfo(QwerTech.armor_upgrade_desk.getItem(i),i));
 		}
 	}
 	
