@@ -1,14 +1,11 @@
 package com.kbi.qwertech;
 
-import codechicken.nei.recipe.CatalystInfo;
-import codechicken.nei.recipe.RecipeCatalysts;
 import com.kbi.qwertech.api.data.*;
 import com.kbi.qwertech.api.recipe.AnyQTTool;
 import com.kbi.qwertech.api.recipe.RepairRecipe;
 import com.kbi.qwertech.api.recipe.WoodSpecificCrafting;
 import com.kbi.qwertech.api.recipe.listeners.OreProcessing_NonCrafting;
 import com.kbi.qwertech.api.recipe.listeners.OreProcessing_QTTool;
-import com.kbi.qwertech.api.recipe.managers.CraftingManagerCountertop;
 import com.kbi.qwertech.api.registry.ArmorUpgradeRegistry;
 import com.kbi.qwertech.blocks.BlockCorrugated;
 import com.kbi.qwertech.blocks.BlockSoil;
@@ -20,7 +17,10 @@ import com.kbi.qwertech.items.stats.*;
 import com.kbi.qwertech.loaders.*;
 import com.kbi.qwertech.loaders.mod.ModLoadBase;
 import com.kbi.qwertech.network.packets.PacketInventorySync;
-import com.kbi.qwertech.tileentities.*;
+import com.kbi.qwertech.tileentities.ChestTileEntity;
+import com.kbi.qwertech.tileentities.NestBoxTileEntity;
+import com.kbi.qwertech.tileentities.NestTileEntity;
+import com.kbi.qwertech.tileentities.UpgradeDesk;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Optional.Interface;
 import cpw.mods.fml.common.Optional.InterfaceList;
@@ -30,7 +30,6 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import gregapi.api.Abstract_Mod;
 import gregapi.api.Abstract_Proxy;
 import gregapi.block.ItemBlockBase;
-import gregapi.block.metatype.BlockStones;
 import gregapi.block.multitileentity.MultiTileEntityBlock;
 import gregapi.block.multitileentity.MultiTileEntityRegistry;
 import gregapi.code.ICondition.And;
@@ -46,7 +45,6 @@ import gregapi.network.NetworkHandler;
 import gregapi.old.Textures;
 import gregapi.oredict.*;
 import gregapi.recipes.AdvancedCraftingTool;
-import gregapi.recipes.Recipe;
 import gregapi.render.IIconContainer;
 import gregapi.render.TextureSet;
 import gregapi.util.CR;
@@ -77,7 +75,6 @@ import java.util.List;
 
 import static gregapi.data.TD.Prefix.*;
 import static gregapi.data.TD.Properties.HAS_TOOL_STATS;
-import static gregapi.oredict.OreDictMaterialCondition.plasmax;
 import static gregapi.oredict.OreDictMaterialCondition.typemin;
 
 @InterfaceList(value = {
@@ -478,30 +475,6 @@ public final class QwerTech extends Abstract_Mod {
         RM.Mixer.addRecipe1(true, 16L, 16L, OP.dust.mat(MT.Rye, 1), UT.Fluids.make("sugarwater", 250), null, IL.Food_Dough_Sugar.get(2));
         RM.Mixer.addRecipe1(true, 16L, 16L, OP.dust.mat(MT.Oat, 1), UT.Fluids.make("sugarwater", 250), null, IL.Food_Dough_Sugar.get(2));
         RM.Mixer.addRecipe1(true, 16L, 16L, OP.dust.mat(MT.Potato, 1), UT.Fluids.make("sugarwater", 250), null, IL.Food_Dough_Sugar.get(2));
-
-//
-//        GameRegistry.addRecipe(new AnyQTTool(12L, new And(OP.stickLong, TD.Atomic.ANTIMATTER.NOT), false, null, new Object[]{OP.toolHeadScrewdriver, OP.toolHeadScrewdriver}, qwerTool.getToolWithStats(12, MT.NULL, MT.Empty)));
-//        GameRegistry.addRecipe(new AnyQTTool(12L, new And(OP.stickLong, TD.Atomic.ANTIMATTER.NOT), false, null, new Object[]{OP.toolHeadScrewdriver, OP.toolHeadFile}, qwerTool.getToolWithStats(12, MT.NULL, MT.Empty)));
-//        GameRegistry.addRecipe(new AnyQTTool(12L, new And(OP.stickLong, TD.Atomic.ANTIMATTER.NOT), false, null, new Object[]{OP.toolHeadFile, OP.toolHeadFile}, qwerTool.getToolWithStats(12, MT.NULL, MT.Empty)));
-//        GameRegistry.addRecipe(new AnyQTTool(12L, new And(OP.stickLong, TD.Atomic.ANTIMATTER.NOT), false, null, new Object[]{OP.toolHeadScrewdriver, OP.toolHeadChisel}, qwerTool.getToolWithStats(12, MT.NULL, MT.Empty)));
-//        GameRegistry.addRecipe(new AnyQTTool(12L, new And(OP.stickLong, TD.Atomic.ANTIMATTER.NOT), false, null, new Object[]{OP.toolHeadFile, OP.toolHeadChisel}, qwerTool.getToolWithStats(12, MT.NULL, MT.Empty)));
-//        GameRegistry.addRecipe(new AnyQTTool(12L, new And(OP.stickLong, TD.Atomic.ANTIMATTER.NOT), false, null, new Object[]{OP.toolHeadChisel, OP.toolHeadChisel}, qwerTool.getToolWithStats(12, MT.NULL, MT.Empty)));
-//        GameRegistry.addRecipe(new AnyQTTool(12L, new And(OP.stickLong, TD.Atomic.ANTIMATTER.NOT), false, null, new Object[]{OP.screw, OP.toolHeadScrewdriver}, qwerTool.getToolWithStats(12, MT.NULL, MT.Empty)));
-//        GameRegistry.addRecipe(new AnyQTTool(12L, new And(OP.stickLong, TD.Atomic.ANTIMATTER.NOT), false, null, new Object[]{OP.screw, OP.toolHeadFile}, qwerTool.getToolWithStats(12, MT.NULL, MT.Empty)));
-//        GameRegistry.addRecipe(new AnyQTTool(12L, new And(OP.stickLong, TD.Atomic.ANTIMATTER.NOT), false, null, new Object[]{OP.screw, OP.toolHeadChisel}, qwerTool.getToolWithStats(12, MT.NULL, MT.Empty)));
-//        GameRegistry.addRecipe(new AnyQTTool(12L, new And(OP.stickLong, TD.Atomic.ANTIMATTER.NOT), false, null, new Object[]{OP.screw, OP.screw}, qwerTool.getToolWithStats(12, MT.NULL, MT.Empty)));
-//        GameRegistry.addRecipe(new AnyQTTool(12L, new And(OP.stickLong, TD.Atomic.ANTIMATTER.NOT), false, null, new Object[]{OP.toolHeadArrow, OP.toolHeadScrewdriver}, qwerTool.getToolWithStats(12, MT.NULL, MT.Empty)));
-//        GameRegistry.addRecipe(new AnyQTTool(12L, new And(OP.stickLong, TD.Atomic.ANTIMATTER.NOT), false, null, new Object[]{OP.toolHeadArrow, OP.toolHeadFile}, qwerTool.getToolWithStats(12, MT.NULL, MT.Empty)));
-//        GameRegistry.addRecipe(new AnyQTTool(12L, new And(OP.stickLong, TD.Atomic.ANTIMATTER.NOT), false, null, new Object[]{OP.toolHeadArrow, OP.toolHeadChisel}, qwerTool.getToolWithStats(12, MT.NULL, MT.Empty)));
-//        GameRegistry.addRecipe(new AnyQTTool(12L, new And(OP.stickLong, TD.Atomic.ANTIMATTER.NOT), false, null, new Object[]{OP.toolHeadArrow, OP.screw}, qwerTool.getToolWithStats(12, MT.NULL, MT.Empty)));
-//        GameRegistry.addRecipe(new AnyQTTool(12L, new And(OP.stickLong, TD.Atomic.ANTIMATTER.NOT), false, null, new Object[]{OP.toolHeadArrow, OP.toolHeadArrow}, qwerTool.getToolWithStats(12, MT.NULL, MT.Empty)));
-//
-//        GameRegistry.addRecipe(new AnyQTTool(14L, new And(TD.Atomic.ANTIMATTER.NOT), true, new Object[]{OP.toolHeadAxe, OP.plate}, new Object[]{OP.stickLong}));
-//
-//        GameRegistry.addRecipe(new AnyQTTool(16L, new And(TD.Atomic.ANTIMATTER.NOT), true, new Object[]{OP.toolHeadShovel, OP.plate}, new Object[]{OP.stickLong}));
-//
-//        GameRegistry.addRecipe(new AnyQTTool(18L, new And(TD.Atomic.ANTIMATTER.NOT), true, new Object[]{OP.toolHeadPickaxe, OP.plate}, new Object[]{OP.stickLong}));
-
         // TODO CONFIG
         OreDictMaterial[] wallmats = new OreDictMaterial[]{MT.Fe, MT.Al, MT.Au, MT.Steel, MT.Bronze, MT.Brass, MT.Ag, MT.StainlessSteel, MT.WroughtIron, MT.Plastic, MT.Ti, MT.TungstenSteel, MT.Invar, MT.TinAlloy, MT.SteelGalvanized, MT.Electrum};
         for (int q = 0; q < 16; q++) {
@@ -566,39 +539,18 @@ public final class QwerTech extends Abstract_Mod {
 
     @Override
     public void onModPostInit2(FMLPostInitializationEvent aEvent) {
-        for (int q = 0; q < CS.BlocksGT.stones.length; q++) {
-            BlockStones block = (BlockStones) CS.BlocksGT.stones[q];
-//            machines.add(block.mMaterial.mNameLocal + " Countertop", "Countertops", 667 + (q * 3), 0, CuttingBoardTileEntity.class, 0, 16, metal, UT.NBT.make(NullBT, CS.NBT_MATERIAL, block.mMaterial, CS.NBT_INV_SIZE, 9, CS.NBT_TEXTURE, q, "qt.metatex", 0, CS.NBT_HARDNESS, 3.0F, CS.NBT_RESISTANCE, 3.0F, CS.NBT_COLOR, UT.Code.getRGBInt(block.mMaterial.fRGBaSolid)), "S", "P", 'S', ST.make(block.mSlabs[CS.SIDE_DOWN], 1, 0), 'P', ST.make(block, 1, 0));
-//            machines.add("Smooth " + block.mMaterial.mNameLocal + " Countertop", "Countertops", 667 + (q * 3) + 1, 0, CuttingBoardTileEntity.class, 0, 16, metal, UT.NBT.make(NullBT, CS.NBT_MATERIAL, block.mMaterial, CS.NBT_INV_SIZE, 9, CS.NBT_TEXTURE, q, "qt.metatex", 7, CS.NBT_HARDNESS, 3.0F, CS.NBT_RESISTANCE, 3.0F, CS.NBT_COLOR, UT.Code.getRGBInt(block.mMaterial.fRGBaSolid)), "S", "P", 'S', ST.make(block.mSlabs[CS.SIDE_DOWN], 1, 7), 'P', ST.make(block, 1, 7));
-//            machines.add(block.mMaterial.mNameLocal + " Cobblestone Countertop", "Countertops", 667 + (q * 3) + 2, 0, CuttingBoardTileEntity.class, 0, 16, metal, UT.NBT.make(NullBT, CS.NBT_MATERIAL, block.mMaterial, CS.NBT_INV_SIZE, 9, CS.NBT_TEXTURE, q, "qt.metatex", 1, CS.NBT_HARDNESS, 3.0F, CS.NBT_RESISTANCE, 3.0F, CS.NBT_COLOR, UT.Code.getRGBInt(block.mMaterial.fRGBaSolid)), "S", "P", 'S', ST.make(block.mSlabs[CS.SIDE_DOWN], 1, 1), 'P', ST.make(block, 1, 1));
-//
-//            machines.add(block.mMaterial.mNameLocal + " Counterdrawers", "Counterdrawers", 1250 + (q * 3), 0, CountertopShelvesTileEntity.class, 0, 16, metal, UT.NBT.make(NullBT, CS.NBT_MATERIAL, block.mMaterial, CS.NBT_INV_SIZE, 9 + 18, CS.NBT_TEXTURE, q, "qt.metatex", 0, CS.NBT_HARDNESS, 3.0F, CS.NBT_RESISTANCE, 3.0F, CS.NBT_COLOR, UT.Code.getRGBInt(block.mMaterial.fRGBaSolid)), "GCG", "PHP", 'C', machines.getItem(667 + (q * 3)), 'P', ST.make(block, 1, 0), 'H', OD.craftingChest, 'G', OD.itemGlue);
-//            CR.shaped(machines.getItem(1250 + (q * 3)), new Object[]{"GCG", "PHP", 'C', machines.getItem(667 + (q * 3)), 'P', ST.make(block, 1, 0), 'H', OD.craftingChest, 'G', OD.slimeball});
-//            machines.add("Smooth " + block.mMaterial.mNameLocal + " Counterdrawers", "Counterdrawers", 1251 + (q * 3), 0, CountertopShelvesTileEntity.class, 0, 16, metal, UT.NBT.make(NullBT, CS.NBT_MATERIAL, block.mMaterial, CS.NBT_INV_SIZE, 9 + 18, CS.NBT_TEXTURE, q, "qt.metatex", 7, CS.NBT_HARDNESS, 3.0F, CS.NBT_RESISTANCE, 3.0F, CS.NBT_COLOR, UT.Code.getRGBInt(block.mMaterial.fRGBaSolid)), "GCG", "PHP", 'C', machines.getItem(668 + (q * 3)), 'P', ST.make(block, 1, 7), 'H', OD.craftingChest, 'G', OD.itemGlue);
-//            CR.shaped(machines.getItem(1251 + (q * 3)), new Object[]{"GCG", "PHP", 'C', machines.getItem(668 + (q * 3)), 'P', ST.make(block, 1, 7), 'H', OD.craftingChest, 'G', OD.slimeball});
-//            machines.add(block.mMaterial.mNameLocal + " Counterdrawers", "Counterdrawers", 1252 + (q * 3), 0, CountertopShelvesTileEntity.class, 0, 16, metal, UT.NBT.make(NullBT, CS.NBT_MATERIAL, block.mMaterial, CS.NBT_INV_SIZE, 9 + 18, CS.NBT_TEXTURE, q, "qt.metatex", 1, CS.NBT_HARDNESS, 3.0F, CS.NBT_RESISTANCE, 3.0F, CS.NBT_COLOR, UT.Code.getRGBInt(block.mMaterial.fRGBaSolid)), "GCG", "PHP", 'C', machines.getItem(669 + (q * 3)), 'P', ST.make(block, 1, 1), 'H', OD.craftingChest, 'G', OD.itemGlue);
-//            CR.shaped(machines.getItem(1252 + (q * 3)), new Object[]{"GCG", "PHP", 'C', machines.getItem(669 + (q * 3)), 'P', ST.make(block, 1, 1), 'H', OD.craftingChest, 'G', OD.slimeball});
-        }
-
         RegisterArmor.instance.addUpgrades();
-
-        //CraftingManagerHammer.replacems.put(ST.make(Items.feather, 1, 0), "itemFeather");
-        //CraftingManagerHammer.replacems.put(ST.make(Blocks.chest, 1, 0), "craftingChest");
-        //CraftingManagerHammer.replacems.put(ST.make(Blocks.crafting_table, 1, 0), "craftingWorkBench");
-        //CS.GT.mAfterPostInit.add(CraftingManagerHammer.getInstance());
-        //CS.GT.mAfterPostInit.add(CraftingManager3D.getInstance());
-
         // NEI Catalyst Plugin for GT
-        Recipe.RecipeMap.RECIPE_MAP_LIST.forEach(map->{
-            for (int i = 0; i < map.mRecipeMachineList.toArray().length; i++) {
-                RecipeCatalysts.addRecipeCatalyst(map.mNameNEI,new CatalystInfo((ItemStack) map.mRecipeMachineList.toArray()[i],i));
-            }
-        });
+        // todo disable the NEI override thing it causes crash in dedicated server
+//        Recipe.RecipeMap.RECIPE_MAP_LIST.forEach(map->{
+//            for (int i = 0; i < map.mRecipeMachineList.toArray().length; i++) {
+//                RecipeCatalysts.addRecipeCatalyst(map.mNameNEI,new CatalystInfo((ItemStack) map.mRecipeMachineList.toArray()[i],i));
+//            }
+//        });
     }
 
     @Mod.EventHandler
     public void onModsLoaded(FMLLoadCompleteEvent event) {
-        CraftingManagerCountertop.getInstance().run();
         ModLoadBase.runPostInit();
     }
 
